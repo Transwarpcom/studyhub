@@ -1,0 +1,98 @@
+{
+  "id": "english/vocab/01",
+  "title": "01 词根词缀：一次记一串",
+  "subtitle": "四级高频词根 · 语境选词 · 词形变化",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "为什么要按词根记",
+      "md": "## 四级词汇的真实分布\n\n四级大纲约 4500 词，其中**派生词占六成以上**。也就是说，记住一个词根，往往能连带认出五六个词。\n\n三个高频词根先拿下：\n\n| 词根 | 含义 | 代表词 |\n|---|---|---|\n| `spect` / `spic` | 看 | inspect, respect, suspect, prospect |\n| `port` | 搬、运 | import, export, transport, portable |\n| `duc` / `duct` | 引导 | produce, introduce, reduce, conduct |\n\n## 拆词三步\n\n1. 找词根（决定核心含义）\n2. 看前缀（决定方向：in- 向内、ex- 向外、re- 回、pro- 向前）\n3. 看后缀（决定词性：-tion 名词、-ive 形容词、-ly 副词）\n\n`in` + `spect` = 向里看 = **检查**\n`pro` + `spect` = 向前看 = **前景、可能性**\n`re` + `spect` = 回头看 = **尊重**（反复看一个人 = 敬重）"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "20 个必背高频词",
+      "md": "## 按考试出现频率排序\n\n| 单词 | 词性 | 释义 | 搭配 |\n|---|---|---|---|\n| acquire | v. | 获得，习得 | acquire skills |\n| adapt | v. | 适应；改编 | adapt to |\n| adequate | adj. | 足够的 | adequate supply |\n| alter | v. | 改变 | alter the plan |\n| approach | n./v. | 方法；接近 | an approach to |\n| assume | v. | 假定；承担 | assume responsibility |\n| benefit | n./v. | 益处；受益 | benefit from |\n| capacity | n. | 容量；能力 | capacity for |\n| commit | v. | 承诺；犯（错） | commit to |\n| consequence | n. | 后果 | as a consequence |\n| contribute | v. | 贡献；促成 | contribute to |\n| decline | v./n. | 下降；婉拒 | a sharp decline |\n| demonstrate | v. | 证明；演示 | demonstrate that |\n| establish | v. | 建立；确立 | establish a link |\n| estimate | v./n. | 估计 | a rough estimate |\n| impose | v. | 强加 | impose on |\n| involve | v. | 涉及；使参与 | be involved in |\n| maintain | v. | 维持；主张 | maintain that |\n| promote | v. | 促进；晋升 | promote growth |\n| reveal | v. | 揭示 | reveal the truth |\n\n> 背诵建议：不要孤立背单词，背**搭配**。四级阅读考的是「这个词在这句里什么意思」，不是词典第一条释义。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "The new policy is expected to ______ economic growth in rural areas.\\n\\n选最合适的一项：",
+      "explain": "**promote** 促进（growth 是它的固定搭配）。\n\n- impose 强加，常接 `on`，语义不通\n- decline 下降，与「政策预期」矛盾\n- alter 改变，可以搭配但语气中性，不如 promote 准确\n\n**做题顺序**：先看空格后的名词（growth），再找能和它搭配的动词。",
+      "options": [
+        "promote",
+        "impose",
+        "decline",
+        "alter"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "选词",
+        "搭配"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi",
+      "question": "下列哪些词与 `contribute` 的常见用法搭配正确？",
+      "explain": "`contribute` 的两条主线：\n\n1. **contribute to + 名词**：促成、有助于（to 是介词）\n2. **contribute + 物 + to + 人/机构**：捐助\n\nC 的 `in` 不对，D 的 `for` 也不对。四级里 `contribute to` 出现频率极高，看到就选。",
+      "options": [
+        "contribute to the success",
+        "contribute money to charity",
+        "contribute in the meeting",
+        "contribute for the project"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "tags": [
+        "搭配"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "blank",
+      "question": "填出括号内词的正确形式：\\n\\nThe ______ (demonstrate) of the new device attracted many investors.",
+      "explain": "空格前是 `The`，后面是 `of`，需要**名词**。\n\ndemonstrate（动词）→ demonstration（名词，演示、示威）。\n\n**词性判断法**：`the ___ of` 中间几乎一定是名词。常见后缀：-tion, -ment, -ance, -ness。",
+      "blanks": [
+        [
+          "demonstration"
+        ]
+      ],
+      "tags": [
+        "词形变化"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "choice",
+      "question": "`The report ______ that the number of students choosing science has fallen sharply.`\\n\\n最合适的是：",
+      "explain": "report **reveals** that...（报告揭示……），是新闻类阅读的高频句式。\n\n- impose 需要宾语是人（impose sth on sb），这里接 that 从句不通\n- decline 作不及物动词时是「下降」，主语应是数量本身，不是报告\n- adapt 需要 to\n\n**看到 `report / study / survey + ___ + that` 这个框架，动词大概率是 show / reveal / suggest / indicate。**",
+      "options": [
+        "reveals",
+        "imposes",
+        "declines",
+        "adapts"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "语境"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "用 `contribute to` 和 `be involved in` 各写一句关于「大学生参与志愿活动」的英文句子。",
+      "explain": "**参考答案**\n\n1. *Volunteering **contributes to** the development of students' social skills.*\n   （志愿活动有助于培养学生的人际能力。）\n\n2. *Many college students **are involved in** community service every weekend.*\n   （许多大学生每周参与社区服务。）\n\n**写法要点**\n\n- `contribute to` 后面接名词或动名词，不接句子\n- `be involved in` 的 in 不能换成 on/with\n- 主语尽量具体（volunteering / college students），别用 `it` 开头凑数\n\n四级写作里这两个短语都属于「加分表达」，比 `help` 和 `take part in` 高级一档。",
+      "tags": [
+        "写作"
+      ]
+    }
+  ]
+}

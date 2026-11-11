@@ -1,0 +1,81 @@
+{
+  "id": "english/reading/01",
+  "title": "01 长篇阅读：段落信息匹配",
+  "subtitle": "十道题对十五段 · 定位 · 同义替换",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "这个题型到底在考什么",
+      "md": "## 题型结构\n\n一篇约 1000 词的文章，分成 A–O 共 15 段；后面 10 个句子，要求给每句找到对应的段落。\n\n**核心特征**\n\n- 题目顺序**与文章顺序无关**，不能顺着读\n- 每个段落**最多用一次**（有 5 段是干扰项）\n- 题目是原文的**同义改写**，几乎不会出现一模一样的词\n\n## 五步法\n\n1. **先扫题干，划关键词**：专有名词、数字、大写词优先（不会被改写）\n2. **再回文章，逐段读首末句**：段落主旨通常在第一句或最后一句\n3. **匹配靠同义替换**，不靠原词\n4. **先做有数字/人名的题**，这些最好定位\n5. **剩下最难的两三道，用排除法**：把已用段落划掉，剩下的范围会小很多\n\n> 时间分配：这个题型建议 12–15 分钟。不要逐字读全文——读不完，也不需要。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "同义替换的六种套路",
+      "md": "## 出题人怎么改写\n\n| 原文 | 题干改写 | 手法 |\n|---|---|---|\n| cause | lead to / result in | 动词替换 |\n| important | significant / crucial | 近义词 |\n| many | a large number of | 短语替换 |\n| people who... | those who... | 结构替换 |\n| not easy | difficult | 反义正说 |\n| because | as a result of | 逻辑词换位 |\n\n## 长难句拆主干\n\n遇到读不懂的句子，先砍掉三类成分：\n\n1. 介词短语（in the past twenty years / of the students）\n2. 定语从句（which / that / who 引导的整段）\n3. 插入语（两个逗号或两个破折号之间的内容）\n\n剩下的主谓宾就是句子的真实意思。\n\n**例**\n\n> *The assumption **that** economic growth will automatically solve environmental problems, **which** was widely accepted in the 1990s, has been challenged by recent studies.*\n\n砍掉 `that...` 和 `which...` 两个从句，主干是：\n\n> *The assumption has been challenged by recent studies.*\n\n（这个假设已被近期研究质疑。）"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "题干：`Some researchers believe that early exposure to music can improve children's language ability.`\\n\\n原文对应段落最可能包含下面哪种表述？",
+      "explain": "题干的关键信息是 **研究者 + 早期接触音乐 + 提升语言能力**。\n\nA 把三处全换了：\n- researchers → certain scholars\n- early exposure to music → musical training at an early age\n- improve → be strengthened\n\n其余三项虽然都出现在文章里（很可能就是干扰段），但和题干信息不匹配。\n\n**做这类题，划题干时只划「谁 + 做了什么 + 结果」，形容词一律不划。**",
+      "options": [
+        "According to certain scholars, language skills may be strengthened by musical training at an early age.",
+        "Music education is expensive and many schools cannot afford it.",
+        "Children usually begin to learn languages before the age of five.",
+        "The government has increased funding for arts education."
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "同义替换"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "段落首句：`It is tempting to blame technology for the decline in face-to-face communication.`\\n\\n该段最可能支持的观点是：",
+      "explain": "`It is tempting to...` 是英语里的**让步/反讽信号**，意思是「人们很容易这么想（但接下来要反驳）」。\n\n同类信号词：`It is easy to assume...` / `A common belief is that...` / `Many people claim...`\n\n看到这些，下一句通常就是 \"But / However / In fact...\"，作者真正想说的是反面。\n\nB 的 `oversimplified`（过于简化）正是对这种「甩锅给技术」的委婉否定。",
+      "options": [
+        "Technology is the main cause of reduced face-to-face communication, and this view is convincing.",
+        "Blaming technology for the decline may be an oversimplified view.",
+        "Face-to-face communication has completely disappeared.",
+        "Technology has no effect on how people communicate."
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "作者态度"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "blank",
+      "question": "用一句话概括下面这句的主干（中文）：\\n\\n`The idea that remote work will permanently replace the traditional office, which gained popularity during the pandemic, has gradually lost support among managers.`",
+      "explain": "**拆句**\n\n- `that remote work will permanently replace...` 是 idea 的同位语从句\n- `which gained popularity during the pandemic` 是非限制性定语从句，修饰 idea\n- 主干只剩：`The idea has gradually lost support among managers.`\n\n**译文**：这个观点在管理者中逐渐失去了支持。\n\n**要能识别**：两个逗号夹住的 which 从句可以直接跳过，不影响主干理解。阅读题里大量长句都是这个结构。",
+      "blanks": [
+        [
+          "这一想法已逐渐失去管理者的支持",
+          "这个观点在管理者中逐渐失去支持",
+          "该观点已逐渐失去管理层的支持",
+          "这一观念逐渐失去支持"
+        ]
+      ],
+      "tags": [
+        "长难句"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "把这句话译成中文：\\n\\n`While digital tools have made information more accessible, they have also made it harder for people to tell reliable sources from unreliable ones.`",
+      "explain": "**参考译文**\n\n尽管数字工具让信息更易获取，但它们也让人们更难分辨可靠来源与不可靠来源。\n\n**得分点**\n\n1. `While` 表让步，译「尽管 / 虽然」，不能译成「当……时候」\n2. `have made information more accessible` 是 make + 宾语 + 形容词的复合结构\n3. `tell A from B` 固定搭配：区分 A 和 B\n4. 两个分句主语一致（digital tools / they），中文可保留代词「它们」\n\n**四级翻译的通用原则**：先保证主干（谁 做了什么），再补状语。宁可句子朴素，不要为了文采把主谓宾弄丢。",
+      "tags": [
+        "翻译"
+      ]
+    }
+  ]
+}

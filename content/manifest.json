@@ -1,0 +1,92 @@
+{
+  "version": 1,
+  "updated": "2026-11-11",
+  "title": "学习台",
+  "tree": [
+    {
+      "id": "math",
+      "title": "高等数学 A1",
+      "icon": "function",
+      "kind": "folder",
+      "summary": "第 1 章 函数与极限（持续更新）",
+      "children": [
+        {
+          "id": "math/ch01",
+          "title": "第 1 章 函数与极限",
+          "icon": "folder.fill",
+          "kind": "folder",
+          "summary": "极限定义 · 无穷小 · 两个重要极限",
+          "children": [
+            {
+              "id": "math/ch01/01",
+              "title": "1.1 数列极限的定义",
+              "kind": "lesson",
+              "bundle": "math/ch01/01",
+              "summary": "ε-N 语言 · 几何意义 · 证明模板",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/ch01/02",
+              "title": "1.2 无穷小与无穷大",
+              "kind": "lesson",
+              "bundle": "math/ch01/02",
+              "summary": "等价无穷小 · 阶的比较",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/ch01/03",
+              "title": "1.3 两个重要极限",
+              "kind": "lesson",
+              "bundle": "math/ch01/03",
+              "summary": "sin x/x · e 的两种形式",
+              "badge": "6 卡"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "title": "大学英语 I",
+      "icon": "textformat.abc",
+      "kind": "folder",
+      "summary": "词汇 · 阅读（听力与写作待补）",
+      "children": [
+        {
+          "id": "english/vocab",
+          "title": "词汇",
+          "icon": "character.book.closed.fill",
+          "kind": "folder",
+          "summary": "词根词缀 · 四级高频",
+          "children": [
+            {
+              "id": "english/vocab/01",
+              "title": "01 词根词缀：一次记一串",
+              "kind": "lesson",
+              "bundle": "english/vocab/01",
+              "summary": "spect/port/duc · 20 个高频词",
+              "badge": "6 卡"
+            }
+          ]
+        },
+        {
+          "id": "english/reading",
+          "title": "阅读",
+          "icon": "doc.text.magnifyingglass",
+          "kind": "folder",
+          "summary": "长篇阅读 · 同义替换",
+          "children": [
+            {
+              "id": "english/reading/01",
+              "title": "01 长篇阅读：段落信息匹配",
+              "kind": "lesson",
+              "bundle": "english/reading/01",
+              "summary": "五步法 · 同义替换六套路",
+              "badge": "5 卡"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

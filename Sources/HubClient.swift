@@ -28,7 +28,7 @@ final class HubClient {
     }
 
     var token: String {
-        get { defaults.string(forKey: "hub.token") ?? "" }
+        get { defaults.string(forKey: "hub.token") ?? "gaoshu2026" }
         set { defaults.set(newValue, forKey: "hub.token") }
     }
 

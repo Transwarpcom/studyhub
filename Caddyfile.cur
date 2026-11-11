@@ -1,0 +1,87 @@
+{
+	email admin@medwarp.cn
+}
+
+# HTML 发布站：全部经网关（认证 + 限流 + 封禁）
+html.medwarp.cn {
+	encode zstd gzip
+
+	# 安全响应头
+	header {
+		X-Content-Type-Options nosniff
+		X-Frame-Options SAMEORIGIN
+		Referrer-Policy no-referrer
+		-Server
+	}
+
+	# 审计日志（含真实 IP）
+	log {
+		output file /data/access.log {
+			roll_size 20mb
+			roll_keep 5
+		}
+		format json
+	}
+
+
+	# IPA 分发：直连静态容器，绕过密码网关（42MB 流式转发慢）
+	redir /ipa /ipa/ 302
+	# 只有 .ipa 走附件下载 + octet-stream 强制保存。
+	# 不能把整个 /ipa/* 都改成 attachment：安装页和 list.json 也要能正常渲染，
+	# 否则页面直接变成下载文件，fetch 拿不到 JSON，列表永远空着。
+	handle /ipa/*.ipa {
+		header Content-Type application/octet-stream
+		header Content-Disposition "attachment"
+		header Cache-Control "no-store"
+		reverse_proxy static:80
+	}
+	handle /ipa/* {
+		reverse_proxy static:80
+	}
+
+	# 学习台 StudyHub API：直连内容服务，不走密码网关（App 用 Bearer token 自己认证）
+	handle /study-api/* {
+		uri strip_prefix /study-api
+		reverse_proxy studyhub:8099
+	}
+
+	# 全部流量交给网关
+	reverse_proxy gateway:8080 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+	}
+}
+
+# 三视图工具站：独立子域，无密码，直连静态容器
+tv.medwarp.cn {
+	encode zstd gzip
+	header {
+		X-Content-Type-Options nosniff
+		-Server
+	}
+	root * /srv
+	file_server
+}
+
+# X 存档查看器：反代到本机 x-clone（ssh -R 隧道 → 宿主 127.0.0.1:8911 → socat → 172.20.0.1:8911）
+xv.medwarp.cn {
+	encode zstd gzip
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy no-referrer
+		-Server
+	}
+	log {
+		output file /data/xv.log {
+			roll_size 20mb
+			roll_keep 3
+		}
+		format json
+	}
+	reverse_proxy 172.20.0.1:8911 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+		flush_interval -1
+	}
+}
