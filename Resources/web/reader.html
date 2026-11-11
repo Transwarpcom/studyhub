@@ -35,6 +35,15 @@
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text)}
+  /* 手动主题覆盖（跟随系统是默认） */
+  body.theme-light{
+    --bg:#f2f2f7;--card:#ffffff;--text:#1c1c1e;--sub:#6c6c70;--line:#e3e3e8;
+    --accent:#2563eb;--ok:#16a34a;--bad:#dc2626;--code:#f4f4f6;color-scheme:light;
+  }
+  body.theme-dark{
+    --bg:#000000;--card:#1c1c1e;--text:#f2f2f7;--sub:#9b9ba0;--line:#2f2f33;
+    --accent:#5b93ff;--ok:#4ade80;--bad:#f87171;--code:#2c2c2e;color-scheme:dark;
+  }
   body{
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","SF Pro Text","Helvetica Neue","Microsoft YaHei",sans-serif;
     font-size:17px;line-height:1.78;

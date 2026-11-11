@@ -67,6 +67,13 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                             .frame(width: 26, alignment: .trailing)
                     }
+                    Picker("主题", selection: Binding(get: { store.theme },
+                                                    set: { store.setTheme($0) })) {
+                        Text("跟随系统").tag("auto")
+                        Text("浅色").tag("light")
+                        Text("深色").tag("dark")
+                    }
+                    .pickerStyle(.segmented)
                 }
 
                 Section("学习统计") {

@@ -62,7 +62,9 @@ struct QuizCardView: UIViewRepresentable {
                                         subtitle: "",
                                         cards: [item.card],
                                         progress: [:],
-                                        fontSize: fontSize)
+                                        fontSize: fontSize,
+                                        scrollY: 0,
+                                        theme: UserDefaults.standard.string(forKey: "hub.theme") ?? "auto")
             guard let data = try? JSONEncoder().encode(payload),
                   var json = String(data: data, encoding: .utf8) else { return }
             json = json.replacingOccurrences(of: "\u{2028}", with: "\\u2028")

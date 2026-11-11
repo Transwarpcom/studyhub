@@ -518,10 +518,17 @@
     document.body.style.fontSize = size + 'px';
   }
 
+  function applyTheme(t) {
+    document.body.classList.remove('theme-light', 'theme-dark');
+    if (t === 'light') document.body.classList.add('theme-light');
+    else if (t === 'dark') document.body.classList.add('theme-dark');
+  }
+
   function build(payload) {
     S.payload = payload;
     S.lessonId = payload.lessonId;
     applyFontSize(payload.fontSize);
+    applyTheme(payload.theme);
     S.answered = {};
     S.total = 0;
     S.done = 0;

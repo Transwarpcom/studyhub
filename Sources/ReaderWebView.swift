@@ -10,6 +10,7 @@ struct RenderPayload: Codable {
     var progress: [String: Bool]
     var fontSize: Double
     var scrollY: Double
+    var theme: String
 }
 
 struct ReaderWebView: UIViewRepresentable {
@@ -47,7 +48,8 @@ struct ReaderWebView: UIViewRepresentable {
     func updateUIView(_ uiView: WKWebView, context: Context) {
         context.coordinator.update(lesson: lesson,
                                    progress: store.progressDict(lesson: lesson),
-                                   fontSize: store.fontSize)
+                                   fontSize: store.fontSize,
+                                   theme: store.theme)
     }
 
     static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
@@ -59,6 +61,7 @@ struct ReaderWebView: UIViewRepresentable {
         var progress: [String: Bool] = [:]
         var fontSize: Double = 17
         var scrollY: Double = 0
+        var theme: String = "auto"
         var onScroll: ((Double) -> Void)?
         var onCopyTex: ((String) -> Void)?
         weak var webView: WKWebView?
@@ -74,10 +77,11 @@ struct ReaderWebView: UIViewRepresentable {
             self.onCopyTex = onCopyTex
         }
 
-        func update(lesson: Lesson, progress: [String: Bool], fontSize: Double) {
+        func update(lesson: Lesson, progress: [String: Bool], fontSize: Double, theme: String) {
             self.lesson = lesson
             self.progress = progress
             self.fontSize = fontSize
+            self.theme = theme
             push()
         }
 
@@ -94,7 +98,8 @@ struct ReaderWebView: UIViewRepresentable {
                                         cards: lesson.cards,
                                         progress: progress,
                                         fontSize: fontSize,
-                                        scrollY: scrollY)
+                                        scrollY: scrollY,
+                                        theme: theme)
             guard let data = try? JSONEncoder().encode(payload),
                   var json = String(data: data, encoding: .utf8) else { return }
             json = json.replacingOccurrences(of: "\u{2028}", with: "\\u2028")

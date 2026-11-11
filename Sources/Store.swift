@@ -25,6 +25,8 @@ final class Store: ObservableObject {
 
     // 阅读器字号
     @Published var fontSize: Double = UserDefaults.standard.object(forKey: "hub.fontSize") as? Double ?? 17
+    // 阅读器主题：auto / light / dark
+    @Published var theme: String = UserDefaults.standard.string(forKey: "hub.theme") ?? "auto"
 
     let client = HubClient.shared
     private var lessons: [String: Lesson] = [:]
@@ -366,6 +368,11 @@ final class Store: ObservableObject {
     func setFontSize(_ v: Double) {
         fontSize = v
         UserDefaults.standard.set(v, forKey: "hub.fontSize")
+    }
+
+    func setTheme(_ t: String) {
+        theme = t
+        UserDefaults.standard.set(t, forKey: "hub.theme")
     }
 
     // MARK: 同步
