@@ -12,3 +12,6 @@ content_build/
 
 # 含真实 token 的临时脚本
 tools/*_ready.py
+
+# 构建产物
+out/

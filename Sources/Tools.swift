@@ -121,6 +121,7 @@ enum Reminder {
 // MARK: - 学习报告
 
 enum ReportBuilder {
+    @MainActor
     static func text(store: Store) -> String {
         let f = DateFormatter()
         f.dateFormat = "yyyy-MM-dd HH:mm"
