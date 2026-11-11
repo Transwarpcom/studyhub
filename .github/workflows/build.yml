@@ -42,6 +42,9 @@ jobs:
           mkdir -p Payload
           cp -R "$APP" Payload/
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" "Payload/StudyHub.app/Info.plist" || true
+          # 版本号自动递增：主版本读 VERSION 文件，末位跟 run_number 走
+          BASEV=$(head -1 VERSION 2>/dev/null || echo 1.5)
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${BASEV}.${{ github.run_number }}" "Payload/StudyHub.app/Info.plist" || true
           /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "Payload/StudyHub.app/Info.plist"
           /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "Payload/StudyHub.app/Info.plist"
           zip -qry StudyHub-unsigned.ipa Payload
