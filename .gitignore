@@ -7,3 +7,5 @@ studyhub_server.log
 __pycache__/
 *.pyc
 content_build/
+
+.token

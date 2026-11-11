@@ -23,12 +23,12 @@ final class HubClient {
     private let defaults = UserDefaults.standard
 
     var baseURL: String {
-        get { defaults.string(forKey: "hub.baseURL") ?? "https://html.medwarp.cn/study-api" }
+        get { defaults.string(forKey: "hub.baseURL") ?? BuildConfig.defaultBaseURL }
         set { defaults.set(newValue, forKey: "hub.baseURL") }
     }
 
     var token: String {
-        get { defaults.string(forKey: "hub.token") ?? "gaoshu2026" }
+        get { defaults.string(forKey: "hub.token") ?? BuildConfig.defaultToken }
         set { defaults.set(newValue, forKey: "hub.token") }
     }
 
