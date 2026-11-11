@@ -9,14 +9,18 @@ struct RenderPayload: Codable {
     var cards: [Card]
     var progress: [String: Bool]
     var fontSize: Double
+    var scrollY: Double
 }
 
 struct ReaderWebView: UIViewRepresentable {
     let lesson: Lesson
+    var scrollY: Double = 0
+    var onScroll: ((Double) -> Void)? = nil
+    var onCopyTex: ((String) -> Void)? = nil
     @EnvironmentObject var store: Store
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(lesson: lesson)
+        Coordinator(lesson: lesson, scrollY: scrollY, onScroll: onScroll, onCopyTex: onCopyTex)
     }
 
     func makeUIView(context: Context) -> WKWebView {
@@ -54,12 +58,20 @@ struct ReaderWebView: UIViewRepresentable {
         var lesson: Lesson
         var progress: [String: Bool] = [:]
         var fontSize: Double = 17
+        var scrollY: Double = 0
+        var onScroll: ((Double) -> Void)?
+        var onCopyTex: ((String) -> Void)?
         weak var webView: WKWebView?
         private var ready = false
         private var lastJSON = ""
 
-        init(lesson: Lesson) {
+        init(lesson: Lesson, scrollY: Double = 0,
+             onScroll: ((Double) -> Void)? = nil,
+             onCopyTex: ((String) -> Void)? = nil) {
             self.lesson = lesson
+            self.scrollY = scrollY
+            self.onScroll = onScroll
+            self.onCopyTex = onCopyTex
         }
 
         func update(lesson: Lesson, progress: [String: Bool], fontSize: Double) {
@@ -81,7 +93,8 @@ struct ReaderWebView: UIViewRepresentable {
                                         subtitle: lesson.subtitle ?? "",
                                         cards: lesson.cards,
                                         progress: progress,
-                                        fontSize: fontSize)
+                                        fontSize: fontSize,
+                                        scrollY: scrollY)
             guard let data = try? JSONEncoder().encode(payload),
                   var json = String(data: data, encoding: .utf8) else { return }
             json = json.replacingOccurrences(of: "\u{2028}", with: "\\u2028")
@@ -109,6 +122,12 @@ struct ReaderWebView: UIViewRepresentable {
                 }
             } else if type == "ready" {
                 push(force: true)
+            } else if type == "scroll" {
+                if let y = body["y"] as? Double {
+                    onScroll?(y)
+                }
+            } else if type == "copy", let tex = body["tex"] as? String {
+                onCopyTex?(tex)
             } else if type == "openURL", let s = body["url"] as? String, let u = URL(string: s) {
                 UIApplication.shared.open(u)
             } else if type == "haptic" {

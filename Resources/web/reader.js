@@ -21,6 +21,31 @@
     done: 0
   };
 
+  // 长按复制公式 / 滚动位置上报
+  var longPressTimer = null;
+  var scrollTimer = null;
+
+  document.addEventListener('touchstart', function (e) {
+    var el = e.target && e.target.closest ? e.target.closest('.mtex') : null;
+    if (!el) return;
+    longPressTimer = setTimeout(function () {
+      var tex = el.getAttribute('data-tex') || '';
+      if (tex) post({ type: 'copy', tex: tex });
+      if (navigator.vibrate) { try { navigator.vibrate(10); } catch (err) {} }
+    }, 600);
+  }, { passive: true });
+
+  document.addEventListener('touchend', function () { if (longPressTimer) clearTimeout(longPressTimer); });
+  document.addEventListener('touchmove', function () { if (longPressTimer) clearTimeout(longPressTimer); });
+
+  window.addEventListener('scroll', function () {
+    if (scrollTimer) return;
+    scrollTimer = setTimeout(function () {
+      scrollTimer = null;
+      post({ type: 'scroll', y: window.scrollY || document.documentElement.scrollTop || 0 });
+    }, 700);
+  });
+
   // ---------- 与原生通信 ----------
   function post(obj) {
     try {
@@ -80,7 +105,10 @@
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;');
-      return it.d ? '$$' + body + '$$' : '$' + body + '$';
+      var delim = it.d ? '$$' : '$';
+      // 包一层带 data-tex 的 span，长按可以复制 LaTeX 源码
+      var raw = String(it.b).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return '<span class="mtex" data-tex="' + raw + '">' + delim + body + delim + '</span>';
     });
   }
 
@@ -532,6 +560,14 @@
 
     updateProgress();
     post({ type: 'ready' });
+
+    // 恢复上次阅读位置
+    if (payload.scrollY && payload.scrollY > 10) {
+      var target = payload.scrollY;
+      setTimeout(function () {
+        try { window.scrollTo(0, target); } catch (e) {}
+      }, 260);
+    }
   }
 
   window.renderStudyHub = function (payload) {

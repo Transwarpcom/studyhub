@@ -148,6 +148,7 @@ struct FolderView: View {
 struct NodeRow: View {
     let node: Node
     @Binding var path: [Node]
+    @EnvironmentObject var store: Store
 
     private var isFolder: Bool { node.kind == "folder" }
 
@@ -180,6 +181,17 @@ struct NodeRow: View {
                 }
 
                 Spacer(minLength: 6)
+
+                if store.isFavorite(node.id) {
+                    Image(systemName: "star.fill")
+                        .font(.caption2)
+                        .foregroundColor(.yellow)
+                }
+                if store.notes[node.id] != nil {
+                    Image(systemName: "note.text")
+                        .font(.caption2)
+                        .foregroundColor(.orange)
+                }
 
                 if let b = node.badge, !b.isEmpty {
                     Text(b)
@@ -263,11 +275,18 @@ struct LessonLoaderView: View {
     @EnvironmentObject var store: Store
     @State private var lesson: Lesson?
     @State private var error: String?
+    @State private var showNote = false
+    @State private var noteText = ""
 
     var body: some View {
         Group {
             if let lesson {
-                ReaderWebView(lesson: lesson)
+                ReaderWebView(lesson: lesson,
+                              scrollY: store.position(for: lesson.id),
+                              onScroll: { y in store.setPosition(y, for: lesson.id) },
+                              onCopyTex: { tex in
+                                  UIPasteboard.general.string = tex
+                              })
                     .ignoresSafeArea(edges: .bottom)
             } else if let error {
                 VStack(spacing: 14) {
@@ -287,6 +306,41 @@ struct LessonLoaderView: View {
         }
         .navigationTitle(node.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    store.toggleFavorite(node.id)
+                } label: {
+                    Image(systemName: store.isFavorite(node.id) ? "star.fill" : "star")
+                }
+                Button {
+                    noteText = store.note(for: node.id)
+                    showNote = true
+                } label: {
+                    Image(systemName: store.notes[node.id] == nil ? "square.and.pencil" : "note.text")
+                }
+            }
+        }
+        .sheet(isPresented: $showNote) {
+            NavigationStack {
+                TextEditor(text: $noteText)
+                    .font(.body)
+                    .padding(8)
+                    .navigationTitle("笔记 · \(node.title)")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("取消") { showNote = false }
+                        }
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("保存") {
+                                store.setNote(noteText, for: node.id)
+                                showNote = false
+                            }
+                        }
+                    }
+            }
+        }
         .task {
             if lesson == nil { await load(force: false) }
         }

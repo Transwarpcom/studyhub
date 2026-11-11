@@ -13,6 +13,9 @@ final class Store: ObservableObject {
     @Published var wrongs: [WrongItem] = []
     @Published var days: [String: DayStat] = [:]
     @Published var reviews: [String: ReviewItem] = [:]
+    @Published var notes: [String: String] = [:]          // lessonId -> 笔记
+    @Published var favorites: Set<String> = []            // 收藏的 lessonId
+    @Published var positions: [String: Double] = [:]      // lessonId -> 阅读位置
 
     // 批量缓存
     @Published var downloading = false
@@ -57,6 +60,17 @@ final class Store: ObservableObject {
            let r = try? JSONDecoder().decode([String: ReviewItem].self, from: d) {
             reviews = r
         }
+        if let d = UserDefaults.standard.data(forKey: "hub.notes"),
+           let n = try? JSONDecoder().decode([String: String].self, from: d) {
+            notes = n
+        }
+        if let a = UserDefaults.standard.array(forKey: "hub.favorites") as? [String] {
+            favorites = Set(a)
+        }
+        if let d = UserDefaults.standard.data(forKey: "hub.positions"),
+           let p = try? JSONDecoder().decode([String: Double].self, from: d) {
+            positions = p
+        }
         if let t = UserDefaults.standard.object(forKey: "hub.lastSync") as? Date {
             lastSync = t
         }
@@ -90,6 +104,58 @@ final class Store: ObservableObject {
         if let d = try? JSONEncoder().encode(reviews) {
             UserDefaults.standard.set(d, forKey: "hub.reviews")
         }
+    }
+
+    // MARK: 笔记 / 收藏 / 阅读位置
+
+    func saveNotes() {
+        if let d = try? JSONEncoder().encode(notes) {
+            UserDefaults.standard.set(d, forKey: "hub.notes")
+        }
+    }
+
+    func setNote(_ text: String, for lessonId: String) {
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            notes.removeValue(forKey: lessonId)
+        } else {
+            notes[lessonId] = text
+        }
+        saveNotes()
+    }
+
+    func note(for lessonId: String) -> String {
+        notes[lessonId] ?? ""
+    }
+
+    func toggleFavorite(_ lessonId: String) {
+        if favorites.contains(lessonId) {
+            favorites.remove(lessonId)
+        } else {
+            favorites.insert(lessonId)
+        }
+        UserDefaults.standard.set(Array(favorites), forKey: "hub.favorites")
+    }
+
+    func isFavorite(_ lessonId: String) -> Bool {
+        favorites.contains(lessonId)
+    }
+
+    func setPosition(_ y: Double, for lessonId: String) {
+        positions[lessonId] = y
+        if positions.count > 400 {
+            // 简单限制：超出就全量写一次
+            if let d = try? JSONEncoder().encode(positions) {
+                UserDefaults.standard.set(d, forKey: "hub.positions")
+            }
+            return
+        }
+        if let d = try? JSONEncoder().encode(positions) {
+            UserDefaults.standard.set(d, forKey: "hub.positions")
+        }
+    }
+
+    func position(for lessonId: String) -> Double {
+        positions[lessonId] ?? 0
     }
 
     // MARK: 抽题与复习
