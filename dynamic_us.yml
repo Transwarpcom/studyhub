@@ -86,6 +86,24 @@ http:
       tls:
         certResolver: letsencrypt
 
+    studyhub-api-html:
+      rule: "Host(`html.medwarp.cn`) && PathPrefix(`/study-api`)"
+      service: studyhub-service
+      entryPoints:
+        - websecure
+      middlewares:
+        - studyhub-strip
+      tls:
+        certResolver: letsencrypt
+
+    studyhub-ipa-html:
+      rule: "Host(`html.medwarp.cn`) && PathPrefix(`/ipa`)"
+      service: studyhub-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
   services:
     next-service:
       loadBalancer:
