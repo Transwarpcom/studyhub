@@ -387,19 +387,34 @@ final class Store: ObservableObject {
         guard !loading else { return }
         loading = true
         defer { loading = false }
-        do {
-            let data = try await client.getRaw("/manifest")
-            let m = try JSONDecoder().decode(Manifest.self, from: data)
-            manifest = m
-            client.saveCache(data, name: "manifest")
-            let now = Date()
-            lastSync = now
-            UserDefaults.standard.set(now, forKey: "hub.lastSync")
-            lastError = nil
-            await loadReplies()
-        } catch {
-            lastError = error.localizedDescription
+
+        // 主源失败自动切 GitHub 静态镜像
+        let candidates = [client.baseURL, HubClient.mirrorBase]
+        var succeeded = false
+        var lastMsg = ""
+        for base in candidates {
+            client.activeBase = base
+            do {
+                let data = try await client.getRaw("/manifest")
+                let m = try JSONDecoder().decode(Manifest.self, from: data)
+                manifest = m
+                client.saveCache(data, name: "manifest")
+                let now = Date()
+                lastSync = now
+                UserDefaults.standard.set(now, forKey: "hub.lastSync")
+                lastError = nil
+                succeeded = true
+                break
+            } catch {
+                lastMsg = error.localizedDescription
+            }
         }
+        if !succeeded {
+            client.activeBase = client.baseURL
+            lastError = lastMsg.isEmpty ? "内容源都连不上" : lastMsg
+            return
+        }
+        await loadReplies()
     }
 
     func loadReplies() async {
@@ -422,7 +437,7 @@ final class Store: ObservableObject {
         let key = node.bundle ?? node.id
         if let cached = lessons[key] { return cached }
 
-        let path = "/lesson?" + queryFor(key)
+        let path = client.lessonPath(key)
         if let data = try? await client.getRaw(path) {
             let lesson = try JSONDecoder().decode(Lesson.self, from: data)
             lessons[key] = lesson

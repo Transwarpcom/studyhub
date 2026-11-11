@@ -32,6 +32,30 @@ final class HubClient {
         set { defaults.set(newValue, forKey: "hub.token") }
     }
 
+    // MARK: 内容源（主服务器失效时自动切 GitHub 静态镜像）
+
+    /// GitHub 上的静态镜像（content 目录直接跑 raw）
+    static let mirrorBase = "https://raw.githubusercontent.com/Transwarpcom/studyhub/main/content"
+
+    /// 当前实际使用的源
+    var activeBase: String {
+        get { defaults.string(forKey: "hub.activeBase") ?? baseURL }
+        set { defaults.set(newValue, forKey: "hub.activeBase") }
+    }
+
+    var isStatic: Bool {
+        activeBase.contains("raw.githubusercontent.com")
+    }
+
+    /// 静态镜像的章节路径：/lessons/<id 下划线化>.json
+    func lessonPath(_ key: String) -> String {
+        if isStatic {
+            return "/lessons/" + key.replacingOccurrences(of: "/", with: "_") + ".json"
+        }
+        let enc = key.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? key
+        return "/lesson?id=" + enc
+    }
+
     // MARK: 缓存
 
     var cacheDir: URL {
@@ -67,7 +91,7 @@ final class HubClient {
     // MARK: 请求
 
     private func makeRequest(_ path: String, method: String = "GET") throws -> URLRequest {
-        let base = baseURL.trimmingCharacters(in: .whitespacesAndNewlines)
+        let base = activeBase.trimmingCharacters(in: .whitespacesAndNewlines)
         guard var comps = URLComponents(string: base + path) else { throw HubError.badURL }
         if comps.scheme == nil { comps.scheme = "https" }
         guard let url = comps.url else { throw HubError.badURL }
