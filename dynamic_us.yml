@@ -1,0 +1,126 @@
+http:
+  middlewares:
+    badger:
+      plugin:
+        badger:
+          disableForwardAuth: true
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
+
+    studyhub-strip:
+      stripPrefix:
+        prefixes:
+          - "/study-api"
+  routers:
+    # HTTP to HTTPS redirect router
+    main-app-router-redirect:
+      rule: "Host(`pangolin.medwarp.cn`)"
+      service: next-service
+      entryPoints:
+        - web
+      middlewares:
+        - redirect-to-https
+        - badger
+
+    # Next.js router (handles everything except API and WebSocket paths)
+    next-router:
+      rule: "Host(`pangolin.medwarp.cn`) && !PathPrefix(`/api/v1`)"
+      service: next-service
+      entryPoints:
+        - websecure
+      middlewares:
+        - badger
+      tls:
+        certResolver: letsencrypt
+        domains:
+          - main: "medwarp.cn"
+            sans:
+              - "*.medwarp.cn"
+          - main: "warpdotsys.com"
+            sans:
+              - "*.warpdotsys.com"
+          - main: "warpdotsys.email"
+            sans:
+              - "*.warpdotsys.email"
+          - main: "nyangley1762.org"
+            sans:
+              - "*.nyangley1762.org"
+    # API router (handles /api/v1 paths)
+    api-router:
+      rule: "Host(`pangolin.medwarp.cn`) && PathPrefix(`/api/v1`)"
+      service: api-service
+      entryPoints:
+        - websecure
+      middlewares:
+        - badger
+      tls:
+        certResolver: letsencrypt
+
+    # WebSocket router
+    ws-router:
+      rule: "Host(`pangolin.medwarp.cn`)"
+      service: api-service
+      entryPoints:
+        - websecure
+      middlewares:
+        - badger
+      tls:
+        certResolver: letsencrypt
+
+    studyhub-api:
+      rule: "Host(`us.medwarp.cn`) && PathPrefix(`/study-api`)"
+      service: studyhub-service
+      entryPoints:
+        - websecure
+      middlewares:
+        - studyhub-strip
+      tls:
+        certResolver: letsencrypt
+
+    studyhub-ipa:
+      rule: "Host(`us.medwarp.cn`) && PathPrefix(`/ipa`)"
+      service: studyhub-service
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    next-service:
+      loadBalancer:
+        servers:
+          - url: "http://pangolin:3002"  # Next.js server
+
+    api-service:
+      loadBalancer:
+        servers:
+          - url: "http://pangolin:3000"  # API/WebSocket server
+    studyhub-service:
+      loadBalancer:
+        servers:
+          - url: "http://studyhub:8099"
+
+tcp:
+  serversTransports:
+    pp-transport-v1:
+      proxyProtocol:
+        version: 1
+    pp-transport-v2:
+      proxyProtocol:
+        version: 2
+
+  routers:
+    reality-router:
+      rule: "HostSNI(`speed.cloudflare.com`)"
+      entryPoints:
+        - websecure
+      tls:
+        passthrough: true
+      service: reality-service
+
+  services:
+    reality-service:
+      loadBalancer:
+        servers:
+          - address: "172.18.0.1:8443"

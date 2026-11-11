@@ -30,6 +30,7 @@ MAX_UPLOAD = 25 * 1024 * 1024
 
 INBOX = os.path.join(DATA_DIR, "inbox")
 REPLIES = os.path.join(DATA_DIR, "replies.json")
+IPA_DIR = os.environ.get("IPA_DIR", os.path.join(DATA_DIR, "ipa"))
 LOCK = threading.Lock()
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9_\-/\.]{1,120}$")
@@ -154,6 +155,26 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
             data = read_json(REPLIES, {"version": 1, "replies": []})
             return self.send_body(200, data)
+
+        if path.startswith("/ipa/"):
+            name = path.split("/")[-1]
+            if not re.match(r"^[A-Za-z0-9_\-\.]{1,120}$", name):
+                return self.send_body(400, {"ok": False, "error": "bad name"})
+            fp = os.path.join(IPA_DIR, name)
+            if not os.path.isfile(fp):
+                return self.send_body(404, {"ok": False, "error": "not found", "name": name})
+            with open(fp, "rb") as f:
+                data = f.read()
+            low = name.lower()
+            if low.endswith(".html"):
+                ctype = "text/html; charset=utf-8"
+            elif low.endswith(".json"):
+                ctype = "application/json; charset=utf-8"
+            elif low.endswith(".png"):
+                ctype = "image/png"
+            else:
+                ctype = "application/octet-stream"
+            return self.send_body(200, data, ctype)
 
         if path == "/inbox":
             if not self.ok_auth(admin=True):
