@@ -18,11 +18,11 @@ struct RootView: View {
 
     var body: some View {
         TabView(selection: $tab) {
+            TodayView()
+                .tabItem { Label("今日", systemImage: "sun.max.fill") }
+                .tag(0)
             LibraryView()
                 .tabItem { Label("课程", systemImage: "books.vertical.fill") }
-                .tag(0)
-            WrongBookView()
-                .tabItem { Label("错题", systemImage: "exclamationmark.circle.fill") }
                 .tag(1)
             InboxView()
                 .tabItem { Label("答疑", systemImage: "tray.full.fill") }

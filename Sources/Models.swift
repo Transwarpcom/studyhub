@@ -79,3 +79,29 @@ struct DayStat: Codable, Hashable {
     var answered: Int
     var correct: Int
 }
+
+/// 复习排期（艾宾浩斯）
+struct ReviewItem: Codable, Hashable {
+    var key: String           // "lessonId|cardId"
+    var box: Int              // 0–5
+    var due: Date
+    var lessonId: String
+    var lessonTitle: String
+}
+
+/// 一道待答的题
+struct QuizItem: Identifiable, Hashable {
+    var id: String
+    var lessonId: String
+    var lessonTitle: String
+    var card: Card
+}
+
+/// 一次练习/测验
+struct QuizSession: Identifiable {
+    var id = UUID()
+    var title: String
+    var items: [QuizItem]
+    var exam: Bool            // true = 交卷后统一判分
+    var limitSeconds: Int     // 0 = 不限时
+}

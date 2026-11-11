@@ -12,6 +12,7 @@ final class Store: ObservableObject {
     @Published var uploads: [UploadRecord] = []
     @Published var wrongs: [WrongItem] = []
     @Published var days: [String: DayStat] = [:]
+    @Published var reviews: [String: ReviewItem] = [:]
 
     // 批量缓存
     @Published var downloading = false
@@ -52,6 +53,10 @@ final class Store: ObservableObject {
            let x = try? JSONDecoder().decode([String: DayStat].self, from: d) {
             days = x
         }
+        if let d = UserDefaults.standard.data(forKey: "hub.reviews"),
+           let r = try? JSONDecoder().decode([String: ReviewItem].self, from: d) {
+            reviews = r
+        }
         if let t = UserDefaults.standard.object(forKey: "hub.lastSync") as? Date {
             lastSync = t
         }
@@ -79,6 +84,103 @@ final class Store: ObservableObject {
         if let d = try? JSONEncoder().encode(days) {
             UserDefaults.standard.set(d, forKey: "hub.days")
         }
+    }
+
+    private func saveReviews() {
+        if let d = try? JSONEncoder().encode(reviews) {
+            UserDefaults.standard.set(d, forKey: "hub.reviews")
+        }
+    }
+
+    // MARK: 抽题与复习
+
+    /// 到期待复习的条目（按到期时间排序）
+    var dueReviews: [ReviewItem] {
+        let now = Date()
+        return reviews.values.filter { $0.due <= now }.sorted { $0.due < $1.due }
+    }
+
+    /// 艾宾浩斯间隔（天）
+    private let reviewIntervals: [Double] = [1, 2, 4, 7, 15, 30]
+
+    func recordReview(key: String, lessonId: String, lessonTitle: String, correct: Bool) {
+        var it = reviews[key] ?? ReviewItem(key: key, box: 0, due: Date(),
+                                            lessonId: lessonId, lessonTitle: lessonTitle)
+        it.box = correct ? min(it.box + 1, reviewIntervals.count - 1) : 0
+        it.due = Date().addingTimeInterval(reviewIntervals[it.box] * 86400)
+        it.lessonId = lessonId
+        it.lessonTitle = lessonTitle
+        reviews[key] = it
+        saveReviews()
+    }
+
+    /// 从所有章节里抽题。优先用已缓存的，缺的现拉。
+    func pickQuestions(count: Int, chapters: [String]? = nil) async -> [QuizItem] {
+        var pool: [QuizItem] = []
+        let nodes = allLessonNodes.filter { n in
+            guard let chapters else { return true }
+            return chapters.contains { n.id.hasPrefix($0) }
+        }
+        for n in nodes {
+            var lesson = cachedLesson(node: n)
+            if lesson == nil {
+                lesson = try? await loadLesson(node: n)
+            }
+            guard let lesson else { continue }
+            for c in lesson.cards where c.type != "lecture" {
+                pool.append(QuizItem(id: "\(lesson.id)|\(c.id)", lessonId: lesson.id,
+                                     lessonTitle: lesson.title, card: c))
+            }
+        }
+        guard !pool.isEmpty else { return [] }
+        return Array(pool.shuffled().prefix(count))
+    }
+
+    /// 错题本 → 队列
+    func wrongQuestions(limit: Int = 20) -> [QuizItem] {
+        var out: [QuizItem] = []
+        for w in wrongs.prefix(limit) {
+            let node = Node(id: w.lessonId, title: w.lessonTitle, icon: nil, kind: "lesson",
+                            summary: nil, children: nil, bundle: w.lessonId, badge: nil)
+            if let lesson = cachedLesson(node: node),
+               let card = lesson.cards.first(where: { $0.id == w.cardId }) {
+                out.append(QuizItem(id: w.id, lessonId: w.lessonId,
+                                    lessonTitle: w.lessonTitle, card: card))
+            }
+        }
+        return out
+    }
+
+    /// 到期复习 → 队列
+    func reviewQuestions(limit: Int = 30) async -> [QuizItem] {
+        var out: [QuizItem] = []
+        for r in dueReviews.prefix(limit) {
+            let node = Node(id: r.lessonId, title: r.lessonTitle, icon: nil, kind: "lesson",
+                            summary: nil, children: nil, bundle: r.lessonId, badge: nil)
+            var lesson = cachedLesson(node: node)
+            if lesson == nil { lesson = try? await loadLesson(node: node) }
+            if let lesson, let card = lesson.cards.first(where: { $0.id == r.key.split(separator: "|").last.map(String.init) ?? "" }) {
+                out.append(QuizItem(id: r.key, lessonId: r.lessonId,
+                                    lessonTitle: r.lessonTitle, card: card))
+            }
+        }
+        return out
+    }
+
+    /// 某章/某节的全部题（用于章节测验）
+    func questions(in node: Node) async -> [QuizItem] {
+        var out: [QuizItem] = []
+        let list = node.kind == "folder" ? flatten(node.children ?? []) : [node]
+        for n in list {
+            var lesson = cachedLesson(node: n)
+            if lesson == nil { lesson = try? await loadLesson(node: n) }
+            guard let lesson else { continue }
+            for c in lesson.cards where c.type != "lecture" {
+                out.append(QuizItem(id: "\(lesson.id)|\(c.id)", lessonId: lesson.id,
+                                    lessonTitle: lesson.title, card: c))
+            }
+        }
+        return out
     }
 
     // MARK: 批量缓存
@@ -308,6 +410,9 @@ final class Store: ObservableObject {
         if correct { st.correct += 1 }
         days[day] = st
         saveDays()
+
+        // 艾宾浩斯排期
+        recordReview(key: key, lessonId: lessonId, lessonTitle: lessonTitle, correct: correct)
     }
 
     func stats(lesson: Lesson) -> (answered: Int, correct: Int, total: Int) {
