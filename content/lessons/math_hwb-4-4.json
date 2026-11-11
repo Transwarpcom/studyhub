@@ -1,0 +1,73 @@
+{
+  "id": "math/hwb-4-4",
+  "title": "作业册 · 4.4 有理函数的积分",
+  "subtitle": "9 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 4.4 有理函数的积分\n\n作业册本节 9 题：部分分式、配方拆项、万能代换、根式代换。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**二、填空题 第 1 题**\n\n$\\dfrac{1}{x(1+x)(1+x+x^{2})}$ 分成部分分式的和的形式为 ____",
+      "explain": "**答案**：\n\n$$\\frac1x+\\frac{A}{1+x}+\\frac{Bx+C}{1+x+x^2}$$\n\n其中 $A,B,C$ 由通分确定，具体为\n\n$$\\frac{1}{x(1+x)(1+x^2+x)}=\\frac1x-\\frac{1}{1+x}+\\frac{-x}{1+x+x^2}$$\n\n**理由**\n\n分母含三个因式：一个一次单因式 $x$、一个一次单因式 $1+x$、一个**不可约二次因式** $1+x+x^2$（判别式 $1-4=-3<0$）。\n\n按规则设：\n\n$$\\frac{A}{x}+\\frac{B}{1+x}+\\frac{Cx+D}{1+x+x^2}$$\n\n**要点**：不可约二次因式的分子要设成一次式 $Cx+D$，不能只设常数。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**二、填空题 第 2 题**\n\n$\\displaystyle\\int\\frac{2x+3}{x^{2}+3x-10}dx=$ ____",
+      "explain": "**答案**：$\\ln\\left|x^2+3x-10\\right|+C$\n\n**过程**\n\n注意到分子正好是分母的导数：\n\n$$(x^2+3x-10)'=2x+3$$\n\n所以\n\n$$\\int\\frac{2x+3}{x^2+3x-10}dx=\\int\\frac{d(x^2+3x-10)}{x^2+3x-10}=\\ln\\left|x^2+3x-10\\right|+C$$\n\n**技巧**：先看分子是不是分母的导数，是就直接凑微分，不用拆部分分式。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、填空题 第 3 题**\n\n$\\displaystyle\\int\\frac{\\cos x}{1+\\sin x}dx=$ ____",
+      "explain": "**答案**：$\\ln|1+\\sin x|+C$\n\n**过程**\n\n$\\cos x\\,dx=d(\\sin x)$，令 $u=1+\\sin x$，$du=\\cos x\\,dx$：\n\n$$\\int\\frac{du}{u}=\\ln|u|+C=\\ln|1+\\sin x|+C$$"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**三、计算题 第 1 题**\n\n$\\displaystyle\\int\\frac{x+1}{x^{2}+4x+13}dx$",
+      "explain": "**解**\n\n**配方**：$x^2+4x+13=(x+2)^2+9$。\n\n**拆分子**：把分子凑成分母导数的倍数。$(x^2+4x+13)'=2x+4$，所以\n\n$$x+1=\\frac12(2x+4)-1$$\n\n**拆成两个积分**：\n\n$$\\int\\frac{x+1}{x^2+4x+13}dx=\\frac12\\int\\frac{2x+4}{x^2+4x+13}dx-\\int\\frac{dx}{(x+2)^2+9}$$\n\n第一个：\n\n$$=\\frac12\\ln(x^2+4x+13)$$\n\n第二个（$a=3$）：\n\n$$=\\frac13\\arctan\\frac{x+2}{3}$$\n\n**合并**：\n\n$$\\frac12\\ln(x^2+4x+13)-\\frac13\\arctan\\frac{x+2}{3}+C$$\n\n**要点**：分子先拆成「分母导数 + 常数」两部分，前一半对数、后一半反正切。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、计算题 第 2 题**\n\n$\\displaystyle\\int\\frac{dx}{x^{2}+x-2}$",
+      "explain": "**解**\n\n分母因式分解：\n\n$$x^2+x-2=(x+2)(x-1)$$\n\n部分分式：\n\n$$\\frac{1}{(x+2)(x-1)}=\\frac{A}{x+2}+\\frac{B}{x-1}$$\n\n通分：$1=A(x-1)+B(x+2)$。\n\n令 $x=1$：$1=3B\\Rightarrow B=\\dfrac13$；令 $x=-2$：$1=-3A\\Rightarrow A=-\\dfrac13$。\n\n积分：\n\n$$\\int\\left(\\frac{-1/3}{x+2}+\\frac{1/3}{x-1}\\right)dx=\\frac13\\ln|x-1|-\\frac13\\ln|x+2|+C$$\n\n**答案**：$\\dfrac13\\ln\\left|\\dfrac{x-1}{x+2}\\right|+C$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、计算题 第 3 题**\n\n$\\displaystyle\\int\\frac{dx}{3+\\cos x}$",
+      "explain": "**解**\n\n三角有理式，用**万能代换** $t=\\tan\\dfrac x2$：\n\n$$\\cos x=\\frac{1-t^2}{1+t^2},\\qquad dx=\\frac{2dt}{1+t^2}$$\n\n代入：\n\n$$\\int\\frac{\\frac{2dt}{1+t^2}}{3+\\frac{1-t^2}{1+t^2}}=\\int\\frac{2dt}{3(1+t^2)+(1-t^2)}=\\int\\frac{2dt}{4+2t^2}=\\int\\frac{dt}{2+t^2}$$\n\n套 $\\displaystyle\\int\\frac{dt}{a^2+t^2}=\\frac1a\\arctan\\frac ta$，$a=\\sqrt2$：\n\n$$=\\frac{1}{\\sqrt2}\\arctan\\frac{t}{\\sqrt2}+C$$\n\n回代 $t=\\tan\\dfrac x2$：\n\n$$=\\frac{1}{\\sqrt2}\\arctan\\left(\\frac{1}{\\sqrt2}\\tan\\frac x2\\right)+C$$\n\n**要点**：含 $\\sin x,\\cos x$ 的有理式，万能代换一定能把三角问题化成有理函数。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题 第 4 题**\n\n$\\displaystyle\\int\\frac{dx}{(1+\\sqrt[3]{x})\\sqrt{x}}$",
+      "explain": "**解**\n\n根指数 2 和 3 的最小公倍数是 6，令\n\n$$x=t^6,\\qquad dx=6t^5dt$$\n\n则 $\\sqrt x=t^3$，$\\sqrt[3]x=t^2$。代入：\n\n$$\\int\\frac{6t^5dt}{(1+t^2)t^3}=\\int\\frac{6t^2}{1+t^2}dt$$\n\n拆项：\n\n$$=6\\int\\left(1-\\frac{1}{1+t^2}\\right)dt=6t-6\\arctan t+C$$\n\n回代 $t=x^{1/6}$：\n\n$$=6\\sqrt[6]{x}-6\\arctan\\sqrt[6]{x}+C$$\n\n**要点**：多个不同次根号 → 取根指数的最小公倍数代换，一次全部消掉。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算题 第 5 题**\n\n$\\displaystyle\\int x^{3}\\sqrt{1+x^{2}}\\,dx$",
+      "explain": "**解**\n\n令 $u=1+x^2$，则 $x^2=u-1$，$x\\,dx=\\dfrac12du$。\n\n$$x^3\\sqrt{1+x^2}dx=x^2\\sqrt{1+x^2}\\cdot x\\,dx=(u-1)\\sqrt u\\cdot\\frac12du$$\n\n$$=\\frac12\\int\\left(u^{3/2}-u^{1/2}\\right)du=\\frac12\\left(\\frac25u^{5/2}-\\frac23u^{3/2}\\right)+C$$\n\n$$=\\frac15u^{5/2}-\\frac13u^{3/2}+C$$\n\n回代：\n\n$$=\\frac15(1+x^2)^{5/2}-\\frac13(1+x^2)^{3/2}+C$$\n\n**要点**：$x^3dx=x^2\\cdot x\\,dx$，拆出一个 $x\\,dx$ 正好凑 $du$。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**三、计算题 第 6 题**\n\n$\\displaystyle\\int\\frac{1+x^{2}}{1+x^{4}}dx$",
+      "explain": "**解**\n\n**第一步：分子分母同除以 $x^2$**\n\n$$\\frac{1+x^2}{1+x^4}=\\frac{1+\\frac{1}{x^2}}{x^2+\\frac{1}{x^2}}$$\n\n**第二步：凑 $d\\left(x-\\frac1x\\right)$**\n\n$$\\left(x-\\frac1x\\right)'=1+\\frac{1}{x^2}$$\n\n所以分子正好是它的导数。\n\n**第三步：把分母用 $u=x-\\frac1x$ 表示**\n\n$$u^2=x^2-2+\\frac{1}{x^2}\\Rightarrow x^2+\\frac{1}{x^2}=u^2+2$$\n\n**第四步：积分**\n\n$$\\int\\frac{du}{u^2+2}=\\frac{1}{\\sqrt2}\\arctan\\frac{u}{\\sqrt2}+C$$\n\n回代：\n\n$$=\\frac{1}{\\sqrt2}\\arctan\\frac{x-\\frac1x}{\\sqrt2}+C=\\frac{1}{\\sqrt2}\\arctan\\frac{x^2-1}{\\sqrt2\\,x}+C$$\n\n**这是教材上的经典题**，套路固定：除以 $x^2$ → 凑 $u=x-\\frac1x$（或 $x+\\frac1x$）。"
+    },
+    {
+      "id": "q10",
+      "type": "text",
+      "question": "**三、计算题 第 7 题**\n\n$\\displaystyle\\int\\frac{\\sin x}{1+\\cos^{2}x}dx$",
+      "explain": "**解**\n\n$\\sin x\\,dx=-d(\\cos x)$，令 $u=\\cos x$：\n\n$$\\int\\frac{\\sin x}{1+\\cos^2x}dx=-\\int\\frac{du}{1+u^2}=-\\arctan u+C$$\n\n$$=-\\arctan(\\cos x)+C$$\n\n**答案**：$-\\arctan(\\cos x)+C$。\n\n**验证**：求导得 $-\\dfrac{1}{1+\\cos^2x}\\cdot(-\\sin x)=\\dfrac{\\sin x}{1+\\cos^2x}$ ✓"
+    }
+  ]
+}

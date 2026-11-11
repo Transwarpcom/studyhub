@@ -1,0 +1,37 @@
+{
+  "id": "math/hwb-2-3",
+  "title": "作业册 · 2.3 高阶导数",
+  "subtitle": "4 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 2.3 高阶导数\n\n《高等数学作业册》本节 4 题。每题一张卡，点「对答案」看过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "第 1 题\n\n$y = \\ln(x + \\sqrt{1 + x^{2}})$ ，求 $y''$ ;",
+      "explain": "**解**\n\n一阶导：\n\n$$y'=\\frac{1}{x+\\sqrt{1+x^2}}\\cdot\\left(1+\\frac{x}{\\sqrt{1+x^2}}\\right)=\\frac{1}{x+\\sqrt{1+x^2}}\\cdot\\frac{\\sqrt{1+x^2}+x}{\\sqrt{1+x^2}}=\\frac{1}{\\sqrt{1+x^2}}$$\n\n（分子分母正好约掉，这是一阶导的漂亮化简。）\n\n二阶导：\n\n$$y''=\\left[(1+x^2)^{-1/2}\\right]'=-\\frac12(1+x^2)^{-3/2}\\cdot2x=-\\frac{x}{(1+x^2)^{3/2}}$$\n\n**答案**：$y''=-\\dfrac{x}{(1+x^2)^{3/2}}$。\n\n**注意**：先化简一阶导，二阶导才不会爆炸。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "第 2 题\n\n设 $f''(x)$ 存在，且 $y = \\ln[f(x)]$ ，求 $y''$ ;",
+      "explain": "**解**\n\n一阶导：\n\n$$y'=\\frac{f'(x)}{f(x)}$$\n\n二阶导（商的法则）：\n\n$$y''=\\frac{f''(x)f(x)-f'(x)\\cdot f'(x)}{[f(x)]^2}=\\frac{f''(x)f(x)-[f'(x)]^2}{[f(x)]^2}$$\n\n**答案**：$y''=\\dfrac{f''f-(f')^2}{f^2}$。\n\n**易错**：别忘了分母是 $f^2$，不是 $f$。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "第 3 题\n\n$y = xe^{x}$ ，求 $y^{(n)}$ ;",
+      "explain": "**解**\n\n用莱布尼茨公式，或直接观察规律。\n\n$y=xe^x$：\n\n$$y'=e^x+xe^x=(x+1)e^x$$\n$$y''=(x+1)e^x+e^x=(x+2)e^x$$\n\n归纳：\n\n$$y^{(n)}=(x+n)e^x$$\n\n**答案**：$y^{(n)}=(x+n)e^x$。\n\n**说明**：$e^x$ 求导不变，所以每求一次导只有 $x$ 那一项贡献一个新项。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "第 4 题\n\n设 $y = x^{2} \\sin x$ ，求 $y^{(100)}$ ;",
+      "explain": "**解**\n\n用莱布尼茨公式：\n\n$$(uv)^{(100)}=\\sum_{k=0}^{100}C_{100}^{k}u^{(100-k)}v^{(k)}$$\n\n取 $u=x^2$，$v=\\sin x$。$u$ 的三阶及以上导数全为 0，所以只剩三项：\n\n$$y^{(100)}=x^2(\\sin x)^{(100)}+100\\cdot(2x)(\\sin x)^{(99)}+\\frac{100\\cdot99}{2}\\cdot2\\cdot(\\sin x)^{(98)}$$\n\n用 $(\\sin x)^{(n)}=\\sin\\left(x+\\dfrac{n\\pi}{2}\\right)$：\n\n- $(\\sin x)^{(100)}=\\sin(x+50\\pi)=\\sin x$\n- $(\\sin x)^{(99)}=\\sin(x+49\\pi+\\frac\\pi2)=-\\cos x$\n- $(\\sin x)^{(98)}=\\sin(x+49\\pi)=-\\sin x$\n\n代入：\n\n$$y^{(100)}=x^2\\sin x-200x\\cos x-9900\\sin x$$\n\n**答案**：$y^{(100)}=(x^2-9900)\\sin x-200x\\cos x$。\n\n**要点**：莱布尼茨只保留前几项，因为 $x^2$ 的高阶导很快变零。"
+    }
+  ]
+}

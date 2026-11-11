@@ -62,3 +62,20 @@ struct UploadRecord: Codable, Identifiable {
     var created: Date
     var status: String
 }
+
+/// 错题本条目
+struct WrongItem: Codable, Identifiable, Hashable {
+    var id: String            // "lessonId|cardId"
+    var lessonId: String
+    var lessonTitle: String
+    var cardId: String
+    var preview: String
+    var ts: Date
+}
+
+/// 每日答题统计
+struct DayStat: Codable, Hashable {
+    var day: String           // yyyy-MM-dd
+    var answered: Int
+    var correct: Int
+}

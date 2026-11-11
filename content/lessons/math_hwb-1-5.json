@@ -1,0 +1,49 @@
+{
+  "id": "math/hwb-1-5",
+  "title": "作业册 · 1.5 极限运算法则",
+  "subtitle": "6 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 1.5 极限运算法则\n\n《高等数学作业册》本节共 6 题，按原册编号。每题一张卡，点「对答案」看完整过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "第 1 题\n\n$\\lim_{x\\to\\infty}\\frac{(3x^{2}+2)^{3}}{(2x^{3}+3)^{2}}$ ;",
+      "explain": "**解**\n\n分子分母同除以 $x^6$：\n\n$$\\frac{(3x^2+2)^3}{(2x^3+3)^2}=\\frac{\\left(3+\\frac{2}{x^2}\\right)^3x^6}{\\left(2+\\frac{3}{x^3}\\right)^2x^6}=\\frac{\\left(3+\\frac{2}{x^2}\\right)^3}{\\left(2+\\frac{3}{x^3}\\right)^2}$$\n\n当 $x\\to\\infty$ 时，$\\frac{2}{x^2}\\to0$，$\\frac{3}{x^3}\\to0$：\n\n$$\\to\\frac{3^3}{2^2}=\\frac{27}{4}$$\n\n**快法**：分子最高次项 $(3x^2)^3=27x^6$，分母 $(2x^3)^2=4x^6$，系数比即答案。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "第 2 题\n\n$\\lim_{n\\to\\infty}(1+\\frac{1}{2}+\\frac{1}{4}+\\cdots+\\frac{1}{2^{n}})$ ;",
+      "explain": "**解**\n\n括号内是等比数列，首项 $1$，公比 $\\dfrac12$，共 $n+1$ 项：\n\n$$1+\\frac12+\\frac14+\\cdots+\\frac1{2^n}=\\frac{1-\\left(\\frac12\\right)^{n+1}}{1-\\frac12}=2\\left[1-\\left(\\frac12\\right)^{n+1}\\right]$$\n\n当 $n\\to\\infty$，$\\left(\\frac12\\right)^{n+1}\\to0$，所以\n\n$$\\lim=2$$\n\n**要点**：先求和再取极限，不能对每一项分别取极限（项数在变）。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "第 3 题\n\n$\\lim_{n\\to\\infty}\\left(\\frac{1}{2}+\\frac{1}{2\\cdot3}+\\frac{1}{3\\cdot4}+\\cdots+\\frac{1}{n(n+1)}\\right)$ ;",
+      "explain": "**解**\n\n用裂项：\n\n$$\\frac{1}{k(k+1)}=\\frac1k-\\frac1{k+1}$$\n\n所以\n\n$$\\frac12+\\frac{1}{2\\cdot3}+\\frac{1}{3\\cdot4}+\\cdots+\\frac{1}{n(n+1)}$$\n\n$$=\\frac12+\\left(\\frac12-\\frac13\\right)+\\left(\\frac13-\\frac14\\right)+\\cdots+\\left(\\frac1n-\\frac1{n+1}\\right)$$\n\n中间项全部抵消：\n\n$$=\\frac12+\\frac12-\\frac1{n+1}=1-\\frac1{n+1}$$\n\n当 $n\\to\\infty$，$\\dfrac1{n+1}\\to0$，所以\n\n$$\\lim=1$$\n\n**易错**：第一项 $\\frac12$ 不是裂项形式（它是 $\\frac1{1\\cdot2}$ 的值），不要重复加。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "第 4 题\n\n$\\lim_{x\\to0}\\frac{\\sqrt{1+x}-\\sqrt{1-x}}{x}$ ;",
+      "explain": "**解**\n\n分子有理化，同乘 $\\sqrt{1+x}+\\sqrt{1-x}$：\n\n$$\\frac{\\sqrt{1+x}-\\sqrt{1-x}}{x}=\\frac{(1+x)-(1-x)}{x\\left(\\sqrt{1+x}+\\sqrt{1-x}\\right)}=\\frac{2x}{x\\left(\\sqrt{1+x}+\\sqrt{1-x}\\right)}$$\n\n约掉 $x$：\n\n$$=\\frac{2}{\\sqrt{1+x}+\\sqrt{1-x}}$$\n\n令 $x\\to0$：\n\n$$\\to\\frac{2}{1+1}=1$$\n\n**答案**：$1$。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "第 5 题\n\n$\\lim_{x\\to+\\infty}\\left(\\sqrt{1+x^{2}}-x\\right)\\cdot x$ ;",
+      "explain": "**解**\n\n先有理化（分子分母同乘 $\\sqrt{1+x^2}+x$）：\n\n$$\\sqrt{1+x^2}-x=\\frac{(1+x^2)-x^2}{\\sqrt{1+x^2}+x}=\\frac{1}{\\sqrt{1+x^2}+x}$$\n\n所以\n\n$$\\left(\\sqrt{1+x^2}-x\\right)\\cdot x=\\frac{x}{\\sqrt{1+x^2}+x}$$\n\n分子分母同除以 $x$（$x>0$）：\n\n$$=\\frac{1}{\\sqrt{\\frac{1}{x^2}+1}+1}\\to\\frac{1}{1+1}=\\frac12$$\n\n**答案**：$\\dfrac12$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "第 6 题\n\n已知 $\\lim_{x\\to 1}\\frac{x^2 + ax + b}{x - 1} = 5$ ，求 $a,b$ 值.",
+      "explain": "**解**\n\n因为分母 $x-1\\to0$ 而极限存在（等于 5），分子必须也趋于 $0$，否则极限为无穷。\n\n所以\n\n$$1+a+b=0\\Rightarrow b=-1-a$$\n\n于是分子含因式 $(x-1)$，做除法：\n\n$$x^2+ax+b=(x-1)(x-c)$$\n\n展开比较一次项：$a=-1-c$。\n\n约分后\n\n$$\\lim_{x\\to1}\\frac{(x-1)(x-c)}{x-1}=1-c=5\\Rightarrow c=-4$$\n\n所以\n\n$$x^2+ax+b=(x-1)(x+4)=x^2+3x-4$$\n\n即\n\n$$a=3,\\qquad b=-4$$\n\n**验证**：$1+3-4=0$ ✓，且 $\\lim\\limits_{x\\to1}\\dfrac{(x-1)(x+4)}{x-1}=5$ ✓"
+    }
+  ]
+}

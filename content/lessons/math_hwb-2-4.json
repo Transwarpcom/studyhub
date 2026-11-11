@@ -1,0 +1,67 @@
+{
+  "id": "math/hwb-2-4",
+  "title": "作业册 · 2.4 隐函数与参数方程求导",
+  "subtitle": "9 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 2.4 隐函数及由参数方程所确定的函数的导数\n\n《高等数学作业册》本节 9 题。每题一张卡，点「对答案」看过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n设 $x = x(y)$ 由方程 $y - x - \\ln x = 0$ 确定，则 $\\frac{dx}{dy}|_{y=1} =$ ____ .",
+      "explain": "**答案**：$\\dfrac12$\n\n**过程**\n\n$y=1$ 时由 $1-x-\\ln x=0$ 得 $x=1$（$1-1-0=0$ ✓）。\n\n把方程对 $x$ 求导（$y$ 是 $x$ 的函数）：\n\n$$y'-1-\\frac1x=0\\Rightarrow y'=1+\\frac1x$$\n\n在 $x=1$ 处 $y'=2$。\n\n所以\n\n$$\\left.\\frac{dx}{dy}\\right|_{y=1}=\\frac{1}{y'}=\\frac12$$\n\n**要点**：$\\dfrac{dx}{dy}$ 与 $\\dfrac{dy}{dx}$ 互为倒数。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题** 第 2 题\n\n设 $\\left\\{\\begin{aligned} x &= 2t - t^{2} \\\\ y &= 3t - t^{3} \\end{aligned}\\right.$ ，则 $\\frac{dy}{dx}=$ ____， $\\frac{d^{2}y}{dx^{2}}=$ ____.",
+      "explain": "**答案**：$\\dfrac{dy}{dx}=\\dfrac{3(1+t)}{2}$；$\\dfrac{d^2y}{dx^2}=\\dfrac{3}{4(1-t)}$\n\n**一阶导**\n\n$$\\frac{dy}{dx}=\\frac{(3t-t^3)'}{(2t-t^2)'}=\\frac{3-3t^2}{2-2t}=\\frac{3(1-t^2)}{2(1-t)}=\\frac{3(1+t)}{2}$$\n\n**二阶导**（关键：再对 $t$ 求导后要除以 $x'(t)$）\n\n$$\\frac{d^2y}{dx^2}=\\frac{d}{dt}\\left[\\frac{3(1+t)}{2}\\right]\\cdot\\frac{1}{x'(t)}=\\frac32\\cdot\\frac{1}{2-2t}=\\frac{3}{4(1-t)}$$\n\n**易错**：漏掉最后的 $\\dfrac{1}{x'(t)}$。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、选择题** 第 1 题\n\n设曲线 L 的参数方程是 $\\left\\{\\begin{aligned} x &= 2(t - \\sin t) \\\\ y &= 2(1 - \\cos t) \\end{aligned}\\right.$ ，则曲线在 $t = \\frac{\\pi}{2}$ 处的切线方程是（）\nA、 $x-y=\\pi$ ; B、 $x+y=\\pi-4$ ; C、 $x+y=\\pi$ ; D、 $x-y=\\pi-4$ .",
+      "explain": "**答案**：$x-y=\\pi-4$（按下面算出的斜率与切点，选项里对应那一条）\n\n**过程**\n\n$$\\frac{dy}{dx}=\\frac{2\\sin t}{2(1-\\cos t)}=\\frac{\\sin t}{1-\\cos t}$$\n\n$t=\\dfrac\\pi2$ 时：$\\sin\\frac\\pi2=1$，$\\cos\\frac\\pi2=0$，所以斜率\n\n$$k=\\frac{1}{1-0}=1$$\n\n切点：\n\n$$x=2\\left(\\frac\\pi2-1\\right)=\\pi-2,\\qquad y=2(1-0)=2$$\n\n切线：\n\n$$y-2=1\\cdot\\left[x-(\\pi-2)\\right]\\Rightarrow y=x-\\pi+4$$\n\n即\n\n$$x-y=\\pi-4$$\n\n**要点**：先算 $\\frac{dy}{dx}$，再代 $t$，最后用点斜式。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题** 第 2 题\n\n设 $\\left\\{\\begin{aligned}x&=\\varphi(t)\\\\ y&=\\psi(t)\\end{aligned}\\right.$ ， $\\varphi,\\psi$ 二阶可导，则 $\\frac{d^{2}y}{dx^{2}}=(\\quad)$ A、 $\\frac{\\psi''(t)}{\\varphi''(t)}$ ; B、 $\\frac{d}{dt}[\\frac{\\psi'(t)}{\\varphi'(t)}]$ ; C、 $\\frac{d}{dt}[\\frac{\\psi'(t)}{\\varphi'(t)}]/\\varphi'(t)$ ; D、 $\\frac{d}{dt}[\\frac{\\psi'(t)}{\\varphi'(t)}]/\\psi'(t)$ .",
+      "explain": "**答案**：$\\dfrac{d^2y}{dx^2}=\\dfrac{\\psi''(t)\\varphi'(t)-\\psi'(t)\\varphi''(t)}{\\left[\\varphi'(t)\\right]^3}$\n\n**推导**\n\n一阶导：\n\n$$\\frac{dy}{dx}=\\frac{\\psi'(t)}{\\varphi'(t)}$$\n\n二阶导（再对 $t$ 求导，除以 $\\varphi'(t)$）：\n\n$$\\frac{d^2y}{dx^2}=\\frac{d}{dt}\\left[\\frac{\\psi'}{\\varphi'}\\right]\\cdot\\frac{1}{\\varphi'}=\\frac{\\psi''\\varphi'-\\psi'\\varphi''}{(\\varphi')^2}\\cdot\\frac{1}{\\varphi'}=\\frac{\\psi''\\varphi'-\\psi'\\varphi''}{(\\varphi')^3}$$\n\n**记忆**：分母是 $\\varphi'$ 的**三次方**，分子是「上导下不导 减 上不导下导」。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、计算题** 第 1 题\n\n设 $y^{3}-3y+2ax=0$ 确定 $y=y(x)$ ，求 $y', y''$ .",
+      "explain": "**解**\n\n**一阶导**：两边对 $x$ 求导（$y=y(x)$）\n\n$$3y^2y'-3y'+2a=0\\Rightarrow y'=\\frac{-2a}{3(y^2-1)}$$\n\n**二阶导**：对 $y'$ 再求导\n\n$$y''=\\frac{d}{dx}\\left[\\frac{-2a}{3(y^2-1)}\\right]=\\frac{-2a}{3}\\cdot\\frac{-1}{(y^2-1)^2}\\cdot2y\\cdot y'=\\frac{4ay\\,y'}{3(y^2-1)^2}$$\n\n代入 $y'$：\n\n$$y''=\\frac{4ay}{3(y^2-1)^2}\\cdot\\frac{-2a}{3(y^2-1)}=\\frac{-8a^2y}{9(y^2-1)^3}$$\n\n**答案**：$y'=\\dfrac{-2a}{3(y^2-1)}$，$y''=\\dfrac{-8a^2y}{9(y^2-1)^3}$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、计算题** 第 2 题\n\n设函数 $y = y(x)$ 由方程 $xy + \\ln(x + e^{2}) + \\ln y = 0$ 确定，求 $y'(0)$ .",
+      "explain": "**解**\n\n**先求 $y(0)$**：令 $x=0$，方程变成\n\n$$0+\\ln(e^2)+\\ln y=0\\Rightarrow 2+\\ln y=0\\Rightarrow y=e^{-2}$$\n\n**两边对 $x$ 求导**：\n\n$$y+xy'+\\frac{1}{x+e^2}+\\frac{y'}{y}=0$$\n\n**代入 $x=0,\\ y=e^{-2}$**：\n\n$$e^{-2}+0+\\frac{1}{e^2}+\\frac{y'}{e^{-2}}=0$$\n\n前两项合并：$2e^{-2}$，而 $\\dfrac{y'}{e^{-2}}=y'e^2$：\n\n$$2e^{-2}+y'e^2=0\\Rightarrow y'=-2e^{-4}$$\n\n**答案**：$y'(0)=-2e^{-4}$。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题** 第 3 题\n\n已知 $y = x^{x} + x^{\\frac{1}{x}}$ ，求 $\\frac{dy}{dx}$ .",
+      "explain": "**解**\n\n**第一项** $y_1=x^x$：取对数 $\\ln y_1=x\\ln x$，求导\n\n$$\\frac{y_1'}{y_1}=\\ln x+1\\Rightarrow y_1'=x^x(\\ln x+1)$$\n\n**第二项** $y_2=x^{1/x}$：取对数 $\\ln y_2=\\dfrac{\\ln x}{x}$，求导\n\n$$\\frac{y_2'}{y_2}=\\frac{\\frac1x\\cdot x-\\ln x}{x^2}=\\frac{1-\\ln x}{x^2}$$\n\n$$y_2'=x^{1/x}\\cdot\\frac{1-\\ln x}{x^2}$$\n\n**合并**：\n\n$$\\frac{dy}{dx}=x^x(\\ln x+1)+\\frac{x^{1/x}(1-\\ln x)}{x^2}$$\n\n**要点**：幂指函数一律取对数，两项分开算。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算题** 第 4 题\n\n设 $\\left\\{\\begin{aligned} x &= \\cos t \\\\ y &= t \\cos t - \\sin t \\end{aligned}\\right.$ ，求 $\\frac{d^{2}y}{dx^{2}}$ .",
+      "explain": "**解**\n\n**一阶导**\n\n$$\\frac{dy}{dx}=\\frac{\\left(t\\cos t-\\sin t\\right)'}{(\\cos t)'}=\\frac{\\cos t-t\\sin t-\\cos t}{-\\sin t}=\\frac{-t\\sin t}{-\\sin t}=t$$\n\n**二阶导**（再对 $t$ 求导，除以 $x'(t)=-\\sin t$）\n\n$$\\frac{d^2y}{dx^2}=\\frac{d(t)}{dt}\\cdot\\frac{1}{-\\sin t}=1\\cdot\\left(-\\frac{1}{\\sin t}\\right)=-\\csc t$$\n\n**答案**：$\\dfrac{d^2y}{dx^2}=-\\dfrac{1}{\\sin t}$。\n\n**注意**：一阶导化简成 $t$ 之后二阶导就很好算，别硬算。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**三、计算题** 第 5 题\n\n已知 $y=\\sqrt[3]{\\frac{(x+1)(x+2)}{(x+3)(4-x)}}$ ，求 $y'$ .",
+      "explain": "**解**\n\n**取对数**（多个因子连乘除，标准做法）：\n\n$$\\ln|y|=\\frac13\\left[\\ln|x+1|+\\ln|x+2|-\\ln|x+3|-\\ln|4-x|\\right]$$\n\n注意 $\\ln|4-x|$ 求导是 $\\dfrac{-1}{4-x}=\\dfrac{1}{x-4}$（链式法则带负号）。\n\n两边对 $x$ 求导：\n\n$$\\frac{y'}{y}=\\frac13\\left[\\frac{1}{x+1}+\\frac{1}{x+2}-\\frac{1}{x+3}+\\frac{1}{4-x}\\right]$$\n\n所以\n\n$$y'=\\frac{y}{3}\\left[\\frac{1}{x+1}+\\frac{1}{x+2}-\\frac{1}{x+3}+\\frac{1}{4-x}\\right]$$\n\n其中 $y=\\sqrt[3]{\\dfrac{(x+1)(x+2)}{(x+3)(4-x)}}$。\n\n**易错**：最后一项是 $\\ln(4-x)$，求导后是 $\\dfrac{-1}{4-x}$，负负得正变成 $+\\dfrac{1}{4-x}$。"
+    }
+  ]
+}

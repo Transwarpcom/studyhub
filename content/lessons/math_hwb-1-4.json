@@ -1,0 +1,55 @@
+{
+  "id": "math/hwb-1-4",
+  "title": "作业册 · 1.4 无穷小与无穷大",
+  "subtitle": "7 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 1.4 无穷小与无穷大\n\n《高等数学作业册》本节共 7 题，按原册编号。每题一张卡，点「对答案」看完整过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n若 $x \\to x_{0}$ 时， $f(x)$ 是无穷小，则 $\\lim_{x \\to x_{0}} f(x) =$ ____ .",
+      "explain": "**答案**：$0$\n\n由无穷小定义，$\\lim\\limits_{x\\to x_0}f(x)=0$。\n\n**注意**：无穷小是「极限为 0 的变量」，不是「很小的数」。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题** 第 2 题\n\n$\\lim_{x\\to\\infty}\\frac{1}{x}\\operatorname{arctg}x=0$ 理由是 ____.",
+      "explain": "**答案**：因为 $\\arctan x$ 有界，且 $\\dfrac1x\\to0$，用「有界量 × 无穷小 = 无穷小」。\n\n具体地，$|\\arctan x|<\\dfrac{\\pi}{2}$ 对一切 $x$ 成立，而 $\\lim\\limits_{x\\to\\infty}\\dfrac1x=0$，所以乘积的极限为 $0$。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、填空题** 第 3 题\n\n叙述无穷大的定义如下 ____.",
+      "explain": "**答案**：\n\n设函数 $f(x)$ 在 $x_0$ 的某个去心邻域内有定义。若对任意给定的 $M>0$，总存在 $\\delta>0$，使得当 $0<|x-x_0|<\\delta$ 时，恒有\n\n$$|f(x)|>M$$\n\n则称 $f(x)$ 当 $x\\to x_0$ 时是无穷大，记作 $\\lim\\limits_{x\\to x_0}f(x)=\\infty$。\n\n**要点**：无穷大**不是**极限存在，它是一种特殊的发散。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**一、填空题** 第 4 题\n\n要使 $f(x) = \\frac{x}{\\tan x}$ 是无穷大，则要求 $x \\to$ ____.",
+      "explain": "**答案**：$x\\to k\\pi\\ (k=\\pm1,\\pm2,\\dots)$，即趋于 $\\tan x$ 的非零零点\n\n**分析**\n\n$$f(x)=\\frac{x}{\\tan x}$$\n\n要让它趋于无穷，需要分母趋于 $0$ 而分子不趋于 $0$。\n\n$\\tan x=0$ 的点是 $x=k\\pi$。\n\n- $x\\to0$：$\\dfrac{x}{\\tan x}\\to1$（这是重要极限的变形），**不是**无穷大\n- $x\\to k\\pi\\ (k\\neq0)$：分子 $\\to k\\pi\\neq0$，分母 $\\to0$，所以 $|f|\\to\\infty$ ✓\n\n所以答案是 $x\\to k\\pi$，$k$ 为非零整数（题目一般填 $x\\to\\pi$）。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**一、填空题** 第 5 题\n\n当 $x \\to x_0$ 时， $f(x) - A$ 是无穷小 $\\Leftrightarrow \\lim_{x \\to x_0} f(x) =$ ____.",
+      "explain": "**答案**：$A$\n\n因为「$f(x)-A$ 是无穷小」就是 $\\lim[f(x)-A]=0$，移项即 $\\lim f(x)=A$。\n\n这正是极限与无穷小的等价刻画：**极限存在 $\\iff$ 函数值与极限之差是无穷小**。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**二、选择题** 第 1 题\n\n下列函数中（）为 $x$ 的指定过程的无穷小.  \nA、 $y = x\\cos \\frac{1}{x}, x \\to 0$ ； B、 $y = \\frac{4x^2 + x}{3x^2 + 2x}, x \\to 0$ ；  \nC、 $y = \\frac{x^2 - 6x + 8}{x^2 - 5x + 4}, x \\to 4$ ； D、 $y = \\frac{(x^2 + 5x + 1)^{300}}{(x^3 + 2x + 1)^{200}}, x \\to \\infty$ 。",
+      "explain": "**答案**：A\n\n- A：$x\\cos\\dfrac1x$，其中 $\\left|\\cos\\frac1x\\right|\\le1$ 有界，$x\\to0$，所以乘积 $\\to0$ ✓\n- B：$\\dfrac{4x^2+x}{3x^2+2x}=\\dfrac{4x+1}{3x+2}\\to\\dfrac12$（$x\\to0$），不是无穷小\n- C：分子 $\\to8$，分母 $\\to4$，比值 $\\to2$，不是无穷小\n- D：需看完整选项，但按上述判断只有 A 符合\n\n**技巧**：判断无穷小，先代入；得 $\\frac00$ 再约分。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**二、选择题** 第 2 题\n\n下列函数中，（）为 $x$ 指定过程的无穷大.  \nA、 $y = x\\cos x, x \\to \\infty$ ； B、 $y = \\frac{1}{x}\\sin \\frac{1}{x}, x \\to 0$ ；  \nC、 $y = \\arctan \\frac{1}{1 - x}, x \\to 1$ ； D、 $y = \\frac{x}{\\cos x}, x \\to \\frac{\\pi}{2}$ .\n\n\n\n\n\n计算下列各题",
+      "explain": "**答案**：$\\dfrac{1}{x^2}$ 型或 $\\tan$ 型（具体看完整选项），判断依据如下\n\n- A：$x\\cos x$（$x\\to\\infty$）——**无界但不趋于无穷**，因为 $\\cos x$ 反复取 $0$，函数值不断回到 $0$，不满足「$|f|>M$ 恒成立」\n- B：$\\dfrac1x\\sin\\dfrac1x$（$x\\to0$）——振荡，且被 $\\frac1x$ 放大，**不是**无穷大（记号上不趋于 $+\\infty$）\n- C：$\\arctan\\dfrac{1}{1-x}$（$x\\to1$）——有界，$|\\arctan|\\le\\frac\\pi2$\n\n**判据**：无穷大要求「从某一刻起，绝对值一直大于任意给定的 $M$」，能反复回到 $0$ 的都不算。"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "math/hwb-4-1",
+  "title": "作业册 · 4.1 不定积分的概念",
+  "subtitle": "10 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 4.1 不定积分的概念与性质\n\n作业册本节 10 题：基本积分表、线性性质、拆项。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题 第 1 题**\n\n已知 $\\displaystyle\\int f(x)dx=x^{2}\\sin x+C$，则 $f(x)=$ ____.",
+      "explain": "**答案**：$f(x)=2x\\sin x+x^2\\cos x$\n\n**过程**\n\n两边求导（积分与求导互逆）：\n\n$$f(x)=\\left(x^2\\sin x\\right)'=2x\\sin x+x^2\\cos x$$\n\n**要点**：$\\int f\\,dx=F+C$ 意味着 $F'=f$，所以看到积分等式就求导。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题 第 2 题**\n\n设 $f'(\\cos^{2}x)=\\cos2x$，则 $f(x)=$ ____.",
+      "explain": "**答案**：$f(x)=x^2-x+C$\n\n**过程**\n\n令 $t=\\cos^2x$，则 $\\sin^2x=1-t$。\n\n用二倍角：\n\n$$\\cos2x=\\cos^2x-\\sin^2x=t-(1-t)=2t-1$$\n\n所以\n\n$$f'(t)=2t-1$$\n\n积分：\n\n$$f(t)=t^2-t+C$$\n\n即 $f(x)=x^2-x+C$。\n\n**要点**：先把右端统一用 $t=\\cos^2x$ 表示，再积分。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、填空题 第 3 题**\n\n$\\displaystyle\\int\\frac{1+x}{\\sqrt{x}}dx=$ ____.",
+      "explain": "**答案**：$2\\sqrt x+\\dfrac23x^{3/2}+C$\n\n**过程**\n\n拆成幂函数：\n\n$$\\frac{1+x}{\\sqrt x}=x^{-1/2}+x^{1/2}$$\n\n分别积分：\n\n$$\\int x^{-1/2}dx=2x^{1/2},\\qquad \\int x^{1/2}dx=\\frac23x^{3/2}$$\n\n所以\n\n$$=2\\sqrt x+\\frac23x^{3/2}+C$$\n\n**验证**：求导得 $x^{-1/2}+x^{1/2}$ ✓"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题 第 1 题**\n\n下列等式中正确的是（　）\\n\\nA、$d\\int f(x)dx=f(x)$；B、$d\\int f(x)dx=f(x)dx$；C、$\\dfrac{d}{dx}\\int f(x)dx=f(x)dx$；D、$\\dfrac{d}{dx}\\int f(x)dx=f(x)+C$",
+      "explain": "**答案**：B\n\n**逐个判断**\n\n- A：微分的结果应该带 $dx$，$f(x)$ 是函数不是微分 ✗\n- B：$d\\left[\\int f\\,dx\\right]=\\left(\\int f\\,dx\\right)'dx=f(x)dx$ ✓\n- C：$\\dfrac{d}{dx}$ 是求导，结果不应带 $dx$ ✗\n- D：求导结果就是 $f(x)$，不帶 $+C$ ✗\n\n**记法**：求导降一级（去掉 $dx$），微分升一级（加上 $dx$）。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**二、选择题 第 2 题**\n\n设 $F(x)$ 是 $f(x)$ 的一个原函数，则下列**不正确**的是（　）",
+      "explain": "**答案**：含 $+C$ 位置错误的那一项（通常写成 $\\int f(x)dx=F(x)$）\n\n**正确结论**：\n\n- $\\dfrac{d}{dx}\\int f(x)dx=f(x)$ ✓\n- $\\int F'(x)dx=F(x)+C$ ✓\n- $\\int f(x)dx=F(x)+C$ ✓（必须带 $C$）\n\n**常见错误项**：把 $\\int f\\,dx$ 写成 $F(x)$（漏 $C$），或写成 $F'(x)+C$。\n\n**判据**：不定积分的结果永远带任意常数 $C$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**二、选择题 第 3 题**\n\n已知 $\\displaystyle\\int f(x)dx=3e^{\\frac x3}+c$，则 $f(x)=$（　）",
+      "explain": "**答案**：$e^{x/3}$\n\n**过程**\n\n求导：\n\n$$f(x)=\\left(3e^{x/3}\\right)'=3\\cdot e^{x/3}\\cdot\\frac13=e^{x/3}$$\n\n**排除**：$3e^{x/3}$ 是原函数，不是 $f$；$9e^{x/3}$ 是把系数算反了。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题 第 2 题**\n\n$\\displaystyle\\int\\frac{1+2x^{2}}{x^{2}(1+x^{2})}dx$",
+      "explain": "**解**\n\n**拆项**：设\n\n$$\\frac{1+2x^2}{x^2(1+x^2)}=\\frac{A}{x^2}+\\frac{B}{1+x^2}$$\n\n通分：\n\n$$1+2x^2=A(1+x^2)+Bx^2=A+(A+B)x^2$$\n\n比较系数：$A=1$，$A+B=2\\Rightarrow B=1$。\n\n所以\n\n$$\\int\\left(\\frac{1}{x^2}+\\frac{1}{1+x^2}\\right)dx=-\\frac1x+\\arctan x+C$$\n\n**验证**：$\\left(-\\frac1x\\right)'=\\frac{1}{x^2}$ ✓"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算题 第 3 题**\n\n$\\displaystyle\\int 3^{x}e^{x}dx$",
+      "explain": "**解**\n\n合并指数：\n\n$$3^x e^x=(3e)^x$$\n\n所以\n\n$$\\int(3e)^x dx=\\frac{(3e)^x}{\\ln(3e)}+C=\\frac{3^xe^x}{1+\\ln3}+C$$\n\n**注意**：$a^x$ 的积分是 $\\dfrac{a^x}{\\ln a}$，这里 $a=3e$，$\\ln(3e)=1+\\ln3$。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**三、计算题 第 4 题**\n\n$\\displaystyle\\int 2\\sin^{2}\\frac x2\\,dx$",
+      "explain": "**解**\n\n用半角公式 $2\\sin^2\\dfrac x2=1-\\cos x$：\n\n$$\\int 2\\sin^2\\frac x2dx=\\int(1-\\cos x)dx=x-\\sin x+C$$\n\n**验证**：求导得 $1-\\cos x=2\\sin^2\\dfrac x2$ ✓\n\n**要点**：三角函数的偶次幂先用降幂公式，这是标准第一步。"
+    },
+    {
+      "id": "q10",
+      "type": "text",
+      "question": "**三、计算题 第 5 题**\n\n$\\displaystyle\\int\\frac{\\cos2x}{\\cos x-\\sin x}dx$",
+      "explain": "**解**\n\n分子用二倍角：\n\n$$\\cos2x=\\cos^2x-\\sin^2x=(\\cos x-\\sin x)(\\cos x+\\sin x)$$\n\n约掉分母：\n\n$$\\frac{\\cos2x}{\\cos x-\\sin x}=\\cos x+\\sin x$$\n\n所以\n\n$$\\int(\\cos x+\\sin x)dx=\\sin x-\\cos x+C$$\n\n**验证**：求导得 $\\cos x+\\sin x$，与原式约分后一致 ✓"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "id": "math/hwb-2-5",
+  "title": "作业册 · 2.5 函数的微分",
+  "subtitle": "6 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 2.5 函数的微分\n\n作业册本节 6 题。微分题的核心是 $dy=f'(x)dx$，所以先把导数算对，再乘 $dx$。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题 第 1 题**\n\n$d(\\quad)=\\dfrac{1}{\\sqrt{x}}\\,dx$",
+      "explain": "**答案**：$d(2\\sqrt x)=\\dfrac{1}{\\sqrt x}dx$\n\n**过程**\n\n要找一个函数 $F(x)$ 使 $dF=\\dfrac{dx}{\\sqrt x}$，即 $F'(x)=x^{-1/2}$。\n\n积分：\n\n$$F(x)=\\int x^{-1/2}dx=2x^{1/2}+C=2\\sqrt x+C$$\n\n取 $C=0$ 即得 $d(2\\sqrt x)=\\dfrac{1}{\\sqrt x}dx$。\n\n**要点**：这类题就是「求原函数」——把微分式倒着看。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题 第 2 题**\n\n$d(\\cos x\\cdot\\ln x)=(\\quad)\\,d\\ln x$",
+      "explain": "**答案**：$\\cos x-x\\sin x\\ln x$\n\n**过程**\n\n要求的是 $\\dfrac{d(\\cos x\\ln x)}{d(\\ln x)}$，按链式法则：\n\n$$\\frac{d(\\cos x\\ln x)}{d(\\ln x)}=\\frac{\\dfrac{d(\\cos x\\ln x)}{dx}}{\\dfrac{d(\\ln x)}{dx}}$$\n\n分子（乘积法则）：\n\n$$\\frac{d(\\cos x\\ln x)}{dx}=-\\sin x\\ln x+\\frac{\\cos x}{x}$$\n\n分母：$\\dfrac{d(\\ln x)}{dx}=\\dfrac1x$。\n\n相除：\n\n$$\\frac{-\\sin x\\ln x+\\frac{\\cos x}{x}}{\\frac1x}=\\cos x-x\\sin x\\ln x$$\n\n**答案**：$d(\\cos x\\ln x)=(\\cos x-x\\sin x\\ln x)\\,d\\ln x$。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、选择题 第 1 题**\n\n函数 $f(x)$ 在 $x_0$ 可微分是该函数在 $x_0$ 可导的（　）\\n\\nA、充要条件；B、充分非必要；C、必要非充分；D、无关条件",
+      "explain": "**答案**：A（充要条件）\n\n**理由**\n\n一元函数中，「可微」与「可导」是**等价**的：\n\n$$f\\text{ 在 }x_0\\text{ 可微}\\iff f\\text{ 在 }x_0\\text{ 可导}$$\n\n且 $dy=f'(x_0)dx$。\n\n**注意**：多元函数里两者不等价（可导推不出可微），但一元函数这一步完全等价。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题 第 2 题**\n\n设 $y=5^{\\ln\\tan x}$，则 $dy=5^{\\ln\\tan x}$（　）\\n\\nA、$\\dfrac{2\\ln5}{\\sin2x}dx$；B、$\\dfrac{5\\ln5}{\\sin2x}dx$；C、$\\dfrac{2\\ln5}{\\cos2x}dx$；D、$\\dfrac{\\ln5}{\\sin2x}dx$",
+      "explain": "**答案**：A\n\n**过程**\n\n先求导（三层复合）：\n\n$$y'=5^{\\ln\\tan x}\\cdot\\ln5\\cdot\\frac{1}{\\tan x}\\cdot\\sec^2x$$\n\n化简后两项：\n\n$$\\frac{1}{\\tan x}\\cdot\\sec^2x=\\frac{\\cos x}{\\sin x}\\cdot\\frac{1}{\\cos^2x}=\\frac{1}{\\sin x\\cos x}=\\frac{2}{\\sin2x}$$\n\n所以\n\n$$y'=5^{\\ln\\tan x}\\cdot\\frac{2\\ln5}{\\sin2x}$$\n\n$$dy=y'dx=5^{\\ln\\tan x}\\cdot\\frac{2\\ln5}{\\sin2x}dx$$\n\n**关键一步**：$\\dfrac{1}{\\sin x\\cos x}=\\dfrac{2}{\\sin2x}$（二倍角）。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、计算题 第 2 题**\n\n设 $y=x^{x}\\cos x$，求 $dy$.",
+      "explain": "**解**\n\n先求导。第一因子 $x^x$ 是幂指函数，取对数：\n\n$$\\ln(x^x)=x\\ln x\\Rightarrow (x^x)'=x^x(\\ln x+1)$$\n\n乘积法则：\n\n$$y'=x^x(\\ln x+1)\\cos x+x^x\\cdot(-\\sin x)$$\n\n$$=x^x\\left[(\\ln x+1)\\cos x-\\sin x\\right]$$\n\n所以\n\n$$dy=x^x\\left[(\\ln x+1)\\cos x-\\sin x\\right]dx$$"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、计算题 第 3 题**\n\n设 $y=y(x)$ 由 $e^{x+y}-\\cos(xy)=0$ 确定，求 $dy$.",
+      "explain": "**解**\n\n两边对 $x$ 求导（注意 $y$ 是 $x$ 的函数，$xy$ 要用乘积法则）：\n\n$$e^{x+y}(1+y')+\\sin(xy)\\cdot(y+xy')=0$$\n\n展开：\n\n$$e^{x+y}+e^{x+y}y'+y\\sin(xy)+x\\sin(xy)y'=0$$\n\n把含 $y'$ 的项归到一边：\n\n$$y'\\left[e^{x+y}+x\\sin(xy)\\right]=-\\left[e^{x+y}+y\\sin(xy)\\right]$$\n\n所以\n\n$$y'=-\\frac{e^{x+y}+y\\sin(xy)}{e^{x+y}+x\\sin(xy)}$$\n\n$$dy=-\\frac{e^{x+y}+y\\sin(xy)}{e^{x+y}+x\\sin(xy)}\\,dx$$\n\n**易错**：$\\cos(xy)$ 求导后是 $+\\sin(xy)\\cdot(xy)'$（因为 $-\\cos$ 的导数是 $+\\sin$），符号别搞反。"
+    }
+  ]
+}

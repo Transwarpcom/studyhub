@@ -1,0 +1,55 @@
+{
+  "id": "math/hwb-2-2",
+  "title": "作业册 · 2.2 函数的求导法则",
+  "subtitle": "7 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 2.2 函数的求导法则\n\n《高等数学作业册》本节 7 题。每题一张卡，点「对答案」看过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "第 1 题\n\n$y = (\\arcsin \\frac{x}{2})^{2}$ ;",
+      "explain": "**解**\n\n设 $u=\\arcsin\\dfrac x2$，则 $y=u^2$。\n\n$$y'=2u\\cdot u'=2\\arcsin\\frac x2\\cdot\\frac{1}{\\sqrt{1-\\left(\\frac x2\\right)^2}}\\cdot\\frac12$$\n\n化简：\n\n$$y'=\\frac{\\arcsin\\frac x2}{\\sqrt{1-\\frac{x^2}{4}}}=\\frac{2\\arcsin\\frac x2}{\\sqrt{4-x^2}}$$"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "第 2 题\n\n$y = \\sqrt{1 + \\ln^2x}$ ;",
+      "explain": "**解**\n\n三层复合：$y=\\sqrt u$，$u=1+\\ln^2x$。\n\n$$y'=\\frac{1}{2\\sqrt{1+\\ln^2x}}\\cdot(1+\\ln^2x)'$$\n\n$$(1+\\ln^2x)'=2\\ln x\\cdot\\frac1x$$\n\n所以\n\n$$y'=\\frac{\\ln x}{x\\sqrt{1+\\ln^2x}}$$"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "第 3 题\n\n$y = \\ln \\ln \\ln x$",
+      "explain": "**解**\n\n三层对数，由外到内剥：\n\n$$y'=\\frac{1}{\\ln\\ln x}\\cdot(\\ln\\ln x)'=\\frac{1}{\\ln\\ln x}\\cdot\\frac{1}{\\ln x}\\cdot(\\ln x)'$$\n\n$$=\\frac{1}{\\ln\\ln x}\\cdot\\frac{1}{\\ln x}\\cdot\\frac1x=\\frac{1}{x\\ln x\\ln\\ln x}$$\n\n**验证**：从外到内，每层都套一个 $\\dfrac{1}{\\text{内层}}$，最后乘 $\\dfrac1x$。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "第 4 题\n\n$y = \\ln \\cos \\frac{1}{x} + e^{\\frac{x}{2}}\\cos 3x$",
+      "explain": "**解**\n\n分两项求。\n\n**第一项** $y_1=\\ln\\cos\\dfrac1x$：\n\n$$y_1'=\\frac{1}{\\cos\\frac1x}\\cdot\\left(-\\sin\\frac1x\\right)\\cdot\\left(-\\frac{1}{x^2}\\right)=\\frac{\\tan\\frac1x}{x^2}$$\n\n**第二项** $y_2=e^{x/2}\\cos3x$（乘积法则）：\n\n$$y_2'=\\frac12e^{x/2}\\cos3x+e^{x/2}\\cdot(-3\\sin3x)=e^{x/2}\\left(\\frac{\\cos3x}{2}-3\\sin3x\\right)$$\n\n**合并**：\n\n$$y'=\\frac{\\tan\\frac1x}{x^2}+e^{x/2}\\left(\\frac{\\cos3x}{2}-3\\sin3x\\right)$$"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "第 5 题\n\n$y = x \\arcsin \\frac{x}{2} + \\sqrt{4 - x^{2}}$ ;",
+      "explain": "**解**\n\n**第一项** $x\\arcsin\\dfrac x2$（乘积法则）：\n\n$$\\left(x\\arcsin\\frac x2\\right)'=\\arcsin\\frac x2+x\\cdot\\frac{1}{\\sqrt{1-\\frac{x^2}{4}}}\\cdot\\frac12=\\arcsin\\frac x2+\\frac{x}{\\sqrt{4-x^2}}$$\n\n（因为 $2\\sqrt{1-\\frac{x^2}{4}}=\\sqrt{4-x^2}$。）\n\n**第二项** $\\sqrt{4-x^2}$：\n\n$$\\left(\\sqrt{4-x^2}\\right)'=\\frac{1}{2\\sqrt{4-x^2}}\\cdot(-2x)=-\\frac{x}{\\sqrt{4-x^2}}$$\n\n**合并**，后两项正好抵消：\n\n$$y'=\\arcsin\\frac x2$$\n\n**这个结果很漂亮**，说明原函数是 $\\arcsin\\frac x2$ 的某种原函数。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "第 6 题\n\n设 $f'(x) = -g(x)$ ，求 $\\frac{d}{dx} f(\\cos^2 x)$ ;",
+      "explain": "**解**\n\n令 $u=\\cos^2x$，则 $y=f(u)$。\n\n$$\\frac{d}{dx}f(\\cos^2x)=f'(u)\\cdot u'$$\n\n$u'=2\\cos x\\cdot(-\\sin x)=-\\sin2x$。\n\n又已知 $f'(x)=-g(x)$，所以 $f'(u)=-g(u)=-g(\\cos^2x)$。\n\n代入：\n\n$$=-g(\\cos^2x)\\cdot(-\\sin2x)=g(\\cos^2x)\\sin2x$$\n\n**答案**：$g(\\cos^2x)\\sin2x$。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "第 7 题\n\n设 $y = f(\\sin^2 x) + f(\\cos^2 x)$ ，求 $\\frac{dy}{dx}$ .",
+      "explain": "**解**\n\n两项分别用链式法则：\n\n$$\\frac{d}{dx}f(\\sin^2x)=f'(\\sin^2x)\\cdot2\\sin x\\cos x=f'(\\sin^2x)\\sin2x$$\n\n$$\\frac{d}{dx}f(\\cos^2x)=f'(\\cos^2x)\\cdot(-2\\cos x\\sin x)=-f'(\\cos^2x)\\sin2x$$\n\n合并：\n\n$$\\frac{dy}{dx}=\\sin2x\\left[f'(\\sin^2x)-f'(\\cos^2x)\\right]$$\n\n**答案**：$\\sin2x\\left[f'(\\sin^2x)-f'(\\cos^2x)\\right]$。"
+    }
+  ]
+}

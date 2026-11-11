@@ -1,0 +1,55 @@
+{
+  "id": "math/hwb-5-1",
+  "title": "作业册 · 5.1 定积分的概念与性质",
+  "subtitle": "7 题 · 全册逐题覆盖",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 5.1 定积分的概念与性质\n\n作业册本节 5 题：可积条件、定义式、几何意义、比较、估值。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题 第 1 题**\n\n函数 $f(x)$ 在 $[a,b]$ 上有界是 $f(x)$ 在 $[a,b]$ 上（常义）可积的 ____ 条件，而 $f(x)$ 在 $[a,b]$ 上连续是 $f(x)$ 在 $[a,b]$ 上可积的 ____ 条件.",
+      "explain": "**答案**：**必要**；**充分**\n\n**理由**\n\n- 可积 $\\Rightarrow$ 有界（可积函数必有界），所以有界是**必要条件**；但反过来不成立——$[0,1]$ 上的 Dirichlet 函数有界却不可积\n- 连续 $\\Rightarrow$ 可积，所以连续是**充分条件**；可积不必连续（有有限个第一类间断点也可积）\n\n**记忆**：有界是底线（必须），连续是保险（够了）。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题 第 2 题**\n\n设 $f(x)$ 在 $[0,1]$ 上连续，且 $f(x)>0$，则极限 $\\lim\\limits_{n\\to\\infty}\\dfrac1n\\left[\\ln f\\left(\\dfrac1n\\right)+\\ln f\\left(\\dfrac2n\\right)+\\cdots+\\ln f\\left(\\dfrac nn\\right)\\right]=$ ____.",
+      "explain": "**答案**：$\\displaystyle\\int_0^1\\ln f(x)\\,dx$\n\n**理由**\n\n这是定积分的**定义式**：把 $[0,1]$ 分成 $n$ 等份，每份长 $\\dfrac1n$，取右端点 $\\xi_i=\\dfrac in$：\n\n$$\\sum_{i=1}^{n}\\ln f\\left(\\frac in\\right)\\cdot\\frac1n\\to\\int_0^1\\ln f(x)dx$$\n\n**要点**：看到 $\\dfrac1n\\sum f\\left(\\dfrac in\\right)$ 就认出是 $\\int_0^1f(x)dx$。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、填空题 第 3 题**\n\n定积分 $\\displaystyle\\int_{-\\pi}^{\\pi}\\sin x\\,dx=0$ 的几何意义是 ____.",
+      "explain": "**答案**：$x$ 轴上方与下方两块曲边梯形的面积相等、符号相反，代数和为零\n\n**说明**\n\n$\\sin x$ 在 $[-\\pi,\\pi]$ 上是奇函数，图形关于原点对称。\n\n$[0,\\pi]$ 上 $\\sin x\\ge0$，面积为 $2$；$[-\\pi,0]$ 上 $\\sin x\\le0$，面积也是 $2$，但贡献 $-2$。\n\n定积分是**代数和**：\n\n$$\\int_{-\\pi}^{0}\\sin x\\,dx+\\int_0^{\\pi}\\sin x\\,dx=-2+2=0$$\n\n**注意**：定积分为 0 不等于被积函数为 0，也不等于面积为 0（面积是 $\\int|\\sin x|dx=4$）。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题 第 1 题**\n\n$\\displaystyle\\int_1^2\\ln x\\,dx$ 与 $\\displaystyle\\int_1^2(\\ln x)^3dx$ 的大小关系是（　）\\n\\nA、前者大；B、前者小；C、两者相等；D、无法判定",
+      "explain": "**答案**：A（前者大）\n\n**理由**\n\n在 $[1,2]$ 上，$0\\le\\ln x<1$（因为 $\\ln2\\approx0.693<1$）。\n\n对 $0\\le u<1$，有\n\n$$u^3\\le u$$\n\n（乘以正数才放大的，小于 1 的数立方变小。）\n\n所以 $(\\ln x)^3\\le\\ln x$，且等号只在 $x=1$ 成立。\n\n由保序性：\n\n$$\\int_1^2(\\ln x)^3dx<\\int_1^2\\ln x\\,dx$$\n\n**答案**：A。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、证明与计算 第 1 题**\n\n估计积分值 $\\displaystyle\\int_{\\frac{\\pi}{4}}^{\\frac{5\\pi}{4}}(1+\\cos^{2}x)\\,dx$",
+      "explain": "**解**\n\n**第一步：求被积函数的最值**\n\n$\\cos^2x\\in[0,1]$，所以\n\n$$1\\le 1+\\cos^2x\\le2$$\n\n**第二步：套估值定理**\n\n区间长度：$\\dfrac{5\\pi}{4}-\\dfrac{\\pi}{4}=\\pi$。\n\n$$1\\cdot\\pi\\le\\int_{\\pi/4}^{5\\pi/4}(1+\\cos^2x)dx\\le2\\cdot\\pi$$\n\n即\n\n$$\\pi\\le\\int_{\\frac\\pi4}^{\\frac{5\\pi}4}(1+\\cos^2x)dx\\le2\\pi$$\n\n**第三步（可选）：实际值**\n\n$$\\int(1+\\cos^2x)dx=x+\\frac x2+\\frac{\\sin2x}{4}=\\frac{3x}{2}+\\frac{\\sin2x}{4}$$\n\n代入：$\\left(\\dfrac{15\\pi}{8}+\\dfrac{\\sin\\frac{5\\pi}{2}}{4}\\right)-\\left(\\dfrac{3\\pi}{8}+\\dfrac{\\sin\\frac{\\pi}{2}}{4}\\right)=\\dfrac{3\\pi}{2}+0$\n\n实际值 $\\dfrac{3\\pi}{2}\\approx4.71$，确实落在 $[\\pi,2\\pi]\\approx[3.14,6.28]$ 内 ✓"
+    },
+    {
+      "id": "x1",
+      "type": "text",
+      "question": "**二、选择题 第 2 题**\n\n$f(x)$ 在 $[a,b]$ 上连续且 $\\displaystyle\\int_a^b f(x)dx=0$，则必有（　）\\n\\nA、在 $[a,b]$ 的某个小区间上 $f(x)=0$；B、对 $[a,b]$ 上一切 $x$ 均有 $f(x)=0$；C、在 $[a,b]$ 内至少有一点 $x$，使 $f(x)=0$；D、在 $[a,b]$ 内不一定有 $x$ 使 $f(x)=0$",
+      "explain": "**答案**：C\n\n**证明**（反证法）\n\n设 $f$ 在 $[a,b]$ 上处处不为 $0$。由连续性，$f$ 在该区间上**不变号**（若变号，由介值定理必有零点）。\n\n不妨设 $f(x)>0$ 恒成立。则\n\n$$\\int_a^b f(x)dx>0$$\n\n（连续且恒正，积分严格大于 0。）\n\n这与 $\\int_a^b f=0$ 矛盾。\n\n所以必有某点 $f(x)=0$。\n\n**排除**：A 太强（有零点不等于有一段恒为 0）；B 太强；D 与结论相反。"
+    },
+    {
+      "id": "x2",
+      "type": "text",
+      "question": "**三、证明与计算 第 2 题**\n\n设 $f(x)$ 在 $[0,1]$ 上可导，且满足 $f\\left(\\dfrac12\\right)-4\\displaystyle\\int_0^{\\frac12}xf(x)dx=0$，证明在 $(0,1)$ 内至少存在一点 $\\xi$，使 $f'(\\xi)=-\\dfrac{f(\\xi)}{\\xi}$.",
+      "explain": "**证明**\n\n要证的式子改写一下：$\\xi f'(\\xi)+f(\\xi)=0$，即\n\n$$\\left[xf(x)\\right]'_{x=\\xi}=0$$\n\n所以构造辅助函数\n\n$$F(x)=xf(x)$$\n\n**第一步：用积分中值定理处理积分项**\n\n$$\\int_0^{1/2}xf(x)dx=F(\\xi_1)\\cdot\\frac12,\\qquad \\xi_1\\in\\left(0,\\frac12\\right)$$\n\n（这里 $F(x)=xf(x)$ 连续，可以直接用积分中值定理。）\n\n**第二步：由题设条件**\n\n$$f\\left(\\frac12\\right)=4\\int_0^{1/2}xf(x)dx=4\\cdot F(\\xi_1)\\cdot\\frac12=2F(\\xi_1)$$\n\n**第三步：把两端都写成 $F$ 的形式**\n\n$$F\\left(\\frac12\\right)=\\frac12f\\left(\\frac12\\right)=\\frac12\\cdot2F(\\xi_1)=F(\\xi_1)$$\n\n**第四步：罗尔定理**\n\n$F(x)=xf(x)$ 在 $[\\xi_1,\\frac12]$ 上连续、可导，且两端值相等，所以存在 $\\xi\\in\\left(\\xi_1,\\frac12\\right)\\subset(0,1)$ 使\n\n$$F'(\\xi)=0$$\n\n即\n\n$$\\xi f'(\\xi)+f(\\xi)=0\\Rightarrow f'(\\xi)=-\\frac{f(\\xi)}{\\xi}$$\n\n$\\blacksquare$\n\n**构造思路**：看到 $f'=-\\frac f\\xi$ 就想到 $xf'+f=0$，即 $(xf)'=0$，所以辅助函数取 $F=xf$。"
+    }
+  ]
+}

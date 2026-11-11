@@ -1,0 +1,73 @@
+{
+  "id": "math/hwb-3-6",
+  "title": "作业册 · 3.6 图形描绘与曲率",
+  "subtitle": "10 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 3.6 函数图形的描绘 · 曲率\n\n作业册本节 10 题精讲：曲率、渐近线、图形描绘、单调最值、极限、凹凸拐点。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题 第 1 题**\n\n曲线 $y=e^{2x}-2x$ 在极值点处的曲率 $k=$ ____，曲率半径 $R=$ ____.",
+      "explain": "**答案**：$k=4$，$R=\\dfrac14$\n\n**先找极值点**\n\n$$y'=2e^{2x}-2=0\\Rightarrow e^{2x}=1\\Rightarrow x=0$$\n\n且 $y''=4e^{2x}>0$，是极小值点。\n\n**求曲率**\n\n在 $x=0$ 处：$y'=0$，$y''=4$。\n\n$$k=\\frac{|y''|}{\\left[1+(y')^2\\right]^{3/2}}=\\frac{4}{(1+0)^{3/2}}=4$$\n\n$$R=\\frac1k=\\frac14$$"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题 第 2 题**\n\n设 $y=f(x)$ 二阶可导且有拐点 $(x_0,f(x_0))$，则曲线在拐点处的曲率 $k=$ ____.",
+      "explain": "**答案**：$k=0$\n\n**理由**\n\n拐点的定义是凹凸性改变，必要条件是在该点 $f''(x_0)=0$（二阶可导时）。\n\n代入曲率公式：\n\n$$k=\\frac{|f''(x_0)|}{\\left[1+(f'(x_0))^2\\right]^{3/2}}=\\frac{0}{\\cdots}=0$$\n\n**结论**：曲线在拐点处「瞬时是直的」，曲率为零。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、填空题 第 3 题**\n\n设曲线方程为 $y=\\dfrac{\\sin x}{x}+\\arctan(1-\\sqrt{x})$，则曲线有 ____ 渐近线，方程为 ____.",
+      "explain": "**答案**：一条水平渐近线 $y=-\\dfrac{\\pi}{2}$\n\n**过程**\n\n定义域 $x>0$。\n\n**$x\\to+\\infty$ 时**：\n\n$$\\frac{\\sin x}{x}\\to0\\quad(\\text{有界×无穷小})$$\n\n$$1-\\sqrt x\\to-\\infty\\Rightarrow\\arctan(1-\\sqrt x)\\to-\\frac{\\pi}{2}$$\n\n所以\n\n$$y\\to0+\\left(-\\frac{\\pi}{2}\\right)=-\\frac{\\pi}{2}$$\n\n**水平渐近线**：$y=-\\dfrac{\\pi}{2}$。\n\n**$x\\to0^+$ 时**：$\\dfrac{\\sin x}{x}\\to1$，$\\arctan(1-0)=\\dfrac\\pi4$，$y\\to1+\\dfrac\\pi4$，是有限值，不产生垂直渐近线。\n\n所以只有一条渐近线。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、描绘函数**\n\n描绘函数 $y=\\dfrac{x}{1+x^2}$ 的图形.",
+      "explain": "**1. 定义域与奇偶性**\n\n定义域 $\\mathbf R$；$f(-x)=-f(x)$，是**奇函数**，图形关于原点对称，只需画 $x\\ge0$。\n\n**2. 单调性与极值**\n\n$$y'=\\frac{(1+x^2)-x\\cdot2x}{(1+x^2)^2}=\\frac{1-x^2}{(1+x^2)^2}$$\n\n- $x<-1$：$y'<0$，递减\n- $-1<x<1$：$y'>0$，递增\n- $x>1$：$y'<0$，递减\n\n极小值 $y(-1)=-\\dfrac12$，极大值 $y(1)=\\dfrac12$。\n\n**3. 凹凸性与拐点**\n\n$$y''=\\frac{-2x(1+x^2)^2-(1-x^2)\\cdot2(1+x^2)\\cdot2x}{(1+x^2)^4}=\\frac{2x(x^2-3)}{(1+x^2)^3}$$\n\n$y''=0$ 的点：$x=0,\\ \\pm\\sqrt3$。\n\n| 区间 | $(-\\infty,-\\sqrt3)$ | $(-\\sqrt3,0)$ | $(0,\\sqrt3)$ | $(\\sqrt3,+\\infty)$ |\n|---|---|---|---|---|\n| $y''$ | $-$ | $+$ | $-$ | $+$ |\n| 凹凸 | 凸 | 凹 | 凸 | 凹 |\n\n三个拐点：$\\left(-\\sqrt3,-\\dfrac{\\sqrt3}{4}\\right)$、$(0,0)$、$\\left(\\sqrt3,\\dfrac{\\sqrt3}{4}\\right)$。\n\n**4. 渐近线**\n\n$$\\lim_{x\\to\\infty}\\frac{x}{1+x^2}=0$$\n\n水平渐近线 $y=0$。无垂直、无斜渐近线。\n\n**5. 图形**\n\n过原点，在 $(-1,-\\frac12)$ 取极小、$(1,\\frac12)$ 取极大，两端贴 $x$ 轴，整体像个「平躺的 S」。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**一、填空题 第 4 题**\n\n函数 $f(x)=2\\arctan x-\\ln(1+x^{2})$ 的单调减区间是 ____.",
+      "explain": "**答案**：$(1,+\\infty)$\n\n**过程**\n\n$$f'(x)=\\frac{2}{1+x^2}-\\frac{2x}{1+x^2}=\\frac{2(1-x)}{1+x^2}$$\n\n分母恒正，所以 $f'$ 的符号由 $1-x$ 决定：\n\n$$f'(x)<0\\iff x>1$$\n\n**减区间**：$(1,+\\infty)$；增区间 $(-\\infty,1)$。\n\n极大值 $f(1)=2\\cdot\\dfrac\\pi4-\\ln2=\\dfrac\\pi2-\\ln2$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**一、填空题 第 5 题**\n\n函数 $f(x)=3-x-x^{3}$ 在 $[1,3]$ 上的最大值是 ____.",
+      "explain": "**答案**：$1$\n\n**过程**\n\n$$f'(x)=-1-3x^2<0\\quad\\text{对一切 }x\\text{ 成立}$$\n\n所以 $f$ 在 $[1,3]$ 上**严格递减**，最大值在左端点：\n\n$$f(1)=3-1-1=1$$\n\n最小值在右端点 $f(3)=3-3-27=-27$。\n\n**要点**：单调函数在闭区间上的最值直接看端点，不用找驻点。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题 第 2 题**\n\n$\\lim\\limits_{x\\to0}\\dfrac{x\\cot x-1}{x^{2}}$",
+      "explain": "**解**\n\n先化简：\n\n$$x\\cot x-1=\\frac{x\\cos x}{\\sin x}-1=\\frac{x\\cos x-\\sin x}{\\sin x}$$\n\n所以\n\n$$\\frac{x\\cot x-1}{x^2}=\\frac{x\\cos x-\\sin x}{x^2\\sin x}$$\n\n**用泰勒**（分母 $x^2\\sin x\\sim x^3$，分子展开到 $x^3$）：\n\n$$x\\cos x=x\\left(1-\\frac{x^2}{2}+o(x^2)\\right)=x-\\frac{x^3}{2}+o(x^3)$$\n\n$$\\sin x=x-\\frac{x^3}{6}+o(x^3)$$\n\n相减：\n\n$$x\\cos x-\\sin x=\\left(-\\frac12+\\frac16\\right)x^3+o(x^3)=-\\frac{x^3}{3}+o(x^3)$$\n\n所以\n\n$$\\lim_{x\\to0}\\frac{-x^3/3}{x^3}=-\\frac13$$\n\n**答案**：$-\\dfrac13$。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算题 第 3 题**\n\n$\\lim\\limits_{x\\to0}(2-\\cos3x)^{\\frac{1}{\\ln(1+x^{2})}}$",
+      "explain": "**解**\n\n$1^\\infty$ 型。取对数：\n\n$$L=\\lim_{x\\to0}\\frac{\\ln(2-\\cos3x)}{\\ln(1+x^2)}$$\n\n**分母**：$\\ln(1+x^2)\\sim x^2$。\n\n**分子**：$2-\\cos3x=1+(1-\\cos3x)$，而 $1-\\cos3x\\sim\\dfrac{9x^2}{2}$，所以\n\n$$\\ln(2-\\cos3x)=\\ln\\left(1+\\frac{9x^2}{2}+o(x^2)\\right)\\sim\\frac{9x^2}{2}$$\n\n于是\n\n$$L=\\lim_{x\\to0}\\frac{\\frac92x^2}{x^2}=\\frac92$$\n\n原极限\n\n$$=e^{9/2}$$\n\n**答案**：$e^{9/2}$。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**三、计算题 第 4 题**\n\n$\\lim\\limits_{x\\to1}\\left(\\dfrac{2x}{x+1}\\right)^{\\frac{2x}{x-1}}$",
+      "explain": "**解**\n\n$1^\\infty$ 型。底数写成 $1+u$：\n\n$$\\frac{2x}{x+1}=1+\\frac{x-1}{x+1}$$\n\n所以 $u=\\dfrac{x-1}{x+1}\\to0$，指数 $v=\\dfrac{2x}{x-1}\\to\\infty$。\n\n计算 $uv$：\n\n$$uv=\\frac{x-1}{x+1}\\cdot\\frac{2x}{x-1}=\\frac{2x}{x+1}\\to\\frac{2}{2}=1$$\n\n由公式 $(1+u)^v\\to e^{uv}$：\n\n$$\\lim=e^{1}=e$$\n\n**答案**：$e$。\n\n**要点**：$1^\\infty$ 型只看 $u\\cdot v$ 的极限，不用每次取对数。"
+    },
+    {
+      "id": "q10",
+      "type": "text",
+      "question": "**四、凹凸与拐点**\n\n求曲线 $y=x^{2}\\ln x$ 的凹凸区间及拐点坐标.",
+      "explain": "**解**\n\n定义域 $x>0$。\n\n**一阶导**：\n\n$$y'=2x\\ln x+x^2\\cdot\\frac1x=2x\\ln x+x$$\n\n**二阶导**：\n\n$$y''=2\\ln x+2x\\cdot\\frac1x+1=2\\ln x+3$$\n\n**令 $y''=0$**：\n\n$$2\\ln x+3=0\\Rightarrow\\ln x=-\\frac32\\Rightarrow x=e^{-3/2}$$\n\n**符号**：\n\n- $0<x<e^{-3/2}$：$y''<0$，凸\n- $x>e^{-3/2}$：$y''>0$，凹\n\n**拐点纵坐标**：\n\n$$y\\left(e^{-3/2}\\right)=e^{-3}\\cdot\\left(-\\frac32\\right)=-\\frac{3}{2e^{3}}$$\n\n**答案**：凸区间 $\\left(0,e^{-3/2}\\right)$，凹区间 $\\left(e^{-3/2},+\\infty\\right)$，拐点 $\\left(e^{-3/2},-\\dfrac{3}{2e^3}\\right)$。"
+    }
+  ]
+}

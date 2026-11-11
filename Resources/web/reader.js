@@ -326,7 +326,7 @@
     el.querySelector('.submit').style.display = 'none';
 
     showResult(el, card, correct, { picked: picked });
-    record(card.id, correct, { picked: picked });
+    record(card.id, correct, { picked: picked }, previewOf(card));
   }
 
   function restoreChoice(el, card, prev) {
@@ -378,7 +378,7 @@
       });
       el.querySelector('.submit').style.display = 'none';
       showResult(el, card, okAll, { picked: picked });
-      record(card.id, okAll, { picked: picked });
+      record(card.id, okAll, { picked: picked }, previewOf(card));
     });
 
     var prev = S.answered[card.id];
@@ -418,7 +418,7 @@
       box.style.display = 'block';
       box.innerHTML = '<div class="tag">参考解答</div><div class="md">' + mdToHtml(card.explain || '（暂无解析）') + '</div>';
       renderMath(box);
-      record(card.id, true, { picked: [] });
+      record(card.id, true, { picked: [] }, previewOf(card));
       updateProgress();
     });
 
@@ -440,9 +440,19 @@
     if (correct) post({ type: 'haptic' });
   }
 
-  function record(cardId, correct, info) {
+  function previewOf(card) {
+    var t = (card.question || card.md || '')
+      .replace(/\$\$[\s\S]*?\$\$/g, ' ')
+      .replace(/\$[^$\n]*\$/g, ' ')
+      .replace(/[#*`>|_]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    return t.slice(0, 60);
+  }
+
+  function record(cardId, correct, info, preview) {
     S.answered[cardId] = { correct: correct, picked: info.picked || [] };
-    post({ type: 'answer', cardId: cardId, correct: !!correct });
+    post({ type: 'answer', cardId: cardId, correct: !!correct, preview: preview || '' });
     updateProgress();
   }
 
@@ -475,9 +485,15 @@
   }
 
   // ---------- 主入口 ----------
+  function applyFontSize(v) {
+    var size = (typeof v === 'number' && v >= 13 && v <= 24) ? v : 17;
+    document.body.style.fontSize = size + 'px';
+  }
+
   function build(payload) {
     S.payload = payload;
     S.lessonId = payload.lessonId;
+    applyFontSize(payload.fontSize);
     S.answered = {};
     S.total = 0;
     S.done = 0;

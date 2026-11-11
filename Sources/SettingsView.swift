@@ -30,6 +30,53 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("离线缓存") {
+                    if store.downloading {
+                        VStack(alignment: .leading, spacing: 8) {
+                            ProgressView(value: Double(store.dlDone),
+                                         total: Double(max(store.dlTotal, 1)))
+                            Text("正在下载 \(store.dlDone)/\(store.dlTotal) 节"
+                                 + (store.dlFailed > 0 ? "，失败 \(store.dlFailed)" : ""))
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 4)
+                    } else {
+                        Button {
+                            Task { await store.downloadAll() }
+                        } label: {
+                            Label("下载全部内容（\(store.allLessonNodes.count) 节）",
+                                  systemImage: "arrow.down.circle.fill")
+                        }
+                    }
+                    LabeledContent("已缓存", value: "\(store.cachedLessonCount) 节 · \(bytesText(store.cacheBytes))")
+                    Button("清空离线缓存（保留答题记录）") {
+                        store.clearLessonCache()
+                        hint = "缓存已清"
+                    }
+                }
+
+                Section("阅读") {
+                    HStack {
+                        Text("字号")
+                        Slider(value: Binding(get: { store.fontSize },
+                                              set: { store.setFontSize($0) }),
+                               in: 14...22, step: 1)
+                        Text("\(Int(store.fontSize))")
+                            .font(.footnote.monospacedDigit())
+                            .foregroundColor(.secondary)
+                            .frame(width: 26, alignment: .trailing)
+                    }
+                }
+
+                Section("学习统计") {
+                    LabeledContent("连续学习", value: "\(store.streakDays) 天")
+                    LabeledContent("今日答题", value: "\(store.todayStat.answered) 题")
+                    LabeledContent("累计答题", value: "\(store.totalAnswered) 题")
+                    LabeledContent("累计正确率", value: rateText)
+                    LabeledContent("错题", value: "\(store.wrongs.count) 道")
+                }
+
                 Section("状态") {
                     LabeledContent("内容版本", value: store.manifest.map { "v\($0.version)" } ?? "—")
                     LabeledContent("上次同步", value: dateText(store.lastSync))
@@ -74,5 +121,17 @@ struct SettingsView: View {
         guard let items = try? fm.contentsOfDirectory(at: HubClient.shared.cacheDir,
                                                       includingPropertiesForKeys: nil) else { return 0 }
         return items.filter { $0.lastPathComponent.hasPrefix("lesson_") }.count
+    }
+
+    private var rateText: String {
+        let a = store.totalAnswered
+        guard a > 0 else { return "—" }
+        return "\(store.totalCorrect * 100 / a)%"
+    }
+
+    private func bytesText(_ b: Int64) -> String {
+        let f = ByteCountFormatter()
+        f.countStyle = .file
+        return f.string(fromByteCount: b)
     }
 }

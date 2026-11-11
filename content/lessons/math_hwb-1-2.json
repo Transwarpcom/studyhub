@@ -1,0 +1,49 @@
+{
+  "id": "math/hwb-1-2",
+  "title": "作业册 · 1.2 数列的极限",
+  "subtitle": "6 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 1.2 数列的极限\n\n这是《高等数学作业册》对应节的题目，共 6 题。\n\n每题一张卡片，点开「对答案」看完整过程。建议先自己做，再对照。\n\n> 题目按原册编号，填空/选择/计算证明分开。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n叙述 $\\lim_{n\\to\\infty}x_{n}=a$ 的 $(\\varepsilon-N$ 方法 $)$ 的定义如下 ____.",
+      "explain": "**答案**：\n\n对任意给定的 $\\varepsilon>0$，总存在正整数 $N$，使得当 $n>N$ 时，恒有\n\n$$|x_n-a|<\\varepsilon$$\n\n则称数列 $\\{x_n\\}$ 收敛于 $a$，记作 $\\lim\\limits_{n\\to\\infty}x_n=a$。\n\n**三个关键词**：任意（$\\varepsilon$）、存在（$N$）、恒有（$n>N$ 时）。顺序不能换。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题** 第 2 题\n\n设有数列 $x_{n} = \\frac{2n - 1}{5n + 2}$ ，对于 $\\forall \\varepsilon > 0$ ，若使 $|x_{n} - \\frac{2}{5}| < \\varepsilon$ ，那么项数 $n$ 应从 ____ 开始.",
+      "explain": "**答案**：$n$ 从 $\\left[\\dfrac{9}{25\\varepsilon}-\\dfrac{2}{5}\\right]+1$ 开始\n\n**过程**\n\n先算差：\n\n$$x_n-\\frac25=\\frac{2n-1}{5n+2}-\\frac25=\\frac{5(2n-1)-2(5n+2)}{5(5n+2)}=\\frac{-9}{25n+10}$$\n\n取绝对值：\n\n$$\\left|x_n-\\frac25\\right|=\\frac{9}{25n+10}<\\varepsilon$$\n\n解出 $n$：\n\n$$25n+10>\\frac9\\varepsilon\\Rightarrow n>\\frac{1}{25}\\left(\\frac9\\varepsilon-10\\right)=\\frac{9}{25\\varepsilon}-\\frac25$$\n\n所以取 $N=\\left[\\dfrac{9}{25\\varepsilon}-\\dfrac25\\right]+1$，$n$ 从 $N+1$ 开始。\n\n**要点**：解不等式时把 $n$ 单独放到一边，取整后加 1。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、选择题** 第 1 题\n\n数列收敛是数列有界的____，数列有界是数列收敛的____。\nA、充分非必要条件； B、必要非充分条件；\nC、充分必要条件； D、既不充分又不必要条件。",
+      "explain": "**答案**：A、B\n\n**推理**\n\n- 收敛 $\\Rightarrow$ 有界：收敛数列必有界（定理）\n- 有界 $\\nRightarrow$ 收敛：$x_n=(-1)^n$ 有界但发散\n\n所以「收敛」是「有界」的**充分非必要条件**；反过来，「有界」是「收敛」的**必要非充分条件**。\n\n**记忆**：收敛比有界强，强的那一方是充分条件。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题** 第 2 题\n\n若数列 $x_{n}$ 有极限 $a, \\forall \\varepsilon > 0$ ，在 $a$ 的 $\\varepsilon$ 邻域之外，数列中的点 ____。\nA、必不存在； B、至多有有限多个；\nC、必定有无穷多个； D、可以有有限个，也可以有无限多个。",
+      "explain": "**答案**：B\n\n**理由**\n\n$\\lim x_n=a$ 的定义是：对任意 $\\varepsilon>0$，存在 $N$，当 $n>N$ 时 $|x_n-a|<\\varepsilon$。\n\n也就是说，$n>N$ 的所有项**都在**邻域内；跑到邻域外的只可能是前 $N$ 项，最多 $N$ 个，是有限的。\n\n**易错**：选「必不存在」——错，前有限项可以在外面；选「无穷多个」——错，那是发散数列的特征。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、证明下列命题** 第 1 题\n\n若 $\\lim_{n\\to \\infty}x_n = a$ ，证明： $\\lim_{n\\to \\infty}\\left|x_n\\right| = \\left|a\\right|$ ，举例说明其逆不真.",
+      "explain": "**证明 $\\lim|x_n|=|a|$**\n\n由绝对值不等式（反向三角不等式）：\n\n$$\\big||x_n|-|a|\\big|\\le|x_n-a|$$\n\n任给 $\\varepsilon>0$，因为 $x_n\\to a$，存在 $N$，当 $n>N$ 时 $|x_n-a|<\\varepsilon$。\n\n于是同一 $N$ 下\n\n$$\\big||x_n|-|a|\\big|\\le|x_n-a|<\\varepsilon$$\n\n由定义，$\\lim\\limits_{n\\to\\infty}|x_n|=|a|$。$\\blacksquare$\n\n**说明逆不真**\n\n取 $x_n=(-1)^n$，则 $|x_n|=1\\to1$，但 $x_n$ 本身在 $1$ 与 $-1$ 之间跳动，不收敛。\n\n所以「绝对值收敛」推不出「原数列收敛」。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、证明下列命题** 第 3 题\n\n设数列 $\\{x_{n}\\}$ 有界， $\\lim_{n\\to \\infty}y_n = 0$ ，证明 $\\lim_{n\\to \\infty}x_n y_n = 0$",
+      "explain": "**证明**\n\n因为 $\\{x_n\\}$ 有界，存在 $M>0$，使 $|x_n|\\le M$ 对一切 $n$ 成立。\n\n任给 $\\varepsilon>0$。因为 $y_n\\to0$，存在 $N$，当 $n>N$ 时\n\n$$|y_n|<\\frac{\\varepsilon}{M}$$\n\n（若 $M=0$ 则 $x_n\\equiv0$，结论显然。）\n\n于是当 $n>N$ 时\n\n$$|x_ny_n|=|x_n|\\cdot|y_n|<M\\cdot\\frac{\\varepsilon}{M}=\\varepsilon$$\n\n由定义，$\\lim\\limits_{n\\to\\infty}x_ny_n=0$。$\\blacksquare$\n\n**这条定理就是**「有界量 × 无穷小 = 无穷小」，后面求极限经常直接用。"
+    }
+  ]
+}

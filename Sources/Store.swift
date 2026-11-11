@@ -10,6 +10,17 @@ final class Store: ObservableObject {
     @Published var progress: [String: Bool] = [:]     // "lessonId|cardId" -> 是否正确
     @Published var replies: [Lesson] = []
     @Published var uploads: [UploadRecord] = []
+    @Published var wrongs: [WrongItem] = []
+    @Published var days: [String: DayStat] = [:]
+
+    // 批量缓存
+    @Published var downloading = false
+    @Published var dlDone = 0
+    @Published var dlTotal = 0
+    @Published var dlFailed = 0
+
+    // 阅读器字号
+    @Published var fontSize: Double = UserDefaults.standard.object(forKey: "hub.fontSize") as? Double ?? 17
 
     let client = HubClient.shared
     private var lessons: [String: Lesson] = [:]
@@ -33,6 +44,14 @@ final class Store: ObservableObject {
            let u = try? JSONDecoder().decode([UploadRecord].self, from: d) {
             uploads = u
         }
+        if let d = UserDefaults.standard.data(forKey: "hub.wrongs"),
+           let w = try? JSONDecoder().decode([WrongItem].self, from: d) {
+            wrongs = w
+        }
+        if let d = UserDefaults.standard.data(forKey: "hub.days"),
+           let x = try? JSONDecoder().decode([String: DayStat].self, from: d) {
+            days = x
+        }
         if let t = UserDefaults.standard.object(forKey: "hub.lastSync") as? Date {
             lastSync = t
         }
@@ -48,6 +67,137 @@ final class Store: ObservableObject {
         if let d = try? JSONEncoder().encode(uploads) {
             UserDefaults.standard.set(d, forKey: "hub.uploads")
         }
+    }
+
+    private func saveWrongs() {
+        if let d = try? JSONEncoder().encode(wrongs) {
+            UserDefaults.standard.set(d, forKey: "hub.wrongs")
+        }
+    }
+
+    private func saveDays() {
+        if let d = try? JSONEncoder().encode(days) {
+            UserDefaults.standard.set(d, forKey: "hub.days")
+        }
+    }
+
+    // MARK: 批量缓存
+
+    func flatten(_ nodes: [Node]) -> [Node] {
+        var out: [Node] = []
+        for n in nodes {
+            if n.kind == "folder" {
+                out += flatten(n.children ?? [])
+            } else {
+                out.append(n)
+            }
+        }
+        return out
+    }
+
+    var allLessonNodes: [Node] {
+        flatten(manifest?.tree ?? [])
+    }
+
+    /// 下载整棵树（已缓存的直接跳过）
+    func downloadAll() async {
+        guard !downloading else { return }
+        let list = allLessonNodes
+        guard !list.isEmpty else { return }
+        downloading = true
+        dlTotal = list.count
+        dlDone = 0
+        dlFailed = 0
+        for n in list {
+            if cachedLesson(node: n) != nil { dlDone += 1; continue }
+            do { _ = try await loadLesson(node: n) } catch { dlFailed += 1 }
+            dlDone += 1
+        }
+        downloading = false
+    }
+
+    /// 下载某一棵子树
+    func download(_ node: Node) async {
+        guard !downloading else { return }
+        let list = node.kind == "folder" ? flatten(node.children ?? []) : [node]
+        guard !list.isEmpty else { return }
+        downloading = true
+        dlTotal = list.count
+        dlDone = 0
+        dlFailed = 0
+        for n in list {
+            if cachedLesson(node: n) != nil { dlDone += 1; continue }
+            do { _ = try await loadLesson(node: n) } catch { dlFailed += 1 }
+            dlDone += 1
+        }
+        downloading = false
+    }
+
+    var cachedLessonCount: Int {
+        let fm = FileManager.default
+        guard let items = try? fm.contentsOfDirectory(at: client.cacheDir, includingPropertiesForKeys: nil) else { return 0 }
+        return items.filter { $0.lastPathComponent.hasPrefix("lesson_") }.count
+    }
+
+    var cacheBytes: Int64 {
+        let fm = FileManager.default
+        guard let items = try? fm.contentsOfDirectory(at: client.cacheDir,
+                                                      includingPropertiesForKeys: [.fileSizeKey]) else { return 0 }
+        var total: Int64 = 0
+        for u in items {
+            if let v = try? u.resourceValues(forKeys: [.fileSizeKey]), let s = v.fileSize {
+                total += Int64(s)
+            }
+        }
+        return total
+    }
+
+    func clearLessonCache() {
+        let fm = FileManager.default
+        guard let items = try? fm.contentsOfDirectory(at: client.cacheDir, includingPropertiesForKeys: nil) else { return }
+        for u in items where u.lastPathComponent.hasPrefix("lesson_") {
+            try? fm.removeItem(at: u)
+        }
+        lessons.removeAll()
+    }
+
+    // MARK: 统计
+
+    var totalAnswered: Int { progress.count }
+    var totalCorrect: Int { progress.values.filter { $0 }.count }
+
+    /// 连续学习天数（今天没答就从昨天往前数）
+    var streakDays: Int {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        var streak = 0
+        var d = Date()
+        var skippedToday = false
+        for _ in 0..<400 {
+            let key = f.string(from: d)
+            if let st = days[key], st.answered > 0 {
+                streak += 1
+                d = d.addingTimeInterval(-86400)
+                skippedToday = true
+            } else if !skippedToday {
+                d = d.addingTimeInterval(-86400)
+                skippedToday = true
+            } else {
+                break
+            }
+        }
+        return streak
+    }
+
+    var todayStat: DayStat {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return days[f.string(from: Date())] ?? DayStat(day: "", answered: 0, correct: 0)
+    }
+
+    func setFontSize(_ v: Double) {
+        fontSize = v
+        UserDefaults.standard.set(v, forKey: "hub.fontSize")
     }
 
     // MARK: 同步
@@ -132,9 +282,32 @@ final class Store: ObservableObject {
 
     // MARK: 答题
 
-    func record(lessonId: String, cardId: String, correct: Bool) {
-        progress["\(lessonId)|\(cardId)"] = correct
+    func record(lessonId: String, lessonTitle: String, cardId: String,
+                correct: Bool, preview: String) {
+        let key = "\(lessonId)|\(cardId)"
+        progress[key] = correct
         saveProgress()
+
+        // 错题本：答错加入，答对移除
+        if correct {
+            wrongs.removeAll { $0.id == key }
+        } else {
+            wrongs.removeAll { $0.id == key }
+            wrongs.insert(WrongItem(id: key, lessonId: lessonId, lessonTitle: lessonTitle,
+                                    cardId: cardId, preview: preview, ts: Date()), at: 0)
+            if wrongs.count > 300 { wrongs = Array(wrongs.prefix(300)) }
+        }
+        saveWrongs()
+
+        // 按天统计
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        let day = f.string(from: Date())
+        var st = days[day] ?? DayStat(day: day, answered: 0, correct: 0)
+        st.answered += 1
+        if correct { st.correct += 1 }
+        days[day] = st
+        saveDays()
     }
 
     func stats(lesson: Lesson) -> (answered: Int, correct: Int, total: Int) {

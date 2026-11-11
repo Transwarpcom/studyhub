@@ -1,0 +1,85 @@
+{
+  "id": "math/hwb-1-6",
+  "title": "作业册 · 1.6 极限存在准则 两个重要极限",
+  "subtitle": "12 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 1.6 极限存在准则 两个重要极限\n\n《高等数学作业册》本节共 12 题，按原册编号。每题一张卡，点「对答案」看完整过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n$\\lim_{x\\to0}\\frac{3\\sin mx}{2x}=\\frac{1}{2}$ ，则 m= ____；",
+      "explain": "**答案**：$m=\\dfrac13$\n\n**过程**\n\n用等价无穷小 $\\sin mx\\sim mx$：\n\n$$\\lim_{x\\to0}\\frac{3\\sin mx}{2x}=\\lim_{x\\to0}\\frac{3mx}{2x}=\\frac{3m}{2}$$\n\n令它等于 $\\dfrac12$：\n\n$$\\frac{3m}{2}=\\frac12\\Rightarrow m=\\frac13$$"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题** 第 2 题\n\n$\\lim_{x\\to\\infty}(1+\\frac{1}{2x})^{hx}=e^{-6}$ ，则 h= ____；",
+      "explain": "**答案**：$h=-12$\n\n**过程**\n\n这是 $1^\\infty$ 型，凑第二个重要极限。写成\n\n$$\\left(1+\\frac{1}{2x}\\right)^{hx}=\\left[\\left(1+\\frac{1}{2x}\\right)^{2x}\\right]^{\\frac h2}$$\n\n括号内 $\\to e$（因为 $u=\\frac1{2x}\\to0$，$v=2x\\to\\infty$，$uv=1$）。\n\n所以\n\n$$e^{\\frac h2}=e^{-6}\\Rightarrow\\frac h2=-6\\Rightarrow h=-12$$"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、填空题** 第 3 题\n\n$\\lim_{x\\to 0}\\left(\\frac{1}{x}\\sin 3x - x\\sin \\frac{2}{x}\\right) =$",
+      "explain": "**答案**：$3$\n\n**过程**\n\n拆成两项：\n\n$$\\lim_{x\\to0}\\left(\\frac{\\sin 3x}{x}-x\\sin\\frac2x\\right)$$\n\n第一项：$\\dfrac{\\sin 3x}{x}\\to3$（第一重要极限）。\n\n第二项：$x\\sin\\dfrac2x$，其中 $\\left|\\sin\\frac2x\\right|\\le1$ 有界，$x\\to0$，所以 $\\to0$。\n\n所以\n\n$$=3-0=3$$"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**一、填空题** 第 4 题\n\n$\\lim_{n\\to\\infty}n[\\ln(n-1)-\\ln n]=$ ____.",
+      "explain": "**答案**：$-1$\n\n**过程**\n\n$$\\ln(n-1)-\\ln n=\\ln\\frac{n-1}{n}=\\ln\\left(1-\\frac1n\\right)$$\n\n用等价无穷小 $\\ln(1+u)\\sim u$（$u=-\\frac1n\\to0$）：\n\n$$\\ln\\left(1-\\frac1n\\right)\\sim-\\frac1n$$\n\n所以\n\n$$n\\left[\\ln(n-1)-\\ln n\\right]\\sim n\\cdot\\left(-\\frac1n\\right)=-1$$\n\n**答案**：$-1$。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**二、选择题** 第 1 题\n\n$\\lim_{x\\to0}\\frac{\\sqrt{2-2\\cos x}}{x}=(\\quad)$ .\nA、0; B、 $\\pm1$ ; C、-1; D、不存在.",
+      "explain": "**答案**：D（不存在）\n\n**过程**\n\n$$2-2\\cos x=2(1-\\cos x)=4\\sin^2\\frac x2$$\n\n所以\n\n$$\\sqrt{2-2\\cos x}=2\\left|\\sin\\frac x2\\right|$$\n\n于是\n\n$$\\frac{2\\left|\\sin\\frac x2\\right|}{x}$$\n\n- $x\\to0^+$：$=\\dfrac{2\\sin\\frac x2}{x}\\to1$\n- $x\\to0^-$：$=\\dfrac{-2\\sin\\frac x2}{x}\\to-1$\n\n左右极限不等，所以**极限不存在**。\n\n**易错**：忘了绝对值，直接当 $\\sin\\frac x2\\sim\\frac x2$ 算，会得到 1。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**二、选择题** 第 2 题\n\n$\\lim_{x\\to 1}\\frac{\\sin^2(1 - x)}{(1 - x)^2(x + 2)} = (\\quad)$ A、 $\\frac{1}{3}$ B、 $-\\frac{1}{3}$ C、0； D、 $\\frac{2}{3}$",
+      "explain": "**答案**：A（$\\dfrac13$）\n\n**过程**\n\n$$\\frac{\\sin^2(1-x)}{(1-x)^2(x+2)}=\\left[\\frac{\\sin(1-x)}{1-x}\\right]^2\\cdot\\frac{1}{x+2}$$\n\n第一因子：令 $t=1-x\\to0$，$\\dfrac{\\sin t}{t}\\to1$，平方后仍 $\\to1$。\n\n第二因子：$x\\to1$ 时 $\\dfrac{1}{x+2}\\to\\dfrac13$。\n\n所以极限 $=1\\cdot\\dfrac13=\\dfrac13$。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算下列各题** 第 1 题\n\n$\\lim_{x\\to\\infty}\\left(\\frac{2x-1}{2x+1}\\right)^{3x}$ ;",
+      "explain": "**解**\n\n先化简底数：\n\n$$\\frac{2x-1}{2x+1}=1-\\frac{2}{2x+1}$$\n\n设 $u=-\\dfrac{2}{2x+1}\\to0$，则\n\n$$\\left(1+u\\right)^{3x}=\\left[(1+u)^{1/u}\\right]^{3xu}$$\n\n括号内 $\\to e$，而\n\n$$3xu=3x\\cdot\\left(-\\frac{2}{2x+1}\\right)=-\\frac{6x}{2x+1}\\to-3$$\n\n所以原极限\n\n$$=e^{-3}$$\n\n**答案**：$e^{-3}$。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算下列各题** 第 2 题\n\n$\\lim_{x\\to0}\\frac{tgx-\\sin x}{x^{3}}$ ;",
+      "explain": "**解**\n\n$$\\tan x-\\sin x=\\sin x\\left(\\frac{1}{\\cos x}-1\\right)=\\sin x\\cdot\\frac{1-\\cos x}{\\cos x}$$\n\n所以\n\n$$\\frac{\\tan x-\\sin x}{x^3}=\\frac{\\sin x}{x}\\cdot\\frac{1-\\cos x}{x^2}\\cdot\\frac{1}{\\cos x}$$\n\n三个因子分别求极限：\n\n$$\\frac{\\sin x}{x}\\to1,\\qquad \\frac{1-\\cos x}{x^2}\\to\\frac12,\\qquad \\frac{1}{\\cos x}\\to1$$\n\n所以\n\n$$\\lim=\\frac12$$\n\n**答案**：$\\dfrac12$。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**三、计算下列各题** 第 3 题\n\n$\\lim_{x\\to0}(1+3\\tan x)^{\\cot x}$ ;",
+      "explain": "**解**\n\n这是 $1^\\infty$ 型。取对数：\n\n$$L=\\lim_{x\\to0}\\cot x\\cdot\\ln(1+3\\tan x)$$\n\n用 $\\ln(1+u)\\sim u$：\n\n$$\\ln(1+3\\tan x)\\sim3\\tan x$$\n\n所以\n\n$$L=\\lim_{x\\to0}\\frac{\\cos x}{\\sin x}\\cdot3\\tan x=\\lim_{x\\to0}\\frac{3\\cos x\\tan x}{\\sin x}=3$$\n\n（因为 $\\tan x=\\dfrac{\\sin x}{\\cos x}$，约分后得 3。）\n\n原极限\n\n$$=e^{3}$$\n\n**答案**：$e^3$。"
+    },
+    {
+      "id": "q10",
+      "type": "text",
+      "question": "**三、计算下列各题** 第 4 题\n\n$\\lim_{n\\to\\infty}\\sqrt[n]{1+2^{n}+3^{n}}$ ;",
+      "explain": "**解**\n\n用夹逼准则。设 $a_n=\\sqrt[n]{1+2^n+3^n}$。\n\n下界：\n\n$$a_n\\ge\\sqrt[n]{3^n}=3$$\n\n上界：\n\n$$a_n=\\sqrt[n]{3^n\\left(1+\\left(\\frac23\\right)^n+\\left(\\frac13\\right)^n\\right)}=3\\sqrt[n]{1+\\left(\\frac23\\right)^n+\\left(\\frac13\\right)^n}$$\n\n括号内 $\\to1$，而 $\\sqrt[n]{1}=1$，$\\sqrt[n]{c}\\to1$（$c>0$），所以上界 $\\to3$。\n\n由夹逼准则，\n\n$$\\lim a_n=3$$\n\n**答案**：$3$。"
+    },
+    {
+      "id": "q11",
+      "type": "text",
+      "question": "**三、计算下列各题** 第 5 题\n\n$\\lim_{n\\to\\infty}n(\\frac{1}{n^{2}+1}+\\frac{1}{n^{2}+2}+\\cdots+\\frac{1}{n^{2}+n})$ ;",
+      "explain": "**解**\n\n设\n\n$$S_n=n\\left(\\frac{1}{n^2+1}+\\frac{1}{n^2+2}+\\cdots+\\frac{1}{n^2+n}\\right)$$\n\n共 $n$ 项，每项都满足\n\n$$\\frac{n}{n^2+n}\\le\\frac{n}{n^2+k}\\le\\frac{n}{n^2+1}$$\n\n所以\n\n$$n\\cdot\\frac{n}{n^2+n}\\le S_n\\le n\\cdot\\frac{n}{n^2+1}$$\n\n即\n\n$$\\frac{n^2}{n^2+n}\\le S_n\\le\\frac{n^2}{n^2+1}$$\n\n两端极限都是 $1$，由夹逼准则，\n\n$$\\lim S_n=1$$\n\n**答案**：$1$。\n\n**要点**：和式求极限先找「最大项 + 最小项」夹住，项数可以随 $n$ 变。"
+    },
+    {
+      "id": "q12",
+      "type": "text",
+      "question": "**三、计算下列各题** 第 6 题\n\n$\\lim_{x\\to\\infty}\\frac{x\\sqrt{x}\\sin\\frac{1}{x}}{\\sqrt{x}-1}$ .",
+      "explain": "**解**\n\n$$\\frac{x\\sqrt x\\sin\\frac1x}{\\sqrt x-1}$$\n\n用 $\\sin\\dfrac1x\\sim\\dfrac1x$（$x\\to\\infty$）：\n\n$$x\\sqrt x\\sin\\frac1x\\sim x\\sqrt x\\cdot\\frac1x=\\sqrt x$$\n\n所以\n\n$$\\frac{x\\sqrt x\\sin\\frac1x}{\\sqrt x-1}\\to\\frac{\\sqrt x}{\\sqrt x-1}=\\frac{1}{1-\\frac{1}{\\sqrt x}}\\to1$$\n\n**答案**：$1$。\n\n**要点**：$x\\to\\infty$ 时 $\\frac1x\\to0$，所以 $\\sin\\frac1x\\sim\\frac1x$ 可以用。"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "math/hwb-3-2",
+  "title": "作业册 · 3.2 洛必达法则",
+  "subtitle": "7 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 3.2 洛必达法则\n\n《高等数学作业册》本节 7 题。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n$\\lim_{x\\to 0}\\frac{e^x - 1}{\\sin x} =$ ____；2. $\\lim_{x\\to +\\infty}\\frac{\\ln x}{x} =$ ____.",
+      "explain": "**答案**：$1$\n\n$$\\lim_{x\\to0}\\frac{e^x-1}{\\sin x}=\\lim_{x\\to0}\\frac{x}{x}=1$$\n\n（用 $e^x-1\\sim x$，$\\sin x\\sim x$。）\n\n也可用洛必达：$\\dfrac{e^x}{\\cos x}\\Big|_{x=0}=1$。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**二、选择题** 第 1 题\n\n设 $\\lim_{x\\to x_{0}}\\frac{f(x)}{g(x)}$ 为未定式，则 $\\lim_{x\\to x_{0}}\\frac{f'(x)}{g'(x)}$ 存在是 $\\lim_{x\\to x_{0}}\\frac{f(x)}{g(x)}$ 存在的（）\nA、必要条件； B、充分条件； C、充分必要条件； D、既非充分也非必要条件.",
+      "explain": "**答案**：充分非必要条件\n\n**理由**\n\n- 若 $\\lim\\dfrac{f'}{g'}$ 存在，由洛必达法则，$\\lim\\dfrac fg$ 也存在且相等 → **充分**\n- 若 $\\lim\\dfrac fg$ 存在，$\\lim\\dfrac{f'}{g'}$ **不一定**存在。反例：$\\dfrac{x+\\sin x}{x}$（$x\\to\\infty$），原式极限为 1，但求导后 $1+\\cos x$ 振荡无极限\n\n所以是**充分非必要**条件。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、选择题** 第 2 题\n\n若 $f(x)$ 与 $g(x)$ 可导， $\\lim_{x\\to a}f(x)=\\lim_{x\\to a}g(x)=0$ ，且 $\\lim_{x\\to a}\\frac{f(x)}{g(x)}=A$ ，则（）\n\nA、必有 $\\lim_{x\\to a}\\frac{f'(x)}{g'(x)} = B$ 存在，且 $A = B$ ；B、必有 $\\lim_{x\\to a}\\frac{f'(x)}{g'(x)} = B$ 存在，且 $A\\neq B$ ；\n\nC、若 $\\lim_{x\\to a}\\frac{f'(x)}{g'(x)} = B$ 存在，且 $A = B$ ；D、若 $\\lim_{x\\to a}\\frac{f'(x)}{g'(x)} = B$ 存在，不一定有 $A = B$ 。",
+      "explain": "**答案**：D（$\\lim\\limits_{x\\to a}\\dfrac{f'(x)}{g'(x)}$ 不一定存在）\n\n**理由**\n\n洛必达法则是**单向**的：$\\lim\\dfrac{f'}{g'}$ 存在 $\\Rightarrow$ $\\lim\\dfrac fg$ 存在且相等，反之不成立。\n\n所以由 $\\lim\\dfrac fg=A$ 推不出 $\\lim\\dfrac{f'}{g'}$ 存在。\n\n**经典反例**：$f=x^2\\sin\\frac1x$，$g=x$（$x\\to0$），$\\dfrac fg=x\\sin\\frac1x\\to0$，但 $\\dfrac{f'}{g'}=2x\\sin\\frac1x-\\cos\\frac1x$ 振荡。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**三、计算题** 第 1 题\n\n$\\lim_{x\\to0}\\frac{x(e^{x}+1)-2(e^{x}-1)}{x^{3}}$ ;",
+      "explain": "**解**\n\n用泰勒展开（分母 $x^3$，分子展开到 $x^3$）：\n\n$$e^x=1+x+\\frac{x^2}{2}+\\frac{x^3}{6}+o(x^3)$$\n\n$$x(e^x+1)=x\\left(2+x+\\frac{x^2}{2}+\\frac{x^3}{6}\\right)=2x+x^2+\\frac{x^3}{2}+o(x^3)$$\n\n$$2(e^x-1)=2\\left(x+\\frac{x^2}{2}+\\frac{x^3}{6}\\right)=2x+x^2+\\frac{x^3}{3}+o(x^3)$$\n\n相减：\n\n$$x(e^x+1)-2(e^x-1)=\\left(\\frac12-\\frac13\\right)x^3+o(x^3)=\\frac{x^3}{6}+o(x^3)$$\n\n所以\n\n$$\\lim_{x\\to0}\\frac{\\frac{x^3}{6}+o(x^3)}{x^3}=\\frac16$$\n\n**答案**：$\\dfrac16$。\n\n**要点**：洛必达要三次，泰勒一次到位。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、计算题** 第 2 题\n\n$\\lim_{x\\to\\pi}(\\cos3x-\\cos x)\\cot^{2}2x$ ;",
+      "explain": "**解**\n\n先化简。\n\n$$\\cos3x-\\cos x=-2\\sin\\frac{3x+x}{2}\\sin\\frac{3x-x}{2}=-2\\sin2x\\sin x$$\n\n$$\\cot^2 2x=\\frac{\\cos^2 2x}{\\sin^2 2x}$$\n\n相乘：\n\n$$(\\cos3x-\\cos x)\\cot^2 2x=-2\\sin2x\\sin x\\cdot\\frac{\\cos^2 2x}{\\sin^2 2x}=-\\frac{2\\sin x\\cos^2 2x}{\\sin 2x}$$\n\n$x\\to\\pi$ 时，令 $t=x-\\pi\\to0$：\n\n$$\\sin x=\\sin(t+\\pi)=-\\sin t\\sim-t$$\n\n$$\\sin2x=\\sin(2t+2\\pi)=\\sin2t\\sim2t$$\n\n$$\\cos^2 2x\\to1$$\n\n代入：\n\n$$\\to-\\frac{2\\cdot(-t)\\cdot1}{2t}=1$$\n\n**答案**：$1$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、计算题** 第 3 题\n\n$\\lim_{x\\to0^{+}}x^{\\frac{1}{\\ln(e^{x}-1)}}$ ;",
+      "explain": "**解**\n\n设\n\n$$L=\\lim_{x\\to0^+}\\frac{\\ln x}{\\ln(e^x-1)}$$\n\n这是 $\\dfrac{\\infty}{\\infty}$ 型（$x\\to0^+$ 时 $\\ln x\\to-\\infty$，$\\ln(e^x-1)\\to-\\infty$）。\n\n用等价无穷小：$e^x-1\\sim x$，所以 $\\ln(e^x-1)\\sim\\ln x$。\n\n于是\n\n$$L=\\lim_{x\\to0^+}\\frac{\\ln x}{\\ln x}=1$$\n\n原极限\n\n$$=e^{L}=e$$\n\n**答案**：$e$。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题** 第 4 题\n\n$\\lim_{x\\to0}\\frac{1}{x}\\left(\\frac{1}{\\sin x}-\\frac{1}{\\tan x}\\right)$ .\n\n\n\n四、设 $f(x)$ 二阶可导， $f(0) = 0, f'(0) = 1, f''(0) = 2$ ，求 $\\lim_{x \\to 0} \\frac{f(x) - x}{x^2}$ .",
+      "explain": "**解**\n\n先合并括号内：\n\n$$\\frac{1}{\\sin x}-\\frac{1}{\\tan x}=\\frac{1}{\\sin x}-\\frac{\\cos x}{\\sin x}=\\frac{1-\\cos x}{\\sin x}$$\n\n所以原式\n\n$$=\\lim_{x\\to0}\\frac{1-\\cos x}{x\\sin x}$$\n\n用等价无穷小：$1-\\cos x\\sim\\dfrac{x^2}{2}$，$\\sin x\\sim x$。\n\n$$=\\lim_{x\\to0}\\frac{x^2/2}{x\\cdot x}=\\frac12$$\n\n**答案**：$\\dfrac12$。"
+    }
+  ]
+}

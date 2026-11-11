@@ -1,5 +1,5 @@
 {
-  "version": 4,
+  "version": 8,
   "updated": "2026-11-11",
   "title": "学习台",
   "tree": [
@@ -333,6 +333,207 @@
               "bundle": "math/hw-class6",
               "summary": "综合技巧：三角代换 / 倒代换 / 拆项",
               "badge": "7 卡"
+            }
+          ]
+        },
+        {
+          "id": "math/hwb",
+          "title": "作业册（按节）",
+          "icon": "checklist",
+          "kind": "folder",
+          "summary": "《高等数学作业册》1.1–5.1，182 题全带过程（逐题覆盖）",
+          "children": [
+            {
+              "id": "math/hwb-1-1",
+              "title": "作业册 · 1.1 映射与函数",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-1",
+              "summary": "6 题 · 含完整过程",
+              "badge": "6 题"
+            },
+            {
+              "id": "math/hwb-1-2",
+              "title": "作业册 · 1.2 数列的极限",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-2",
+              "summary": "6 题 · 含完整过程",
+              "badge": "6 题"
+            },
+            {
+              "id": "math/hwb-1-3",
+              "title": "作业册 · 1.3 函数的极限",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-3",
+              "summary": "7 题 · 含完整过程",
+              "badge": "7 题"
+            },
+            {
+              "id": "math/hwb-1-4",
+              "title": "作业册 · 1.4 无穷小与无穷大",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-4",
+              "summary": "7 题 · 含完整过程",
+              "badge": "7 题"
+            },
+            {
+              "id": "math/hwb-1-5",
+              "title": "作业册 · 1.5 极限运算法则",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-5",
+              "summary": "6 题 · 含完整过程",
+              "badge": "6 题"
+            },
+            {
+              "id": "math/hwb-1-6",
+              "title": "作业册 · 1.6 极限存在准则 两个重要极限",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-6",
+              "summary": "12 题 · 含完整过程",
+              "badge": "12 题"
+            },
+            {
+              "id": "math/hwb-1-7",
+              "title": "作业册 · 1.7 无穷小的比较",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-7",
+              "summary": "4 题 · 含完整过程",
+              "badge": "4 题"
+            },
+            {
+              "id": "math/hwb-1-8",
+              "title": "作业册 · 1.8",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-8",
+              "summary": "9 题 · 含完整过程",
+              "badge": "9 题"
+            },
+            {
+              "id": "math/hwb-1-10",
+              "title": "作业册 · 1.10 闭区间上连续函数的性质",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-10",
+              "summary": "4 题 · 含完整过程",
+              "badge": "4 题"
+            },
+            {
+              "id": "math/hwb-2-1",
+              "title": "作业册 · 2.1 导数概念",
+              "kind": "lesson",
+              "bundle": "math/hwb-2-1",
+              "summary": "8 题 · 含完整过程",
+              "badge": "8 题"
+            },
+            {
+              "id": "math/hwb-2-2",
+              "title": "作业册 · 2.2 函数的求导法则",
+              "kind": "lesson",
+              "bundle": "math/hwb-2-2",
+              "summary": "7 题 · 含完整过程",
+              "badge": "7 题"
+            },
+            {
+              "id": "math/hwb-2-3",
+              "title": "作业册 · 2.3 高阶导数",
+              "kind": "lesson",
+              "bundle": "math/hwb-2-3",
+              "summary": "4 题 · 含完整过程",
+              "badge": "4 题"
+            },
+            {
+              "id": "math/hwb-2-4",
+              "title": "作业册 · 2.4 隐函数与参数方程求导",
+              "kind": "lesson",
+              "bundle": "math/hwb-2-4",
+              "summary": "9 题 · 含完整过程",
+              "badge": "9 题"
+            },
+            {
+              "id": "math/hwb-2-5",
+              "title": "作业册 · 2.5 函数的微分",
+              "kind": "lesson",
+              "bundle": "math/hwb-2-5",
+              "summary": "6 题 · 含完整过程",
+              "badge": "6 题"
+            },
+            {
+              "id": "math/hwb-3-1",
+              "title": "作业册 · 3.1 微分中值定理",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-1",
+              "summary": "8 题 · 含完整过程",
+              "badge": "8 题"
+            },
+            {
+              "id": "math/hwb-3-2",
+              "title": "作业册 · 3.2 洛必达法则",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-2",
+              "summary": "7 题 · 含完整过程",
+              "badge": "7 题"
+            },
+            {
+              "id": "math/hwb-3-3",
+              "title": "作业册 · 3.3 泰勒公式",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-3",
+              "summary": "4 题 · 全册逐题覆盖",
+              "badge": "4 题"
+            },
+            {
+              "id": "math/hwb-3-4",
+              "title": "作业册 · 3.4 函数的单调性与曲线的凹凸性",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-4",
+              "summary": "9 题 · 含完整过程",
+              "badge": "9 题"
+            },
+            {
+              "id": "math/hwb-3-6",
+              "title": "作业册 · 3.6 图形描绘与曲率",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-6",
+              "summary": "10 题 · 含完整过程",
+              "badge": "10 题"
+            },
+            {
+              "id": "math/hwb-4-1",
+              "title": "作业册 · 4.1 不定积分的概念",
+              "kind": "lesson",
+              "bundle": "math/hwb-4-1",
+              "summary": "10 题 · 含完整过程",
+              "badge": "10 题"
+            },
+            {
+              "id": "math/hwb-4-2",
+              "title": "作业册 · 4.2 换元积分法",
+              "kind": "lesson",
+              "bundle": "math/hwb-4-2",
+              "summary": "11 题 · 含完整过程",
+              "badge": "12 题"
+            },
+            {
+              "id": "math/hwb-4-3",
+              "title": "作业册 · 4.3 分部积分法",
+              "kind": "lesson",
+              "bundle": "math/hwb-4-3",
+              "summary": "4 题 · 全册逐题覆盖",
+              "badge": "10 题"
+            },
+            {
+              "id": "math/hwb-4-4",
+              "title": "作业册 · 4.4 有理函数的积分",
+              "kind": "lesson",
+              "bundle": "math/hwb-4-4",
+              "summary": "9 题 · 含完整过程",
+              "badge": "10 题"
+            },
+            {
+              "id": "math/hwb-5-1",
+              "title": "作业册 · 5.1 定积分的概念与性质",
+              "kind": "lesson",
+              "bundle": "math/hwb-5-1",
+              "summary": "7 题 · 全册逐题覆盖",
+              "badge": "7 题"
             }
           ]
         }

@@ -1,0 +1,37 @@
+{
+  "id": "math/hwb-3-3",
+  "title": "作业册 · 3.3 泰勒公式",
+  "subtitle": "4 题 · 全册逐题覆盖",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 3.3 泰勒公式\n\n《高等数学作业册》本节 2 题。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n函数 $y = e^{x}$ 的五阶麦克劳林公式是 ____；\n\n二、利用带有皮亚诺余项的麦克劳林公式计算 $\\lim_{x\\to 0}\\frac{x(e^x + 1) - 2(e^x - 1)}{\\sin^3 x}$ .",
+      "explain": "**答案**：\n\n$$e^x=1+x+\\frac{x^2}{2!}+\\frac{x^3}{3!}+\\frac{x^4}{4!}+\\frac{x^5}{5!}+o(x^5)$$\n\n即 $e^x=1+x+\\dfrac{x^2}{2}+\\dfrac{x^3}{6}+\\dfrac{x^4}{24}+\\dfrac{x^5}{120}+o(x^5)$。\n\n**要点**：佩亚诺余项写 $o(x^5)$，不是 $o(x^6)$。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题** 第 2 题\n\n函数 $y = \\sin x$ 的三阶麦克劳林公式是 ____.\n\n三、求 $f(x) = xe^{x}$ 的 $n$ 阶麦克劳林公式.",
+      "explain": "**答案**：\n\n$$\\sin x=x-\\frac{x^3}{3!}+o(x^3)=x-\\frac{x^3}{6}+o(x^3)$$\n\n**注意**：$\\sin x$ 只有奇次项，三阶展开到 $x^3$ 就是 $x-\\dfrac{x^3}{6}$，下一项 $x^5$ 属于更高阶。"
+    },
+    {
+      "id": "x1",
+      "type": "text",
+      "question": "**二、利用带皮亚诺余项的麦克劳林公式**\n\n计算 $\\lim\\limits_{x\\to0}\\dfrac{x(e^{x}+1)-2(e^{x}-1)}{\\sin^{3}x}$",
+      "explain": "**解**\n\n分母 $\\sin^3x\\sim x^3$，所以分子展开到 $x^3$。\n\n$$e^x=1+x+\\frac{x^2}{2}+\\frac{x^3}{6}+o(x^3)$$\n\n**第一项**：\n\n$$x(e^x+1)=x\\left(2+x+\\frac{x^2}{2}+\\frac{x^3}{6}\\right)=2x+x^2+\\frac{x^3}{2}+o(x^3)$$\n\n**第二项**：\n\n$$2(e^x-1)=2x+x^2+\\frac{x^3}{3}+o(x^3)$$\n\n**相减**：\n\n$$x(e^x+1)-2(e^x-1)=\\left(\\frac12-\\frac13\\right)x^3+o(x^3)=\\frac{x^3}{6}+o(x^3)$$\n\n所以\n\n$$\\lim_{x\\to0}\\frac{\\frac{x^3}{6}+o(x^3)}{x^3}=\\frac16$$\n\n**答案**：$\\dfrac16$。\n\n**对比**：用洛必达要连求三次导，泰勒一次到位。"
+    },
+    {
+      "id": "x2",
+      "type": "text",
+      "question": "**三、求 $n$ 阶麦克劳林公式**\n\n求 $f(x)=xe^{x}$ 的 $n$ 阶麦克劳林公式.",
+      "explain": "**解**\n\n$$e^x=1+x+\\frac{x^2}{2!}+\\frac{x^3}{3!}+\\cdots+\\frac{x^n}{n!}+o(x^n)$$\n\n两边乘 $x$：\n\n$$xe^x=x+x^2+\\frac{x^3}{2!}+\\frac{x^4}{3!}+\\cdots+\\frac{x^{n+1}}{n!}+o(x^{n+1})$$\n\n**写成 $n$ 阶形式**（截到 $x^n$）：\n\n$$xe^x=x+x^2+\\frac{x^3}{2!}+\\cdots+\\frac{x^n}{(n-1)!}+o(x^n)$$\n\n即\n\n$$xe^x=\\sum_{k=1}^{n}\\frac{x^k}{(k-1)!}+o(x^n)$$\n\n**验算**：$n=3$ 时 $x+x^2+\\dfrac{x^3}{2}$，与直接求导（$f(0)=0,f'(0)=1,f''(0)=2,f'''(0)=3$）得 $\\dfrac{0}{0!}+\\dfrac{1}{1!}x+\\dfrac{2}{2!}x^2+\\dfrac{3}{3!}x^3=x+x^2+\\dfrac{x^3}{2}$ ✓"
+    }
+  ]
+}

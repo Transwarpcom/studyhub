@@ -1,0 +1,85 @@
+{
+  "id": "math/hwb-4-2",
+  "title": "作业册 · 4.2 换元积分法",
+  "subtitle": "11 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 4.2 换元积分法\n\n作业册本节 11 题：第一类（凑微分）与第二类（三角代换）。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题 第 1 题**\n\n$\\displaystyle\\int\\frac{f'(x)dx}{\\sqrt{1-[f(x)]^{2}}}=$ ____",
+      "explain": "**答案**：$\\arcsin f(x)+C$\n\n**过程**\n\n令 $u=f(x)$，则 $du=f'(x)dx$，积分变成\n\n$$\\int\\frac{du}{\\sqrt{1-u^2}}=\\arcsin u+C=\\arcsin f(x)+C$$\n\n**要点**：看到 $f'(x)dx$ 就想「凑成 $d f(x)$」。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题 第 2 题**\n\n$\\displaystyle\\int\\frac{f'(x)dx}{1+[f(x)]^{2}}=$ ____",
+      "explain": "**答案**：$\\arctan f(x)+C$\n\n**过程**\n\n同样令 $u=f(x)$：\n\n$$\\int\\frac{du}{1+u^2}=\\arctan u+C=\\arctan f(x)+C$$"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、选择题 第 1 题**\n\n已知 $\\int f(x)dx=F(x)+C$，则 $\\displaystyle\\int xf(a^{2}-x^{2})dx=$（　）",
+      "explain": "**答案**：$-\\dfrac12F(a^2-x^2)+C$\n\n**过程**\n\n令 $u=a^2-x^2$，则 $du=-2x\\,dx$，即 $x\\,dx=-\\dfrac12du$。\n\n$$\\int xf(a^2-x^2)dx=-\\frac12\\int f(u)du=-\\frac12F(u)+C=-\\frac12F(a^2-x^2)+C$$\n\n**易错**：负号来自 $du=-2x\\,dx$。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题 第 2 题**\n\n若 $\\int f(x)dx=F(x)+C$，则 $\\displaystyle\\int\\sin x\\,f(\\cos x)dx=$（　）",
+      "explain": "**答案**：$-F(\\cos x)+C$\n\n**过程**\n\n令 $u=\\cos x$，$du=-\\sin x\\,dx$：\n\n$$\\int\\sin x f(\\cos x)dx=-\\int f(u)du=-F(\\cos x)+C$$"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、计算题 第 3 题**\n\n$\\displaystyle\\int\\frac{dx}{(x+1)(x-2)}$",
+      "explain": "**解**\n\n部分分式：\n\n$$\\frac{1}{(x+1)(x-2)}=\\frac{A}{x+1}+\\frac{B}{x-2}$$\n\n通分比较：$1=A(x-2)+B(x+1)$。\n\n令 $x=2$：$1=3B\\Rightarrow B=\\dfrac13$；令 $x=-1$：$1=-3A\\Rightarrow A=-\\dfrac13$。\n\n$$\\int\\left(\\frac{-1/3}{x+1}+\\frac{1/3}{x-2}\\right)dx=\\frac13\\ln|x-2|-\\frac13\\ln|x+1|+C$$\n\n**答案**：$\\dfrac13\\ln\\left|\\dfrac{x-2}{x+1}\\right|+C$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、计算题 第 4 题**\n\n$\\displaystyle\\int\\frac{dx}{x\\sqrt{x^{2}-9}}$",
+      "explain": "**解**\n\n令 $x=3\\sec t$，$dx=3\\sec t\\tan t\\,dt$，$\\sqrt{x^2-9}=3\\tan t$。\n\n$$\\int\\frac{3\\sec t\\tan t}{3\\sec t\\cdot3\\tan t}dt=\\frac13\\int dt=\\frac t3+C$$\n\n回代：$\\sec t=\\dfrac x3$，$t=\\arccos\\dfrac3x$。\n\n**答案**：$\\dfrac13\\arccos\\dfrac3x+C$（也常写成 $\\dfrac13\\arccos\\dfrac{3}{|x|}+C$，取决于 $x$ 的符号）。\n\n**验证**：对 $\\frac13\\arccos\\frac3x$ 求导应得 $\\dfrac{1}{x\\sqrt{x^2-9}}$。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题 第 5 题**\n\n$\\displaystyle\\int\\frac{dx}{\\cos^{2}x\\sqrt{\\tan x}}$",
+      "explain": "**解**\n\n注意 $\\dfrac{dx}{\\cos^2x}=d(\\tan x)$。\n\n令 $u=\\tan x$：\n\n$$\\int\\frac{du}{\\sqrt u}=2\\sqrt u+C=2\\sqrt{\\tan x}+C$$\n\n**答案**：$2\\sqrt{\\tan x}+C$。\n\n**要点**：看到 $\\sec^2x$ 或 $\\dfrac{1}{\\cos^2x}$ 就想到「凑 $d(\\tan x)$」。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算题 第 6 题**\n\n$\\displaystyle\\int\\sin^{3}x\\cos^{5}x\\,dx$",
+      "explain": "**解**\n\n$\\sin$ 是奇次幂，拆一个出来凑微分：\n\n$$\\sin^3x\\cos^5x=\\sin^2x\\cos^5x\\cdot\\sin x=(1-\\cos^2x)\\cos^5x\\sin x$$\n\n令 $u=\\cos x$，$du=-\\sin x\\,dx$：\n\n$$\\int(1-u^2)u^5(-du)=\\int(u^7-u^5)du=\\frac{u^8}{8}-\\frac{u^6}{6}+C$$\n\n回代：\n\n$$=\\frac{\\cos^8x}{8}-\\frac{\\cos^6x}{6}+C$$\n\n**要点**：正弦奇次幂 → 拆一个凑 $d(\\cos x)$；余弦奇次幂 → 拆一个凑 $d(\\sin x)$。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**三、计算题 第 7 题**\n\n$\\displaystyle\\int\\sec^{4}x\\,dx$",
+      "explain": "**解**\n\n$$\\sec^4x=\\sec^2x\\cdot\\sec^2x=(1+\\tan^2x)\\sec^2x$$\n\n令 $u=\\tan x$，$du=\\sec^2x\\,dx$：\n\n$$\\int(1+u^2)du=u+\\frac{u^3}{3}+C=\\tan x+\\frac{\\tan^3x}{3}+C$$\n\n**答案**：$\\tan x+\\dfrac{\\tan^3x}{3}+C$。"
+    },
+    {
+      "id": "q10",
+      "type": "text",
+      "question": "**四、计算下列各题 第 1 题**\n\n$\\displaystyle\\int\\frac{x^{2}}{\\sqrt{a^{2}-x^{2}}}dx\\quad(a>0)$",
+      "explain": "**解**\n\n令 $x=a\\sin t$，$dx=a\\cos t\\,dt$，$\\sqrt{a^2-x^2}=a\\cos t$。\n\n$$\\int\\frac{a^2\\sin^2t}{a\\cos t}\\cdot a\\cos t\\,dt=a^2\\int\\sin^2t\\,dt$$\n\n用半角公式：\n\n$$=a^2\\int\\frac{1-\\cos2t}{2}dt=\\frac{a^2}{2}t-\\frac{a^2}{4}\\sin2t+C$$\n\n用 $\\sin2t=2\\sin t\\cos t$ 回代，$\\sin t=\\dfrac xa$，$\\cos t=\\dfrac{\\sqrt{a^2-x^2}}{a}$：\n\n$$=\\frac{a^2}{2}\\arcsin\\frac xa-\\frac{x}{2}\\sqrt{a^2-x^2}+C$$\n\n**答案**：$\\dfrac{a^2}{2}\\arcsin\\dfrac xa-\\dfrac{x}{2}\\sqrt{a^2-x^2}+C$。"
+    },
+    {
+      "id": "q11",
+      "type": "text",
+      "question": "**四、计算下列各题 第 2 题**\n\n$\\displaystyle\\int\\frac{dx}{x^{2}\\sqrt{x^{2}+1}}$",
+      "explain": "**解**\n\n令 $x=\\tan t$，$dx=\\sec^2t\\,dt$，$\\sqrt{x^2+1}=\\sec t$。\n\n$$\\int\\frac{\\sec^2t}{\\tan^2t\\cdot\\sec t}dt=\\int\\frac{\\cos t}{\\sin^2t}dt$$\n\n令 $u=\\sin t$：\n\n$$=\\int\\frac{du}{u^2}=-\\frac1u+C=-\\frac{1}{\\sin t}+C$$\n\n回代（$\\sin t=\\dfrac{x}{\\sqrt{x^2+1}}$）：\n\n$$=-\\frac{\\sqrt{x^2+1}}{x}+C$$\n\n**答案**：$-\\dfrac{\\sqrt{x^2+1}}{x}+C$。"
+    },
+    {
+      "id": "q12",
+      "type": "text",
+      "question": "**四、计算下列各题 第 3 题**\n\n$\\displaystyle\\int\\frac{dx}{x^{2}\\sqrt{x^{2}-9}}$",
+      "explain": "**解**\n\n令 $x=3\\sec t$，$dx=3\\sec t\\tan t\\,dt$，$\\sqrt{x^2-9}=3\\tan t$。\n\n$$\\int\\frac{3\\sec t\\tan t}{9\\sec^2t\\cdot3\\tan t}dt=\\frac19\\int\\frac{dt}{\\sec t}=\\frac19\\int\\cos t\\,dt=\\frac{\\sin t}{9}+C$$\n\n回代：$\\sec t=\\dfrac x3$，$\\sin t=\\dfrac{\\sqrt{x^2-9}}{x}$。\n\n$$=\\frac{\\sqrt{x^2-9}}{9x}+C$$\n\n**答案**：$\\dfrac{\\sqrt{x^2-9}}{9x}+C$。"
+    }
+  ]
+}

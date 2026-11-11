@@ -1,0 +1,73 @@
+{
+  "id": "math/hwb-4-3",
+  "title": "作业册 · 4.3 分部积分法",
+  "subtitle": "4 题 · 全册逐题覆盖",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 4.3 分部积分法\n\n作业册本节 7 题。选 $u$ 口诀：反对幂指三。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、选择题 第 1 题**\n\n已知 $f(x)$ 的一个原函数是 $e^{-x^{2}}$，求 $\\displaystyle\\int xf'(x)dx=$（　）",
+      "explain": "**解**\n\n**先求 $f$**：\n\n$$f(x)=\\left(e^{-x^2}\\right)'=-2xe^{-x^2}$$\n\n**分部积分**：\n\n$$\\int xf'(x)dx=xf(x)-\\int f(x)dx$$\n\n代入 $f(x)=-2xe^{-x^2}$，且 $\\int f\\,dx=e^{-x^2}+C$：\n\n$$=x\\cdot\\left(-2xe^{-x^2}\\right)-e^{-x^2}+C$$\n\n$$=-\\left(2x^2+1\\right)e^{-x^2}+C$$\n\n**答案**：$-(2x^2+1)e^{-x^2}+C$。\n\n**要点**：题干说「原函数是 $e^{-x^2}$」，意味着 $\\int f\\,dx=e^{-x^2}+C$，所以 $f=(e^{-x^2})'$。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、选择题 第 2 题**\n\n设 $\\sin2x$ 是 $f(x)$ 的一个原函数，则 $\\displaystyle\\int xf(x)dx=$（　）",
+      "explain": "**解**\n\n$f(x)=(\\sin2x)'=2\\cos2x$。\n\n$$\\int xf(x)dx=\\int2x\\cos2x\\,dx$$\n\n分部：$u=x$，$dv=2\\cos2x\\,dx$，$v=\\sin2x$：\n\n$$=x\\sin2x-\\int\\sin2x\\,dx=x\\sin2x+\\frac12\\cos2x+C$$\n\n**答案**：$x\\sin2x+\\dfrac12\\cos2x+C$。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**二、填空题 第 1 题**\n\n$\\displaystyle\\int xf''(x)dx=$ ____",
+      "explain": "**答案**：$xf'(x)-f(x)+C$\n\n**过程**\n\n分部积分，$u=x$，$dv=f''(x)dx$，$v=f'(x)$：\n\n$$\\int xf''(x)dx=xf'(x)-\\int f'(x)dx=xf'(x)-f(x)+C$$"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、填空题 第 2 题**\n\n设 $f'(e^{x})=2x$，则 $f(x)=$ ____",
+      "explain": "**答案**：$f(x)=2x\\ln x-2x+C$\n\n**过程**\n\n令 $t=e^x$，则 $x=\\ln t$，所以\n\n$$f'(t)=2\\ln t$$\n\n积分：\n\n$$f(t)=\\int2\\ln t\\,dt=2(t\\ln t-t)+C=2t\\ln t-2t+C$$\n\n即\n\n$$f(x)=2x\\ln x-2x+C$$\n\n（用了 $\\int\\ln t\\,dt=t\\ln t-t$。）"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**三、计算题 第 1 题**\n\n$\\displaystyle\\int xe^{-x}dx$",
+      "explain": "**解**\n\n分部：$u=x$，$dv=e^{-x}dx$，$v=-e^{-x}$。\n\n$$\\int xe^{-x}dx=-xe^{-x}-\\int(-e^{-x})dx=-xe^{-x}+\\int e^{-x}dx$$\n\n$$=-xe^{-x}-e^{-x}+C=-(x+1)e^{-x}+C$$\n\n**验证**：求导得 $-e^{-x}+(x+1)e^{-x}=xe^{-x}$ ✓"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**三、计算题 第 2 题**\n\n$\\displaystyle\\int\\ln\\left(-\\frac1x\\right)dx$",
+      "explain": "**解**\n\n定义域要求 $-\\dfrac1x>0$，即 $x<0$。\n\n此时 $-\\dfrac1x=\\dfrac{1}{-x}$，所以\n\n$$\\ln\\left(-\\frac1x\\right)=-\\ln(-x)$$\n\n于是\n\n$$\\int-\\ln(-x)\\,dx$$\n\n令 $t=-x$，$dx=-dt$：\n\n$$=\\int\\ln t\\,dt=t\\ln t-t+C=-x\\ln(-x)+x+C$$\n\n**答案**：$-x\\ln(-x)+x+C$（$x<0$）。\n\n**验算**：求导得 $-\\ln(-x)-1+1=-\\ln(-x)=\\ln\\left(-\\frac1x\\right)$ ✓"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**三、计算题 第 3 题**\n\n$\\displaystyle\\int\\frac{\\ln x}{\\sqrt{x}}dx$",
+      "explain": "**解**\n\n先换元简化：令 $t=\\sqrt x$，则 $x=t^2$，$dx=2t\\,dt$。\n\n$$\\int\\frac{\\ln x}{\\sqrt x}dx=\\int\\frac{\\ln t^2}{t}\\cdot2t\\,dt=4\\int\\ln t\\,dt$$\n\n$$=4(t\\ln t-t)+C$$\n\n回代 $t=\\sqrt x$：\n\n$$=4\\sqrt x\\ln\\sqrt x-4\\sqrt x+C=2\\sqrt x\\ln x-4\\sqrt x+C$$\n\n**答案**：$2\\sqrt x\\ln x-4\\sqrt x+C$。\n\n**另解**：直接分部，$u=\\ln x$，$dv=x^{-1/2}dx$，$v=2\\sqrt x$，结果相同。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**三、计算题 第 4 题**\n\n$\\displaystyle\\int\\cos\\sqrt{x}\\,dx$",
+      "explain": "**解**\n\n令 $t=\\sqrt x$，$x=t^2$，$dx=2t\\,dt$：\n\n$$\\int\\cos\\sqrt x\\,dx=\\int2t\\cos t\\,dt$$\n\n分部：$u=t$，$dv=\\cos t\\,dt$，$v=\\sin t$：\n\n$$=2\\left(t\\sin t-\\int\\sin t\\,dt\\right)=2(t\\sin t+\\cos t)+C$$\n\n回代：\n\n$$=2\\sqrt x\\sin\\sqrt x+2\\cos\\sqrt x+C$$\n\n**答案**：$2\\sqrt x\\sin\\sqrt x+2\\cos\\sqrt x+C$。"
+    },
+    {
+      "id": "x1",
+      "type": "text",
+      "question": "**四、**\n\n已知 $f(x)$ 的一个原函数为 $x\\tan\\dfrac x2$，求 $\\displaystyle\\int xf'(x)dx$.",
+      "explain": "**解**\n\n「原函数是 $x\\tan\\frac x2$」意味着\n\n$$\\int f(x)dx=x\\tan\\frac x2+C$$\n\n所以\n\n$$f(x)=\\left(x\\tan\\frac x2\\right)'=\\tan\\frac x2+x\\cdot\\frac12\\sec^2\\frac x2$$\n\n**分部积分**：\n\n$$\\int xf'(x)dx=xf(x)-\\int f(x)dx$$\n\n代入 $f$ 与原函数：\n\n$$=x\\left(\\tan\\frac x2+\\frac x2\\sec^2\\frac x2\\right)-x\\tan\\frac x2+C$$\n\n$$=\\frac{x^2}{2}\\sec^2\\frac x2+C$$\n\n**答案**：$\\dfrac{x^2}{2}\\sec^2\\dfrac x2+C$。\n\n**要点**：$\\int f\\,dx$ 已知时，$\\int xf'$ 用分部一次就搞定，前后两项的 $x\\tan\\frac x2$ 正好抵消。"
+    },
+    {
+      "id": "x2",
+      "type": "text",
+      "question": "**五、**\n\n设 $I_n=\\displaystyle\\int x^{n}\\cos x\\,dx$，求关于下标 $n$ 的递推公式（$n\\ge2$），并求 $I_5$.",
+      "explain": "**解**\n\n**第一次分部**：$u=x^n$，$dv=\\cos x\\,dx$，$v=\\sin x$：\n\n$$I_n=x^n\\sin x-n\\int x^{n-1}\\sin x\\,dx$$\n\n**第二次分部**（对 $\\int x^{n-1}\\sin x\\,dx$）：$u=x^{n-1}$，$dv=\\sin x\\,dx$，$v=-\\cos x$：\n\n$$\\int x^{n-1}\\sin x\\,dx=-x^{n-1}\\cos x+(n-1)\\int x^{n-2}\\cos x\\,dx$$\n\n代入：\n\n$$I_n=x^n\\sin x+n x^{n-1}\\cos x-n(n-1)I_{n-2}$$\n\n**这就是递推公式**。\n\n**求 $I_5$**：反复用递推降到 $I_1$。\n\n$I_1=\\displaystyle\\int x\\cos x\\,dx=x\\sin x+\\cos x$。\n\n$$I_3=x^3\\sin x+3x^2\\cos x-6I_1=x^3\\sin x+3x^2\\cos x-6x\\sin x-6\\cos x$$\n\n$$I_5=x^5\\sin x+5x^4\\cos x-20I_3$$\n\n$$=x^5\\sin x+5x^4\\cos x-20x^3\\sin x-60x^2\\cos x+120x\\sin x+120\\cos x$$\n\n**整理**：\n\n$$I_5=\\left(x^5-20x^3+120x\\right)\\sin x+\\left(5x^4-60x^2+120\\right)\\cos x+C$$\n\n**验证**：对结果求导应得 $x^5\\cos x$（可自行验算）。"
+    }
+  ]
+}

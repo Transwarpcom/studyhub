@@ -21,12 +21,15 @@ struct RootView: View {
             LibraryView()
                 .tabItem { Label("课程", systemImage: "books.vertical.fill") }
                 .tag(0)
+            WrongBookView()
+                .tabItem { Label("错题", systemImage: "exclamationmark.circle.fill") }
+                .tag(1)
             InboxView()
                 .tabItem { Label("答疑", systemImage: "tray.full.fill") }
-                .tag(1)
+                .tag(2)
             SettingsView()
                 .tabItem { Label("设置", systemImage: "gearshape.fill") }
-                .tag(2)
+                .tag(3)
         }
         .task {
             StoreLocator.shared.store = store

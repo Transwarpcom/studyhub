@@ -5,11 +5,30 @@ import SwiftUI
 struct LibraryView: View {
     @EnvironmentObject var store: Store
     @State private var path: [Node] = []
+    @State private var query = ""
+
+    private var results: [Node] {
+        let q = query.trimmingCharacters(in: .whitespaces)
+        guard !q.isEmpty else { return [] }
+        return store.allLessonNodes.filter {
+            $0.title.localizedCaseInsensitiveContains(q) ||
+            ($0.summary ?? "").localizedCaseInsensitiveContains(q)
+        }
+    }
 
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                if let m = store.manifest {
+                if !query.isEmpty {
+                    Section("搜索结果（\(results.count)）") {
+                        if results.isEmpty {
+                            Text("没有匹配的章节").foregroundColor(.secondary)
+                        }
+                        ForEach(results) { node in
+                            NodeRow(node: node, path: $path)
+                        }
+                    }
+                } else if let m = store.manifest {
                     Section {
                         OverviewCard(manifest: m)
                             .listRowInsets(EdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12))
@@ -18,6 +37,14 @@ struct LibraryView: View {
                     Section("课程") {
                         ForEach(m.tree) { node in
                             NodeRow(node: node, path: $path)
+                                .swipeActions(edge: .trailing) {
+                                    Button {
+                                        Task { await store.download(node) }
+                                    } label: {
+                                        Label("缓存", systemImage: "arrow.down.circle")
+                                    }
+                                    .tint(.blue)
+                                }
                         }
                     }
                     if let e = store.lastError {
@@ -53,6 +80,7 @@ struct LibraryView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索章节")
             .navigationTitle("学习台")
             .refreshable { await store.refresh() }
             .navigationDestination(for: Node.self) { node in
@@ -80,6 +108,7 @@ struct LibraryView: View {
 struct FolderView: View {
     let node: Node
     @Binding var path: [Node]
+    @EnvironmentObject var store: Store
 
     var body: some View {
         List {
@@ -97,6 +126,14 @@ struct FolderView: View {
                 }
                 ForEach(kids) { child in
                     NodeRow(node: child, path: $path)
+                        .swipeActions(edge: .trailing) {
+                            Button {
+                                Task { await store.download(child) }
+                            } label: {
+                                Label("缓存", systemImage: "arrow.down.circle")
+                            }
+                            .tint(.blue)
+                        }
                 }
             }
         }

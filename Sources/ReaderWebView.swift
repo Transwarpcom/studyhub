@@ -8,6 +8,7 @@ struct RenderPayload: Codable {
     var subtitle: String
     var cards: [Card]
     var progress: [String: Bool]
+    var fontSize: Double
 }
 
 struct ReaderWebView: UIViewRepresentable {
@@ -40,7 +41,9 @@ struct ReaderWebView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        context.coordinator.update(lesson: lesson, progress: store.progressDict(lesson: lesson))
+        context.coordinator.update(lesson: lesson,
+                                   progress: store.progressDict(lesson: lesson),
+                                   fontSize: store.fontSize)
     }
 
     static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
@@ -50,6 +53,7 @@ struct ReaderWebView: UIViewRepresentable {
     final class Coordinator: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
         var lesson: Lesson
         var progress: [String: Bool] = [:]
+        var fontSize: Double = 17
         weak var webView: WKWebView?
         private var ready = false
         private var lastJSON = ""
@@ -58,9 +62,10 @@ struct ReaderWebView: UIViewRepresentable {
             self.lesson = lesson
         }
 
-        func update(lesson: Lesson, progress: [String: Bool]) {
+        func update(lesson: Lesson, progress: [String: Bool], fontSize: Double) {
             self.lesson = lesson
             self.progress = progress
+            self.fontSize = fontSize
             push()
         }
 
@@ -75,7 +80,8 @@ struct ReaderWebView: UIViewRepresentable {
                                         title: lesson.title,
                                         subtitle: lesson.subtitle ?? "",
                                         cards: lesson.cards,
-                                        progress: progress)
+                                        progress: progress,
+                                        fontSize: fontSize)
             guard let data = try? JSONEncoder().encode(payload),
                   var json = String(data: data, encoding: .utf8) else { return }
             json = json.replacingOccurrences(of: "\u{2028}", with: "\\u2028")
@@ -93,10 +99,13 @@ struct ReaderWebView: UIViewRepresentable {
             if type == "answer" {
                 let cardId = body["cardId"] as? String ?? ""
                 let correct = body["correct"] as? Bool ?? false
+                let preview = body["preview"] as? String ?? ""
                 let lessonId = lesson.id
+                let lessonTitle = lesson.title
                 let store = StoreLocator.shared.store
                 Task { @MainActor in
-                    store?.record(lessonId: lessonId, cardId: cardId, correct: correct)
+                    store?.record(lessonId: lessonId, lessonTitle: lessonTitle,
+                                  cardId: cardId, correct: correct, preview: preview)
                 }
             } else if type == "ready" {
                 push(force: true)

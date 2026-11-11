@@ -1,0 +1,67 @@
+{
+  "id": "math/hwb-1-8",
+  "title": "作业册 · 1.8",
+  "subtitle": "9 题 · 含完整过程",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 1.8, 1.9 函数的连续性与间断点 连续函数的运算与初等函数的连续性\n\n《高等数学作业册》本节 9 题，按原册编号。每题一张卡，点「对答案」看过程。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、填空题** 第 1 题\n\n函数 $f(x)=\\left\\{\\begin{aligned}\\frac{\\sin 2x}{x}&x<0\\\\ 1&x=0\\end{aligned}\\right.$ ，则 $f(x)$ 的连续区间是 ____.",
+      "explain": "**答案**：$(-\\infty,0)\\cup(0,+\\infty)$\n\n**过程**\n\n$x<0$ 时 $f(x)=\\dfrac{\\sin 2x}{x}$，是初等函数，连续。\n\n$x=0$ 处：$f(0)=1$，但\n\n$$\\lim_{x\\to0^-}\\frac{\\sin 2x}{x}=2\\neq1$$\n\n所以 $x=0$ 是间断点。\n\n连续区间就是去掉 $0$ 的两段：$(-\\infty,0)$ 和 $(0,+\\infty)$。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、填空题** 第 2 题\n\n设 $f(x)$ 处处连续且 $f(2)=3$ ，则 $\\lim_{x\\to0}\\frac{\\sin3x}{x}f(\\frac{\\tan2x}{x})=$ ____.",
+      "explain": "**答案**：$9$\n\n**过程**\n\n第一因子：\n\n$$\\lim_{x\\to0}\\frac{\\sin 3x}{x}=3$$\n\n第二因子：内层 $\\dfrac{\\tan 2x}{x}\\to2$，而 $f$ 处处连续，所以\n\n$$\\lim_{x\\to0}f\\left(\\frac{\\tan 2x}{x}\\right)=f(2)=3$$\n\n（这里用了「连续函数可以把极限号搬进去」。）\n\n相乘：\n\n$$3\\times3=9$$"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、填空题** 第 3 题\n\n函数 $f(x)=\\frac{x^{3}+2x^{2}-x-2}{x^{2}-x-6}$ 的连续区间是 ____，可去间断点是 ____.",
+      "explain": "**答案**：连续区间 $(-\\infty,-2)\\cup(-2,3)\\cup(3,+\\infty)$；可去间断点 $x=-2$\n\n**过程**\n\n**分母因式分解**：\n\n$$x^2-x-6=(x-3)(x+2)$$\n\n所以 $x\\neq3$ 且 $x\\neq-2$，间断点候选是这两个。\n\n**分子因式分解**：\n\n$$x^3+2x^2-x-2=x^2(x+2)-(x+2)=(x+2)(x^2-1)=(x+2)(x-1)(x+1)$$\n\n**约分**：\n\n$$f(x)=\\frac{(x+2)(x-1)(x+1)}{(x-3)(x+2)}=\\frac{(x-1)(x+1)}{x-3}\\quad(x\\neq-2)$$\n\n**判断**：\n\n- $x=3$：分母为 0，分子 $\\neq0$，是**无穷间断点**\n- $x=-2$：约分后极限 $=\\dfrac{(-3)(-1)}{-5}=-\\dfrac35$，极限存在，是**可去间断点**\n\n连续区间：$(-\\infty,-2)\\cup(-2,3)\\cup(3,+\\infty)$。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**二、选择题** 第 1 题\n\n设 $f(x) = \\begin{cases} x + b & x \\geq 0 \\\\ (1 + b)x^2 & x < 0 \\end{cases}$ ，则 $f(x)$ 处处连续的充分必要条件是（）\nA、b=0；B、b=1；C、b=2；D、b=-1。",
+      "explain": "**答案**：A（$b=0$）\n\n**过程**\n\n分界点 $x=0$：\n\n- 左极限：$\\lim\\limits_{x\\to0^-}(1+b)x^2=0$\n- 右极限与函数值：$f(0^+)=b$，$f(0)=b$\n\n连续要求三者相等：\n\n$$0=b$$\n\n所以 $b=0$。\n\n**验证**：$b=0$ 时 $f(x)=x\\ (x\\ge0)$，$f(x)=x^2\\ (x<0)$，在 $0$ 处两侧都趋于 0 ✓"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**二、选择题** 第 2 题\n\n设 $f(x) = \\frac{1 + 2e^{\\overline{x}}}{1 + e^{\\frac{1}{x}}}$ ，则 $x = 0$ 是 $f(x)$ 的（）.\nA、可去间断点； B、跳跃间断点； C、无穷间断点； D、振荡间断点.\n\n三、讨论函数 $f(x) = \\lim_{n\\to \\infty}\\frac{1 - x^{2n}}{1 + x^{2n}} x$ 的连续性，若有间断点，判别其类型.",
+      "explain": "**答案**：B（跳跃间断点）\n\n**过程**\n\n分别求左右极限：\n\n$x\\to0^+$ 时 $\\dfrac1x\\to+\\infty$，$e^{1/x}\\to+\\infty$，分子分母同除以 $e^{1/x}$：\n\n$$\\frac{1+2e^{1/x}}{1+e^{1/x}}=\\frac{e^{-1/x}+2}{e^{-1/x}+1}\\to\\frac{0+2}{0+1}=2$$\n\n$x\\to0^-$ 时 $\\dfrac1x\\to-\\infty$，$e^{1/x}\\to0$：\n\n$$\\frac{1+0}{1+0}=1$$\n\n左右极限都存在但不等（$2\\neq1$），所以是**跳跃间断点**。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**四、计算下列各题** 第 1 题\n\n$\\lim_{x\\to1}\\frac{\\sqrt{5x-4}-\\sqrt{x}}{x-1}$ ;",
+      "explain": "**解**\n\n$\\frac00$ 型，分子有理化：\n\n$$\\frac{\\sqrt{5x-4}-\\sqrt x}{x-1}=\\frac{(5x-4)-x}{(x-1)\\left(\\sqrt{5x-4}+\\sqrt x\\right)}=\\frac{4(x-1)}{(x-1)\\left(\\sqrt{5x-4}+\\sqrt x\\right)}$$\n\n约掉 $(x-1)$：\n\n$$=\\frac{4}{\\sqrt{5x-4}+\\sqrt x}$$\n\n令 $x\\to1$：\n\n$$=\\frac{4}{1+1}=2$$\n\n**答案**：$2$。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**四、计算下列各题** 第 2 题\n\n$\\lim_{x\\to a}\\frac{\\sin x-\\sin a}{x-a}$ ;",
+      "explain": "**解**\n\n用和差化积：\n\n$$\\sin x-\\sin a=2\\cos\\frac{x+a}{2}\\sin\\frac{x-a}{2}$$\n\n所以\n\n$$\\frac{\\sin x-\\sin a}{x-a}=2\\cos\\frac{x+a}{2}\\cdot\\frac{\\sin\\frac{x-a}{2}}{x-a}$$\n\n而\n\n$$\\frac{\\sin\\frac{x-a}{2}}{x-a}=\\frac12\\cdot\\frac{\\sin\\frac{x-a}{2}}{\\frac{x-a}{2}}\\to\\frac12$$\n\n所以原极限\n\n$$=2\\cos a\\cdot\\frac12=\\cos a$$\n\n**答案**：$\\cos a$。\n\n**另一解法**：这正是 $(\\sin x)'|_{x=a}=\\cos a$ 的导数定义。"
+    },
+    {
+      "id": "q8",
+      "type": "text",
+      "question": "**四、计算下列各题** 第 3 题\n\n$\\lim_{x\\to+\\infty}\\left(\\sqrt{x^{2}+x}-\\sqrt{x^{2}-x}\\right)$ ;",
+      "explain": "**解**\n\n有理化：\n\n$$\\sqrt{x^2+x}-\\sqrt{x^2-x}=\\frac{(x^2+x)-(x^2-x)}{\\sqrt{x^2+x}+\\sqrt{x^2-x}}=\\frac{2x}{\\sqrt{x^2+x}+\\sqrt{x^2-x}}$$\n\n分子分母同除以 $x$（$x>0$）：\n\n$$=\\frac{2}{\\sqrt{1+\\frac1x}+\\sqrt{1-\\frac1x}}\\to\\frac{2}{1+1}=1$$\n\n**答案**：$1$。"
+    },
+    {
+      "id": "q9",
+      "type": "text",
+      "question": "**四、计算下列各题** 第 4 题\n\n$\\lim_{x\\to\\infty}\\left(\\frac{3+x}{6+x}\\right)^{\\frac{x-1}{2}}$ ;",
+      "explain": "**解**\n\n这是 $1^\\infty$ 型。取对数：\n\n$$L=\\lim_{x\\to\\infty}\\frac{x-1}{2}\\ln\\frac{3+x}{6+x}$$\n\n$$\\ln\\frac{3+x}{6+x}=\\ln\\left(1-\\frac{3}{6+x}\\right)\\sim-\\frac{3}{6+x}\\sim-\\frac3x$$\n\n所以\n\n$$L=\\lim_{x\\to\\infty}\\frac{x}{2}\\cdot\\left(-\\frac3x\\right)=-\\frac32$$\n\n原极限\n\n$$=e^{-3/2}$$\n\n**答案**：$e^{-3/2}$。"
+    }
+  ]
+}
