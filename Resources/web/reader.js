@@ -75,7 +75,12 @@
     return html.replace(/@@MATH(\d+)@@/g, function (m, n) {
       var it = store[+n];
       if (!it) return '';
-      return it.d ? '$$' + it.b + '$$' : '$' + it.b + '$';
+      // 公式里的 < > & 必须先转义，否则 innerHTML 会把 <\varepsilon 当成标签吞掉
+      var body = String(it.b)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      return it.d ? '$$' + body + '$$' : '$' + body + '$';
     });
   }
 
