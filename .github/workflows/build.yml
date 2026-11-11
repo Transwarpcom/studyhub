@@ -17,13 +17,6 @@ jobs:
       - name: Generate Xcode project
         run: xcodegen generate
 
-      - name: Inject build config
-        env:
-          STUDY_TOKEN: ${{ secrets.STUDY_TOKEN }}
-        run: |
-          printf 'import Foundation\n\nenum BuildConfig {\n    static let defaultBaseURL = "https://html.medwarp.cn/study-api"\n    static let defaultToken = "%s"\n}\n' "$STUDY_TOKEN" > Sources/BuildConfig.swift
-          echo "BuildConfig bytes: $(wc -c < Sources/BuildConfig.swift)"
-
       - name: Show schemes
         run: xcodebuild -list -project StudyHub.xcodeproj
 

@@ -1,0 +1,84 @@
+{
+  "id": "english/cloze/01",
+  "title": "03 选词填空 15 选 10",
+  "subtitle": "词性分类 · 搭配 · 排除法",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "这个题型的规则",
+      "md": "## 结构\n\n一篇约 250 词的短文，挖 **10 个空**，下面给 **15 个词**（A–O），选 10 个填入。\n\n**多出来的 5 个是干扰项**，而且通常和正确答案**词性相同、意思相近**。\n\n**分值**：每题 1 分，共 10 分。性价比很高——会方法就能拿 7 分以上。\n\n## 五步法\n\n1. **给 15 个词标词性**（n. / v. / adj. / adv.），一词多性的都标上\n2. **判断每个空需要什么词性**（看空前后）\n3. **先做有把握的**（固定搭配、语法结构明确的）\n4. **剩下的靠语境和排除**\n5. **最后通读一遍**，检查逻辑\n\n## 判断空位词性的四个信号\n\n| 空前 | 空后 | 需要的词性 |\n|---|---|---|\n| 冠词 a/an/the | 名词 | **形容词** |\n| 主语 | 谓语 | **副词**（修饰动词） |\n| 介词 | 名词 | **形容词/名词** |\n| 情态动词 can/may | — | **动词原形** |\n\n> 铁律：**先定词性，再选意思。** 15 个词里同词性的只有三四个，范围一下就小了。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "高频搭配与逻辑词",
+      "md": "## 必须认识的固定搭配\n\n- `play a ___ role` → **vital / key / significant**\n- `have a ___ effect on` → **profound / negative / positive**\n- `___ to a conclusion` → **come / lead**\n- `be ___ of` → **aware / capable / typical**\n- `___ in mind` → **bear / keep**\n- `take ___ of` → **advantage / care / note**\n\n## 逻辑关系词\n\n| 关系 | 信号词 | 选词方向 |\n|---|---|---|\n| 转折 | however, yet, nevertheless | 选**相反**意思 |\n| 因果 | therefore, thus, consequently | 选**结果** |\n| 并列 | moreover, in addition | 选**同向递进** |\n| 举例 | for instance, such as | 选**具体** |\n\n## 干扰项的特征\n\n- 与正确答案**词性相同**\n- 与上下文某个词**形式相近**（如 affect / effect）\n- 意思**貌似合理但不搭**\n\n**排除法要点**：一个词用掉就划掉，不要重复使用（题目明确 each word 只能用一次）。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "`Playing a ______ role in economic development, small businesses create millions of jobs every year.`\n\nA) vital　B) vitally　C) vitality　D) vitalize",
+      "explain": "空在 `a` 和 `role` 之间，需要**形容词**修饰名词 role。\n\n- vital 形容词 ✓\n- vitally 副词 ✗\n- vitality 名词 ✗\n- vitalize 动词 ✗\n\n**这一题只靠词性就能做对，不用懂句意。** 这就是先定词性的价值。",
+      "options": [
+        "vital",
+        "vitally",
+        "vitality",
+        "vitalize"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "词性"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "`The company has ______ its production by 30% since last year.`\n\nA) increased　B) increasing　C) increase　D) increasingly",
+      "explain": "空前是 `has`，构成现在完成时 `has + 过去分词`。\n\n只有 `increased` 是过去分词（且同时是动词原形，但这里必须用分词形式）。\n\n**信号**：`has/have` 后面 → 过去分词；`be` 后面 → 现在分词或过去分词。",
+      "options": [
+        "increased",
+        "increasing",
+        "increase",
+        "increasingly"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "语法形式"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列哪些词可以填入 `have a ______ effect on`？（多选）",
+      "explain": "空在 `a` 和 `effect` 之间，需要形容词。\n\n- profound（深远的）✓\n- negative（负面的）✓\n- effectively 是副词 ✗\n- significant（显著的）✓\n\n**搭配记忆**：`have a profound/negative/positive/significant impact/effect on` 是四级高频框架。",
+      "options": [
+        "profound",
+        "negative",
+        "effectively",
+        "significant"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "tags": [
+        "搭配"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "用上给出的词完成句子：\n\n`However, this approach is not ______ without risks.`\n（备选：entirely / complete / complete）\n\n说明你选哪个词、为什么。",
+      "explain": "**选 entirely**（副词）。\n\n理由：空在 `is not` 和 `without` 之间，修饰的是整个表语部分，需要**副词**。\n\n- entirely = 完全地（副词）✓\n- complete = 完全的（形容词），不能修饰 `without risks` 这个介词短语\n- complete 作动词是「完成」，语义不通\n\n**译**：然而，这种方法并非完全没有风险。\n\n**注意 `not entirely` 这个搭配**：部分否定，意思是「不完全是」，不是「完全不是」。这类部分否定是阅读和翻译的常考点。",
+      "tags": [
+        "语境"
+      ]
+    }
+  ]
+}

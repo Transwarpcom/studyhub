@@ -1,0 +1,85 @@
+{
+  "id": "english/listening/02",
+  "title": "02 长对话与听力篇章（Section B/C）",
+  "subtitle": "转折信号 · 同义替换 · 态度题",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "长对话的题眼在哪",
+      "md": "## 三个必抓位置\n\n1. **答句**，不是问句。问题通常在问「男的说了什么」，答案在他回答里。\n2. **转折词之后**：`but / however / actually / in fact / to be honest`\n3. **建议与请求**：`Why don't you... / You'd better... / Would you mind...`\n\n## 高频同义替换\n\n| 原文 | 选项 |\n|---|---|\n| I'm not sure | doubtful / uncertain |\n| It's a waste of time | not worthwhile |\n| I can't make it | unable to attend |\n| It's up to you | you decide |\n| That's not my thing | I'm not interested |\n\n## 态度题\n\n听到这些词要标记：\n\n- 正面：`great / fantastic / I love it / exactly`\n- 负面：`terrible / boring / I'm afraid / not really`\n- 中性/保留：`It depends / maybe / I suppose so`\n\n**注意语气**：降调通常表示肯定，升调表示疑问或否定。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "原文：\nM: Shall we meet at 7?\nW: **Actually**, I have a meeting until 7:30.\n\n女士的意思是？",
+      "explain": "`Actually` 是转折信号，后面才是真实情况：她开会到 7:30，所以 7 点来不了。\n\n**规律**：听到 `Actually / To be honest / In fact`，前面说的话基本可以忘掉。\n\n正确选项通常是对 `Actually` 后面内容的同义改写，而不是原词。",
+      "options": [
+        "她会 7 点到",
+        "她 7 点不能到",
+        "她想改地点",
+        "她不想去"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "转折信号"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi",
+      "question": "下列哪些表达表示「不同意 / 否定」？（多选）",
+      "explain": "- `I'm afraid not.` 委婉否定\n- `That's not exactly what I meant.` 委婉纠正\n- `I wouldn't say so.` 不同意\n- `Exactly!` 是完全同意\n\n**听力里的委婉否定最坑**：`I'm afraid...` 后面一定跟坏消息或不同意见。听到 `afraid` 就要准备「否定」选项。",
+      "options": [
+        "I'm afraid not.",
+        "That's not exactly what I meant.",
+        "Exactly!",
+        "I wouldn't say so."
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "tags": [
+        "态度"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "blank",
+      "question": "把下面的意思改写成更书面的一句（英文）：\\n\\n`I don't think it's worth spending so much time on it.`\\n\\n→ `I doubt whether it is ______ spending so much time on.`",
+      "explain": "填 `worth` 或 `worthwhile` 都可以。\n\n- `be worth doing`：值得做\n- `be worthwhile to do / doing`：值得做\n\n**这是四级听力/阅读里最常见的同义替换之一**：\n\n- `It's a waste of time` ↔ `not worth doing`\n- `It's useful` ↔ `worthwhile`\n\n选项里出现 `worthwhile`，原文大概率是 `worth` 或 `useful`。",
+      "blanks": [
+        [
+          "worth",
+          "worthwhile",
+          "worth it"
+        ]
+      ],
+      "tags": [
+        "同义替换"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "choice",
+      "question": "原文：\nW: How was the lecture?\nM: **To be honest**, I could hardly stay awake.\n\n男士对讲座的评价是？",
+      "explain": "`could hardly stay awake`（几乎坐不住/快睡着了）就是「无聊」的口语说法。\n\n**四级听力的评价类表达**：\n\n- 正面：`I couldn't put it down`（爱不释手）/ `It's worth every minute`\n- 负面：`I could hardly stay awake` / `I've seen better` / `Not my cup of tea`\n\n这些都不会直说 boring，要靠**画面感**去理解。",
+      "options": [
+        "很有启发",
+        "枯燥无聊",
+        "内容太难",
+        "时间太短"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "态度"
+      ]
+    }
+  ]
+}

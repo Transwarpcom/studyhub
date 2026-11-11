@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "updated": "2026-11-11",
   "title": "学习台",
   "tree": [
@@ -8,7 +8,7 @@
       "title": "高等数学 A1",
       "icon": "function",
       "kind": "folder",
-      "summary": "第 1 章 函数与极限（持续更新）",
+      "summary": "同济第 8 版上册 · 第 1–4 章",
       "children": [
         {
           "id": "math/ch01",
@@ -22,7 +22,7 @@
               "title": "1.1 数列极限的定义",
               "kind": "lesson",
               "bundle": "math/ch01/01",
-              "summary": "ε-N 语言 · 几何意义 · 证明模板",
+              "summary": "ε-N 语言 · 几何意义 · 用定义证明",
               "badge": "6 卡"
             },
             {
@@ -30,7 +30,7 @@
               "title": "1.2 无穷小与无穷大",
               "kind": "lesson",
               "bundle": "math/ch01/02",
-              "summary": "等价无穷小 · 阶的比较",
+              "summary": "定义 · 等价无穷小 · 比较阶",
               "badge": "6 卡"
             },
             {
@@ -38,8 +38,139 @@
               "title": "1.3 两个重要极限",
               "kind": "lesson",
               "bundle": "math/ch01/03",
-              "summary": "sin x/x · e 的两种形式",
+              "summary": "sin x/x · (1+1/x)^x",
               "badge": "6 卡"
+            }
+          ]
+        },
+        {
+          "id": "math/ch02",
+          "title": "第 2 章 导数与微分",
+          "icon": "folder.fill",
+          "kind": "folder",
+          "summary": "导数概念 · 求导法则 · 隐函数",
+          "children": [
+            {
+              "id": "math/ch02/01",
+              "title": "2.1 导数的概念",
+              "kind": "lesson",
+              "bundle": "math/ch02/01",
+              "summary": "定义 · 几何意义 · 可导与连续",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/ch02/02",
+              "title": "2.2 求导法则",
+              "kind": "lesson",
+              "bundle": "math/ch02/02",
+              "summary": "四则 · 复合 · 反函数",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/ch02/03",
+              "title": "2.3 高阶导数",
+              "kind": "lesson",
+              "bundle": "math/ch02/03",
+              "summary": "二阶导 · n 阶导公式",
+              "badge": "3 卡"
+            },
+            {
+              "id": "math/ch02/04",
+              "title": "2.4 隐函数与参数方程求导",
+              "kind": "lesson",
+              "bundle": "math/ch02/04",
+              "summary": "隐函数 · 参数方程 · 对数求导",
+              "badge": "5 卡"
+            }
+          ]
+        },
+        {
+          "id": "math/ch03",
+          "title": "第 3 章 微分中值定理与导数的应用",
+          "icon": "folder.fill",
+          "kind": "folder",
+          "summary": "中值定理 · 洛必达 · 泰勒 · 单调极值",
+          "children": [
+            {
+              "id": "math/ch03/01",
+              "title": "3.1 微分中值定理",
+              "kind": "lesson",
+              "bundle": "math/ch03/01",
+              "summary": "罗尔 · 拉格朗日 · 柯西",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/ch03/02",
+              "title": "3.2 洛必达法则",
+              "kind": "lesson",
+              "bundle": "math/ch03/02",
+              "summary": "0/0 · ∞/∞ · 七种未定式",
+              "badge": "5 卡"
+            },
+            {
+              "id": "math/ch03/03",
+              "title": "3.3 泰勒公式",
+              "kind": "lesson",
+              "bundle": "math/ch03/03",
+              "summary": "展开 · 佩亚诺余项 · 求极限",
+              "badge": "5 卡"
+            },
+            {
+              "id": "math/ch03/04",
+              "title": "3.4 单调性与曲线的凹凸性",
+              "kind": "lesson",
+              "bundle": "math/ch03/04",
+              "summary": "判据 · 拐点 · 图形描绘",
+              "badge": "5 卡"
+            },
+            {
+              "id": "math/ch03/05",
+              "title": "3.5 函数的极值与最值",
+              "kind": "lesson",
+              "bundle": "math/ch03/05",
+              "summary": "必要条件 · 三判别法 · 应用题",
+              "badge": "4 卡"
+            }
+          ]
+        },
+        {
+          "id": "math/ch04",
+          "title": "第 4 章 不定积分",
+          "icon": "folder.fill",
+          "kind": "folder",
+          "summary": "基本积分表 · 换元 · 分部",
+          "children": [
+            {
+              "id": "math/ch04/01",
+              "title": "4.1 不定积分的概念与性质",
+              "kind": "lesson",
+              "bundle": "math/ch04/01",
+              "summary": "原函数 · 基本积分表 · 线性性质",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/ch04/02",
+              "title": "4.2 第一类换元法（凑微分）",
+              "kind": "lesson",
+              "bundle": "math/ch04/02",
+              "summary": "原理 · 常见凑法 · 换元回代",
+              "badge": "4 卡"
+            },
+            {
+              "id": "math/ch04/03",
+              "title": "4.3 第二类换元法",
+              "kind": "lesson",
+              "bundle": "math/ch04/03",
+              "summary": "三角代换 · 根式代换",
+              "badge": "4 卡"
+            },
+            {
+              "id": "math/ch04/04",
+              "title": "4.4 分部积分法",
+              "kind": "lesson",
+              "bundle": "math/ch04/04",
+              "summary": "选 u 口诀 · 循环积分 · 递推",
+              "badge": "5 卡"
             }
           ]
         }
@@ -50,10 +181,10 @@
       "title": "大学英语 I",
       "icon": "textformat.abc",
       "kind": "folder",
-      "summary": "词汇 · 阅读（听力与写作待补）",
+      "summary": "四级 + 12·2 月考范围",
       "children": [
         {
-          "id": "english/vocab",
+          "id": "english/g01",
           "title": "词汇",
           "icon": "character.book.closed.fill",
           "kind": "folder",
@@ -64,25 +195,75 @@
               "title": "01 词根词缀：一次记一串",
               "kind": "lesson",
               "bundle": "english/vocab/01",
-              "summary": "spect/port/duc · 20 个高频词",
-              "badge": "6 卡"
+              "summary": "四级高频词根 · 语境选词 · 词形变化",
+              "badge": "7 卡"
             }
           ]
         },
         {
-          "id": "english/reading",
+          "id": "english/g02",
+          "title": "听力",
+          "icon": "ear.fill",
+          "kind": "folder",
+          "summary": "短篇新闻 · 长对话 · 篇章",
+          "children": [
+            {
+              "id": "english/listening/01",
+              "title": "01 短篇新闻（Section A）",
+              "kind": "lesson",
+              "bundle": "english/listening/01",
+              "summary": "倒金字塔 · 数字题 · 场景词",
+              "badge": "6 卡"
+            },
+            {
+              "id": "english/listening/02",
+              "title": "02 长对话与听力篇章（Section B/C）",
+              "kind": "lesson",
+              "bundle": "english/listening/02",
+              "summary": "转折信号 · 同义替换 · 态度题",
+              "badge": "5 卡"
+            }
+          ]
+        },
+        {
+          "id": "english/g03",
           "title": "阅读",
           "icon": "doc.text.magnifyingglass",
           "kind": "folder",
-          "summary": "长篇阅读 · 同义替换",
+          "summary": "段落匹配 · 仔细阅读",
           "children": [
             {
               "id": "english/reading/01",
               "title": "01 长篇阅读：段落信息匹配",
               "kind": "lesson",
               "bundle": "english/reading/01",
-              "summary": "五步法 · 同义替换六套路",
-              "badge": "5 卡"
+              "summary": "十道题对十五段 · 定位 · 同义替换",
+              "badge": "6 卡"
+            },
+            {
+              "id": "english/reading/02",
+              "title": "04 仔细阅读（Part IV）",
+              "kind": "lesson",
+              "bundle": "english/reading/02",
+              "summary": "定位 · 五类题 · 排除干扰",
+              "badge": "6 卡"
+            }
+          ]
+        },
+        {
+          "id": "english/g04",
+          "title": "选词填空",
+          "icon": "text.append",
+          "kind": "folder",
+          "summary": "15 选 10 · 词性优先",
+          "children": [
+            {
+              "id": "english/cloze/01",
+              "title": "03 选词填空 15 选 10",
+              "kind": "lesson",
+              "bundle": "english/cloze/01",
+              "summary": "词性分类 · 搭配 · 排除法",
+              "badge": "6 卡"
             }
           ]
         }

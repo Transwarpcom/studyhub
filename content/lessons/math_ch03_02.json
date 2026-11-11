@@ -1,0 +1,76 @@
+{
+  "id": "math/ch03/02",
+  "title": "3.2 洛必达法则",
+  "subtitle": "0/0 · ∞/∞ · 七种未定式",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "法则本身与使用条件",
+      "md": "## 适用类型\n\n只直接处理两种：\n\n$$\\frac{0}{0}\\qquad\\text{和}\\qquad\\frac{\\infty}{\\infty}$$\n\n**定理**：若 $\\lim\\frac{f(x)}{g(x)}$ 是 $\\frac00$ 或 $\\frac\\infty\\infty$ 型，且 $\\lim\\frac{f'(x)}{g'(x)}$ 存在（或为 $\\infty$），则\n\n$$\\lim\\frac{f(x)}{g(x)}=\\lim\\frac{f'(x)}{g'(x)}$$\n\n## 三个前提，缺一不可\n\n1. 必须是 $\\frac00$ 或 $\\frac\\infty\\infty$ 型（先代入验证）\n2. 分子分母在去心邻域内可导，且 $g'(x)\\neq0$\n3. $\\lim\\frac{f'}{g'}$ 存在或为无穷\n\n**第 3 条最容易翻车**：如果 $\\lim\\frac{f'}{g'}$ 振荡不存在，洛必达**失效**，不代表原极限不存在。\n\n反例：$\\lim\\limits_{x\\to\\infty}\\dfrac{x+\\sin x}{x}$ 是 $\\frac\\infty\\infty$ 型，但求导后 $\\dfrac{1+\\cos x}{1}$ 振荡无极限；而原式 $=1+\\dfrac{\\sin x}{x}\\to1$。\n\n## 其它五种未定式\n\n$$0\\cdot\\infty,\\quad \\infty-\\infty,\\quad 0^0,\\quad 1^\\infty,\\quad \\infty^0$$\n\n都要先**变形**成 $\\frac00$ 或 $\\frac\\infty\\infty$：\n\n- $0\\cdot\\infty$：把其中一个写成倒数搬到分母\n- $\\infty-\\infty$：通分或有理化\n- 幂指型 $u^v$：取对数，变成 $v\\ln u$"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$\\lim\\limits_{x\\to0}\\dfrac{e^x-1-x}{x^2}=$ {{1}}",
+      "explain": "$\\frac00$ 型，用两次洛必达：\n\n$$\\lim\\frac{e^x-1}{2x}\\quad(\\text{还是}\\tfrac00)=\\lim\\frac{e^x}{2}=\\frac12$$\n\n**也可以用泰勒**：$e^x=1+x+\\frac{x^2}{2}+o(x^2)$，分子 $=\\frac{x^2}{2}+o(x^2)$，除以 $x^2$ 得 $\\frac12$。\n\n泰勒通常比连用两次洛必达快。",
+      "blanks": [
+        [
+          "1/2",
+          "0.5",
+          "1/2 "
+        ]
+      ],
+      "tags": [
+        "0/0"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$\\lim\\limits_{x\\to0^+}x\\ln x$ 等于？",
+      "explain": "$0\\cdot\\infty$ 型。把 $x$ 写成 $\\frac{1}{1/x}$：\n\n$$\\lim_{x\\to0^+}\\frac{\\ln x}{1/x}\\quad\\left(\\frac\\infty\\infty\\right)$$\n\n洛必达：\n\n$$\\lim\\frac{1/x}{-1/x^2}=\\lim(-x)=0$$\n\n**口诀：$0\\cdot\\infty$ 时，把「好求导的那个」搬到分母。** 这里 $\\ln x$ 求导变 $\\frac1x$ 更简单，所以留分子。",
+      "options": [
+        "$0$",
+        "$-\\infty$",
+        "$1$",
+        "不存在"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "0·∞"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "求 $\\lim\\limits_{x\\to0}\\left(\\dfrac{\\sin x}{x}\\right)^{\\frac{1}{x^2}}$。",
+      "explain": "这是 $1^\\infty$ 型。取对数：\n\n$$L=\\lim_{x\\to0}\\frac{1}{x^2}\\ln\\frac{\\sin x}{x}$$\n\n先算 $\\ln\\frac{\\sin x}{x}$ 的展开。由 $\\sin x=x-\\frac{x^3}{6}+o(x^3)$：\n\n$$\\frac{\\sin x}{x}=1-\\frac{x^2}{6}+o(x^2)$$\n\n$$\\ln\\left(1-\\frac{x^2}{6}+o(x^2)\\right)=-\\frac{x^2}{6}+o(x^2)$$\n\n所以\n\n$$L=\\lim_{x\\to0}\\frac{-\\frac{x^2}{6}}{x^2}=-\\frac16$$\n\n原式 $=e^{-1/6}$。\n\n**要点**：$1^\\infty$ 型先取对数，再用等价无穷小 $\\ln(1+u)\\sim u$，比洛必达快得多。",
+      "tags": [
+        "1^∞",
+        "综合"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "multi",
+      "question": "下列极限中，**不能**直接用洛必达法则的有？",
+      "explain": "A：分子 $x^2\\sin(1/x)$ 在 $0$ 附近导数振荡，$\\lim\\frac{f'}{g'}$ 不存在，洛必达失效。正确做法是直接用无穷小：$x^2\\sin(1/x)=o(x)$，除以 $\\sin x\\sim x$ 得 $0$。\n\nC：求导后 $1+\\cos x$ 振荡，极限不存在，但原式 $=1$。\n\nB、D 都是标准 $\\frac00$ 型，洛必达直接可用（结果都是 $1$）。\n\n**判据：洛必达只在「求导后的极限存在」时才能用。** 振荡型一律改用等价无穷小或夹逼。",
+      "options": [
+        "$\\lim\\limits_{x\\to0}\\dfrac{x^2\\sin(1/x)}{\\sin x}$",
+        "$\\lim\\limits_{x\\to0}\\dfrac{\\sin x}{x}$",
+        "$\\lim\\limits_{x\\to\\infty}\\dfrac{x+\\sin x}{x}$",
+        "$\\lim\\limits_{x\\to0}\\dfrac{e^x-1}{x}$"
+      ],
+      "answer": [
+        0,
+        2
+      ],
+      "tags": [
+        "失效情形"
+      ]
+    }
+  ]
+}

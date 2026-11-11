@@ -1,0 +1,57 @@
+{
+  "id": "math/ch04/02",
+  "title": "4.2 第一类换元法（凑微分）",
+  "subtitle": "原理 · 常见凑法 · 换元回代",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "凑微分的本质",
+      "md": "## 公式\n\n$$\\int f[\\varphi(x)]\\varphi'(x)dx=\\int f(u)du\\Big|_{u=\\varphi(x)}$$\n\n用微分写更直观：\n\n$$\\varphi'(x)dx=d[\\varphi(x)]$$\n\n所以凑微分就是**把被积表达式里的一部分塞进 $d$ 的后面**。\n\n## 例子\n\n$$\\int 2x e^{x^2}dx=\\int e^{x^2}d(x^2)=e^{x^2}+C$$\n\n$$\\int \\frac{2x}{1+x^2}dx=\\int\\frac{d(1+x^2)}{1+x^2}=\\ln(1+x^2)+C$$\n\n$$\\int \\sin^3x\\cos x\\,dx=\\int\\sin^3x\\,d(\\sin x)=\\frac{\\sin^4x}{4}+C$$\n\n## 常见凑法表\n\n| 被积式里的部分 | 凑成 |\n|---|---|\n| $x\\,dx$ | $\\frac12d(x^2)$ |\n| $\\frac{dx}{x}$ | $d(\\ln x)$ |\n| $e^xdx$ | $d(e^x)$ |\n| $\\cos x\\,dx$ | $d(\\sin x)$ |\n| $\\sin x\\,dx$ | $-d(\\cos x)$ |\n| $\\frac{dx}{\\sqrt x}$ | $2d(\\sqrt x)$ |\n| $\\frac{dx}{1+x^2}$ | $d(\\arctan x)$ |\n\n> 判断标准：凑完之后，$d$ 后面那一坨的导数，正好是被积式里剩下的部分。"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$\\displaystyle\\int x e^{x^2}dx=$ {{1}}",
+      "explain": "$x\\,dx=\\frac12d(x^2)$，所以\n\n$$\\int xe^{x^2}dx=\\frac12\\int e^{x^2}d(x^2)=\\frac12e^{x^2}+C$$\n\n**验证**：$\\left(\\frac12e^{x^2}\\right)'=\\frac12e^{x^2}\\cdot2x=xe^{x^2}$ ✓",
+      "blanks": [
+        [
+          "1/2 e^{x^2}+C",
+          "(1/2)e^{x^2}+C",
+          "0.5e^{x^2}+C",
+          "1/2e^(x^2)+C"
+        ]
+      ],
+      "tags": [
+        "凑微分"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$\\displaystyle\\int\\frac{\\ln x}{x}dx$ 等于？",
+      "explain": "$\\dfrac{dx}{x}=d(\\ln x)$，所以\n\n$$\\int\\frac{\\ln x}{x}dx=\\int\\ln x\\,d(\\ln x)=\\frac{(\\ln x)^2}{2}+C$$\n\n把 $\\ln x$ 看成一个整体 $u$，就是 $\\int u\\,du=\\frac{u^2}{2}$。",
+      "options": [
+        "$\\dfrac{(\\ln x)^2}{2}+C$",
+        "$\\ln(\\ln x)+C$",
+        "$\\dfrac1x+C$",
+        "$(\\ln x)^2+C$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "凑微分"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "求 $\\displaystyle\\int\\frac{dx}{x^2+4x+13}$。",
+      "explain": "**第一步：配方**\n\n$$x^2+4x+13=(x+2)^2+9=(x+2)^2+3^2$$\n\n**第二步：凑成 $\\arctan$ 的标准形式**，令 $u=x+2$，$a=3$：\n\n$$\\int\\frac{du}{u^2+9}=\\frac13\\arctan\\frac{u}{3}+C$$\n\n**第三步：回代**\n\n$$\\frac13\\arctan\\frac{x+2}{3}+C$$\n\n**通用套路**：二次三项式先配方，凑成 $u^2+a^2$ 或 $u^2-a^2$ 或 $a^2-u^2$，再套公式。",
+      "tags": [
+        "配方"
+      ]
+    }
+  ]
+}

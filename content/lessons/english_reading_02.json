@@ -1,0 +1,83 @@
+{
+  "id": "english/reading/02",
+  "title": "04 仔细阅读（Part IV）",
+  "subtitle": "定位 · 五类题 · 排除干扰",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "五类题与解法",
+      "md": "## 1. 细节题（最多）\n\n**问法**：According to the passage, why/what/how...\n\n**解法**：题干关键词 → 回原文定位 → 找**同义改写**的选项。\n\n**关键词优先级**：专有名词 > 数字 > 大写词 > 实义动词 > 形容词\n\n## 2. 推断题\n\n**问法**：It can be inferred / implied that...\n\n**解法**：答案一定**基于原文**，但不会照抄。选「顺着原文能推出来」的，不选「听起来合理但原文没提」的。\n\n## 3. 主旨题\n\n**问法**：The main idea / The passage mainly discusses...\n\n**解法**：看**首段末句 + 各段首句**。正确选项要能覆盖全文，不能只覆盖一段。\n\n## 4. 词义题\n\n**问法**：The word \"X\" in Paragraph N most probably means...\n\n**解法**：看**上下文**，尤其是前后句的解释、举例、并列结构。不要用你认识的常见意思硬套。\n\n## 5. 态度题\n\n**问法**：The author's attitude towards... is...\n\n**解法**：找评价性形容词和副词。`objective`（客观）通常是最安全的答案，`indifferent`（漠不关心）几乎永远是错的——作者写了这么多，不可能不关心。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "干扰项的四种套路",
+      "md": "## 1. 偷换概念\n\n原文说 `some researchers`，选项写成 `all researchers`。\n\n**警惕**：`all / always / never / must / only` 这类绝对化词。\n\n## 2. 无中生有\n\n选项的内容听起来很对，但原文**根本没提**。\n\n**判断**：回原文找，找不到就是错的，不要用「常识」补偿。\n\n## 3. 张冠李戴\n\n把 A 的观点安到 B 头上。\n\n**警惕**：选项中的人名、机构名要和原文对得上。\n\n## 4. 过度推断\n\n原文说「可能」，选项说「一定」；原文说「部分」，选项说「全部」。\n\n**原则**：选项的**语气强度不能超过原文**。\n\n## 做题节奏\n\n- 每篇 8–9 分钟\n- 先读题干，不读选项（选项会干扰判断）\n- 定位到段落之后，**只读那一段**，不要重读全文\n- 不确定的题先标记，做完再回来"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "原文：`While some studies suggest a link between screen time and poor sleep, others find no such connection.`\n\n可以推断出？",
+      "explain": "`some studies... others find no such connection` = 研究结论不一致，即 **mixed evidence**。\n\n- B 用了 `definitely`，语气过强\n- C 用了 `All`，与 `others find no...` 直接矛盾\n- D 原文没提\n\n**推断题原则**：选「弱一点」的那个。原文说「有的说 A，有的说 B」，选项说「结论不一」最安全。",
+      "options": [
+        "The evidence on screen time and sleep is mixed.",
+        "Screen time definitely causes poor sleep.",
+        "All studies agree that screen time is harmful.",
+        "Researchers have stopped studying this issue."
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "推断"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "原文：`The term \"digital native\" is often used to describe young people who grew up with the internet.`\n\n`digital native` 最可能的意思是？",
+      "explain": "原文自带解释：`young people who grew up with the internet`（伴随互联网长大的人）。\n\n**词义题技巧**：答案就在**紧挨着的解释性成分**里，常见标志：\n- `is often used to describe...`\n- `that is, ...`\n- `, or ...`\n- `— ... —`（破折号）\n\n不要凭词的常见意思猜。`native` 本义「本地人」，这里是「与生俱来熟悉某事物的人」。",
+      "options": [
+        "天生熟悉数字技术的人",
+        "数字领域的专家",
+        "不使用网络的人",
+        "研究互联网的学者"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "词义"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列哪些是「绝对化」表达，看到要提高警惕？（多选）",
+      "explain": "- `all of them`、`never` 是绝对化表达，原文若没有同样强度，就是错的\n- `in most cases`（大多数情况下）、`tend to`（倾向于）是**留有余地**的表达，通常是正确答案的标志\n\n**做题口诀**：**绝对化 = 高危，模糊化 = 安全。**\n\n四级仔细阅读的正确选项，语气往往比错误选项更「软」。",
+      "options": [
+        "all of them",
+        "in most cases",
+        "never",
+        "tend to"
+      ],
+      "answer": [
+        0,
+        2
+      ],
+      "tags": [
+        "干扰项"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "判断下面选项是否可能正确，并说明理由。\n\n原文：`The new policy is expected to reduce emissions by 20% by 2030.`\n\n选项：`The policy has already reduced emissions significantly.`",
+      "explain": "**不可能正确。**\n\n理由：原文是 `is expected to`（预计将会），选项写成 `has already reduced`（已经减少）。\n\n**时态被偷换了**：将来 → 完成。\n\n**这类错误的识别方法**：回原文时**专门看动词的时态和情态**：\n\n- `is expected to` / `may` / `could` → 选项不能写 `has` / `will definitely`\n- `aims to` → 选项不能写 `has succeeded in`\n\n四级仔细阅读里，时态和语气的偷换是隐形杀手，比词汇不认识更致命。",
+      "tags": [
+        "时态陷阱"
+      ]
+    }
+  ]
+}
