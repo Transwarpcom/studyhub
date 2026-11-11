@@ -37,15 +37,6 @@ http:
           - main: "medwarp.cn"
             sans:
               - "*.medwarp.cn"
-          - main: "warpdotsys.com"
-            sans:
-              - "*.warpdotsys.com"
-          - main: "warpdotsys.email"
-            sans:
-              - "*.warpdotsys.email"
-          - main: "nyangley1762.org"
-            sans:
-              - "*.nyangley1762.org"
     # API router (handles /api/v1 paths)
     api-router:
       rule: "Host(`pangolin.medwarp.cn`) && PathPrefix(`/api/v1`)"

@@ -105,8 +105,43 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("每日提醒") {
+                    Toggle("开启提醒", isOn: Binding(
+                        get: { Reminder.enabled },
+                        set: { v in
+                            Reminder.enabled = v
+                            if v { Reminder.apply() } else { Reminder.disable() }
+                            hint = v ? "已设置每天 \(Reminder.hour):\(String(format: "%02d", Reminder.minute)) 提醒" : "提醒已关闭"
+                        }
+                    ))
+                    if Reminder.enabled {
+                        DatePicker("提醒时间", selection: Binding(
+                            get: {
+                                var c = DateComponents()
+                                c.hour = Reminder.hour
+                                c.minute = Reminder.minute
+                                return Calendar.current.date(from: c) ?? Date()
+                            },
+                            set: { d in
+                                let comp = Calendar.current.dateComponents([.hour, .minute], from: d)
+                                Reminder.hour = comp.hour ?? 20
+                                Reminder.minute = comp.minute ?? 0
+                                Reminder.apply()
+                            }
+                        ), displayedComponents: .hourAndMinute)
+                    }
+                    Text("到点提醒你打开学习台复习到期题目。")
+                        .font(.footnote).foregroundColor(.secondary)
+                }
+
+                Section("学习报告") {
+                    ShareLink(item: ReportBuilder.text(store: store)) {
+                        Label("导出学习报告", systemImage: "square.and.arrow.up")
+                    }
+                }
+
                 Section("关于") {
-                    LabeledContent("版本", value: "1.0.0")
+                    LabeledContent("版本", value: appVersion)
                     Text("学习台 · 高数 / 大学英语\n课程按文件夹组织，支持公式、矢量图、单选、多选、判断、填空、简答。内容由 Hermes 远程下发，读过的章节离线可看。")
                         .font(.footnote)
                         .foregroundColor(.secondary)
@@ -134,6 +169,12 @@ struct SettingsView: View {
         let a = store.totalAnswered
         guard a > 0 else { return "—" }
         return "\(store.totalCorrect * 100 / a)%"
+    }
+
+    private var appVersion: String {
+        let v = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "—"
+        let b = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+        return b.isEmpty ? v : "\(v) (\(b))"
     }
 
     private func bytesText(_ b: Int64) -> String {

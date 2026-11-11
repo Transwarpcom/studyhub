@@ -277,6 +277,7 @@ struct LessonLoaderView: View {
     @State private var error: String?
     @State private var showNote = false
     @State private var noteText = ""
+    @ObservedObject private var speaker = Speaker.shared
 
     var body: some View {
         Group {
@@ -308,6 +309,13 @@ struct LessonLoaderView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
+                Button {
+                    if let lesson {
+                        Speaker.shared.toggle(Speaker.text(of: lesson))
+                    }
+                } label: {
+                    Image(systemName: speaker.speaking ? "stop.circle.fill" : "speaker.wave.2")
+                }
                 Button {
                     store.toggleFavorite(node.id)
                 } label: {

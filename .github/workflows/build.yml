@@ -41,6 +41,9 @@ jobs:
           ls -la "$APP" | head -30
           mkdir -p Payload
           cp -R "$APP" Payload/
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${{ github.run_number }}" "Payload/StudyHub.app/Info.plist" || true
+          /usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "Payload/StudyHub.app/Info.plist"
+          /usr/libexec/PlistBuddy -c "Print :CFBundleVersion" "Payload/StudyHub.app/Info.plist"
           zip -qry StudyHub-unsigned.ipa Payload
           ls -lh StudyHub-unsigned.ipa
           echo "--- bundle contains ---"

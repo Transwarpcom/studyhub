@@ -9,3 +9,6 @@ __pycache__/
 content_build/
 
 .token
+
+# 含真实 token 的临时脚本
+tools/*_ready.py
