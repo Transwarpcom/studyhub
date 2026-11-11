@@ -172,6 +172,9 @@ class Handler(BaseHTTPRequestHandler):
                 ctype = "application/json; charset=utf-8"
             elif low.endswith(".png"):
                 ctype = "image/png"
+            elif low.endswith(".plist"):
+                # iOS OTA 要求 manifest 是 xml，否则安装卡在云朵图标
+                ctype = "application/xml; charset=utf-8"
             else:
                 ctype = "application/octet-stream"
             return self.send_body(200, data, ctype)

@@ -70,6 +70,16 @@ struct TodayView: View {
                     if store.wrongs.isEmpty {
                         Text("还没有错题").foregroundColor(.secondary)
                     } else {
+                        NavigationLink {
+                            WrongBookView().environmentObject(store)
+                        } label: {
+                            HStack {
+                                Label("错题本", systemImage: "book.closed.fill")
+                                Spacer()
+                                Text("\(store.wrongs.count) 道").font(.caption).foregroundColor(.secondary)
+                                Image(systemName: "chevron.right").font(.caption2).foregroundColor(.secondary)
+                            }
+                        }
                         ForEach(wrongGroups, id: \.key) { g in
                             HStack {
                                 Text(g.title).font(.subheadline).lineLimit(1)
