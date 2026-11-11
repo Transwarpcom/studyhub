@@ -223,6 +223,13 @@
         ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'option']
       });
     } catch (e) {}
+    // 兜底：仍然溢出的行内公式，标成可横向滑动
+    try {
+      root.querySelectorAll('.katex').forEach(function (k) {
+        if (k.closest('.katex-display')) return;
+        if (k.scrollWidth > k.clientWidth + 2) k.classList.add('kx-wide');
+      });
+    } catch (e) {}
   }
 
   // ---------- 卡片构建 ----------

@@ -1,0 +1,55 @@
+{
+  "id": "math/hw-4-3b",
+  "title": "作业精讲 · 黑板 8 题",
+  "subtitle": "分部积分专项（含选 u 口诀与三个高频错点）",
+  "cards": [
+    {
+      "id": "b1",
+      "type": "lecture",
+      "title": "黑板 8 题全解",
+      "md": "> 本次作业核心：$\\displaystyle\\int u\\,dv=uv-\\int v\\,du$。选 $u$ 的口诀「反对幂指三」，排在前面的当 $u$。\n\n---"
+    },
+    {
+      "id": "b2",
+      "type": "lecture",
+      "title": "第 1 题",
+      "md": "$$\\int \\sec^{3}x\\,dx$$\n\n**解**：把 $\\sec^{3}x$ 拆成 $\\sec x\\cdot\\sec^{2}x$，用分部积分。\n\n取 $u=\\sec x$，$dv=\\sec^{2}x\\,dx$，则\n\n$$du=\\sec x\\tan x\\,dx,\\qquad v=\\tan x$$\n\n$$\n\\int \\sec^{3}x\\,dx=\\sec x\\tan x-\\int \\sec x\\tan^{2}x\\,dx\n$$\n\n用 $\\tan^{2}x=\\sec^{2}x-1$：\n\n$$\n\\quad \\sec x\\tan x-\\int \\sec x\\left(\\sec^{2}x-1\\right)dx\n=\\sec x\\tan x-\\int \\sec^{3}x\\,dx+\\int \\sec x\\,dx\n$$\n\n把右边的 $\\int\\sec^{3}x\\,dx$ 移到左边（循环型）：\n\n$$\n2\\int \\sec^{3}x\\,dx=\\sec x\\tan x+\\ln\\left|\\sec x+\\tan x\\right|\n$$\n\n**答案**：\n\n$$\\int \\sec^{3}x\\,dx=\\frac{1}{2}\\sec x\\tan x+\\frac{1}{2}\\ln\\left|\\sec x+\\tan x\\right|+C$$\n\n**易错**：移项后要除以 2；$\\int\\sec x\\,dx$ 的标准结果是 $\\ln|\\sec x+\\tan x|$，别写成 $\\ln|\\cos x|$。\n\n---"
+    },
+    {
+      "id": "b3",
+      "type": "lecture",
+      "title": "第 2 题",
+      "md": "$$\\int x\\sin x\\cos x\\,dx$$\n\n**解**：先用倍角公式化简。\n\n$$\\sin x\\cos x=\\frac{1}{2}\\sin 2x$$\n\n原式变成\n\n$$\\int x\\sin x\\cos x\\,dx=\\frac{1}{2}\\int x\\sin 2x\\,dx$$\n\n分部：取 $u=x$，$dv=\\sin 2x\\,dx$，则 $du=dx$，$v=-\\dfrac{1}{2}\\cos 2x$\n\n$$\n\\frac{1}{2}\\int x\\sin 2x\\,dx\n=\\frac{1}{2}\\left[-\\frac{1}{2}x\\cos 2x+\\frac{1}{2}\\int\\cos 2x\\,dx\\right]\n$$\n\n$$\n\\quad \\frac{1}{2}\\left[-\\frac{1}{2}x\\cos 2x+\\frac{1}{4}\\sin 2x\\right]+C\n$$\n\n**答案**：\n\n$$\\int x\\sin x\\cos x\\,dx=-\\frac{1}{4}x\\cos 2x+\\frac{1}{8}\\sin 2x+C$$\n\n**易错**：$v=-\\frac{1}{2}\\cos 2x$ 这个负号和 $1/2$ 容易漏。\n\n---"
+    },
+    {
+      "id": "b4",
+      "type": "lecture",
+      "title": "第 3 题",
+      "md": "$$\\int \\ln^{2}x\\,dx$$\n\n**解**：只有对数，取 $u=\\ln^{2}x$，$dv=dx$，则\n\n$$du=2\\ln x\\cdot\\frac{1}{x}\\,dx,\\qquad v=x$$\n\n$$\n\\int \\ln^{2}x\\,dx=x\\ln^{2}x-2\\int \\ln x\\,dx\n$$\n\n后一项 $\\int\\ln x\\,dx$ 用一次分部：取 $u=\\ln x$，$dv=dx$，则\n\n$$\\int \\ln x\\,dx=x\\ln x-\\int\\frac{x}{x}dx=x\\ln x-x$$\n\n代回：\n\n$$\n\\int\\ln^{2}x\\,dx=x\\ln^{2}x-2\\left(x\\ln x-x\\right)+C\n=x\\ln^{2}x-2x\\ln x+2x+C\n$$\n\n**答案**：\n\n$$\\int \\ln^{2}x\\,dx=x\\ln^{2}x-2x\\ln x+2x+C$$\n\n**验算**：求导\n\n$$\n\\left[\\ln^{2}x+x\\cdot\\frac{2\\ln x}{x}\\right]\n-\\left[2\\ln x+2x\\cdot\\frac{1}{x}\\right]+2\n=\\ln^{2}x+2\\ln x-2\\ln x-2+2=\\ln^{2}x\\ ✓\n$$\n\n**推广**：$$\\displaystyle\\int\\ln^{n}x\\,dx=x\\ln^{n}x-n\\int\\ln^{n-1}x\\,dx$$，是递推公式，$\\ln^3x$ 往上一层层降。\n\n---"
+    },
+    {
+      "id": "b5",
+      "type": "lecture",
+      "title": "第 4 题",
+      "md": "$$\\int x\\tan^{2}x\\,dx$$\n\n**解**：先用 $\\tan^{2}x=\\sec^{2}x-1$ 拆开。\n\n$$\n\\int x\\tan^{2}x\\,dx=\\int x\\sec^{2}x\\,dx-\\int x\\,dx\n$$\n\n前一项分部：取 $u=x$，$dv=\\sec^{2}x\\,dx$，则 $du=dx$，$v=\\tan x$\n\n$$\n\\int x\\sec^{2}x\\,dx=x\\tan x-\\int\\tan x\\,dx=x\\tan x+\\ln\\left|\\cos x\\right|\n$$\n\n后一项：$\\displaystyle\\int x\\,dx=\\frac{x^{2}}{2}$\n\n**答案**：\n\n$$\\int x\\tan^{2}x\\,dx=x\\tan x+\\ln\\left|\\cos x\\right|-\\frac{x^{2}}{2}+C$$\n\n**易错**：$\\int\\tan x\\,dx=-\\ln|\\cos x|$，前面那个负号被减号吃掉变成正号。\n\n---"
+    },
+    {
+      "id": "b6",
+      "type": "lecture",
+      "title": "第 5 题",
+      "md": "$$\\int x\\cos\\frac{x}{2}\\,dx$$\n\n**解**：取 $u=x$，$dv=\\cos\\dfrac{x}{2}dx$，则 $du=dx$，$v=2\\sin\\dfrac{x}{2}$\n\n$$\n\\int x\\cos\\frac{x}{2}\\,dx=2x\\sin\\frac{x}{2}-2\\int 2\\sin\\frac{x}{2}\\cdot\\frac{1}{2}\\,dx\n$$\n\n注意：$v=2\\sin\\frac{x}{2}$，所以 $\\int v\\,du=\\int 2\\sin\\frac{x}{2}\\,dx=-4\\cos\\frac{x}{2}$\n\n$$\n\\quad 2x\\sin\\frac{x}{2}+4\\cos\\frac{x}{2}+C\n$$\n\n**答案**：\n\n$$\\int x\\cos\\frac{x}{2}\\,dx=2x\\sin\\frac{x}{2}+4\\cos\\frac{x}{2}+C$$\n\n**验算**：求导\n$$2\\sin\\frac{x}{2}+2x\\cdot\\frac{1}{2}\\cos\\frac{x}{2}-2\\sin\\frac{x}{2}=x\\cos\\frac{x}{2}\\ ✓$$\n\n---"
+    },
+    {
+      "id": "b7",
+      "type": "lecture",
+      "title": "第 6 题",
+      "md": "$$\\int e^{x}\\sin^{2}x\\,dx$$\n\n**解**：先降幂，再拆成两个积分。\n\n$$\\sin^{2}x=\\frac{1-\\cos 2x}{2}$$\n\n$$\n\\int e^{x}\\sin^{2}x\\,dx=\\frac{1}{2}\\int e^{x}dx-\\frac{1}{2}\\int e^{x}\\cos 2x\\,dx\n$$\n\n第一项：$\\displaystyle\\frac{1}{2}e^{x}$\n\n第二项用循环型分部（两次）：\n\n设 $J=\\int e^{x}\\cos 2x\\,dx$，取 $u=\\cos 2x$，$dv=e^{x}dx$，则 $du=-2\\sin 2x\\,dx$，$v=e^{x}$\n\n$$J=e^{x}\\cos 2x+2\\int e^{x}\\sin 2x\\,dx$$\n\n再对 $\\int e^{x}\\sin 2x\\,dx$ 分部：$u=\\sin 2x$，$dv=e^{x}dx$，$du=2\\cos 2x\\,dx$，$v=e^{x}$\n\n$$\\int e^{x}\\sin 2x\\,dx=e^{x}\\sin 2x-2\\int e^{x}\\cos 2x\\,dx=e^{x}\\sin 2x-2J$$\n\n代回：\n\n$$J=e^{x}\\cos 2x+2\\left(e^{x}\\sin 2x-2J\\right)=e^{x}\\cos 2x+2e^{x}\\sin 2x-4J$$\n\n$$5J=e^{x}\\left(\\cos 2x+2\\sin 2x\\right)$$\n\n$$J=\\frac{e^{x}}{5}\\left(\\cos 2x+2\\sin 2x\\right)$$\n\n**答案**：\n\n$$\\int e^{x}\\sin^{2}x\\,dx=\\frac{e^{x}}{2}-\\frac{e^{x}}{10}\\left(\\cos 2x+2\\sin 2x\\right)+C$$\n\n---"
+    },
+    {
+      "id": "b8",
+      "type": "lecture",
+      "title": "第 7 题",
+      "md": "$$\\int x^{2}\\arctan x\\,dx$$\n\n**解**：取 $u=\\arctan x$，$dv=x^{2}dx$，则 $du=\\dfrac{dx}{1+x^{2}}$，$v=\\dfrac{x^{3}}{3}$\n\n$$\n\\int x^{2}\\arctan x\\,dx=\\frac{x^{3}}{3}\\arctan x-\\frac{1}{3}\\int\\frac{x^{3}}{1+x^{2}}dx\n$$\n\n处理 $\\dfrac{x^{3}}{1+x^{2}}$，做多项式除法：\n\n$$\\frac{x^{3}}{1+x^{2}}=x-\\frac{x}{1+x^{2}}$$\n\n所以\n\n$$\n\\int\\frac{x^{3}}{1+x^{2}}dx=\\int x\\,dx-\\int\\frac{x}{1+x^{2}}dx\n=\\frac{x^{2}}{2}-\\frac{1}{2}\\ln\\left(1+x^{2}\\right)\n$$\n\n**答案**：\n\n$$\\int x^{2}\\arctan x\\,dx=\\frac{x^{3}}{3}\\arctan x-\\frac{x^{2}}{6}+\\frac{1}{6}\\ln\\left(1+x^{2}\\right)+C$$\n\n**易错**：$-1/3$ 乘进去时，后面两项都要变号。\n\n---"
+    }
+  ]
+}

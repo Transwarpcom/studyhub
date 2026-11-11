@@ -1,0 +1,58 @@
+{
+  "id": "math/4-4",
+  "title": "4.4 有理函数的积分",
+  "subtitle": "部分分式 · 四种情形 · 待定系数",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "把有理函数拆成简单分式",
+      "md": "## 什么是有理函数\n\n$$R(x)=\\frac{P(x)}{Q(x)}$$\n\n$P,Q$ 都是多项式。\n\n## 第一步：假分式化真分式\n\n若分子次数 $\\ge$ 分母次数，先做多项式除法：\n\n$$\\frac{x^3+1}{x+1}=x^2-x+1$$\n\n## 第二步：分母因式分解\n\n在实数范围内，$Q(x)$ 只能分解成**一次因式**和**不可约二次因式**的乘积：\n\n$$Q(x)=a(x-x_1)^{k}\\cdots(x^2+px+q)^{m}\\quad(p^2-4q<0)$$\n\n## 第三步：按因式类型设部分分式\n\n| 分母中的因式 | 设的部分分式 |\n|---|---|\n| $(x-a)$ | $\\dfrac{A}{x-a}$ |\n| $(x-a)^k$ | $$\\dfrac{A_1}{x-a}+\\dfrac{A_2}{(x-a)^2}+\\cdots+\\dfrac{A_k}{(x-a)^k}$$ |\n| $(x^2+px+q)$ | $\\dfrac{Bx+C}{x^2+px+q}$ |\n| $(x^2+px+q)^m$ | $\\sum_{i=1}^{m}\\dfrac{B_ix+C_i}{(x^2+px+q)^i}$ |\n\n## 第四步：待定系数\n\n通分后比较分子各项系数，解方程组。\n\n## 第五步：逐项积分\n\n- $\\displaystyle\\int\\frac{dx}{x-a}=\\ln|x-a|+C$\n- $$\\displaystyle\\int\\frac{dx}{(x-a)^k}=\\frac{(x-a)^{1-k}}{1-k}+C$$\n- 二次因式配方后用 $\\arctan$ 或 $\\ln$"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "$\\dfrac{1}{x^2-1}$ 的部分分式分解是？",
+      "explain": "分母分解：$x^2-1=(x-1)(x+1)$。\n\n设\n\n$$\\frac{1}{x^2-1}=\\frac{A}{x-1}+\\frac{B}{x+1}$$\n\n通分：\n\n$$\\frac{A(x+1)+B(x-1)}{x^2-1}$$\n\n比较分子：$A+B=0$，$A-B=1$，解得 $A=\\frac12$，$B=-\\frac12$。\n\n所以\n\n$$\\frac{1}{x^2-1}=\\frac12\\left(\\frac{1}{x-1}-\\frac{1}{x+1}\\right)$$\n\n**积分结果**：$\\dfrac12\\ln\\left|\\dfrac{x-1}{x+1}\\right|+C$。",
+      "options": [
+        "$\\dfrac{1}{x-1}-\\dfrac{1}{x+1}$",
+        "$\\dfrac{1}{2}\\left(\\dfrac{1}{x-1}-\\dfrac{1}{x+1}\\right)$",
+        "$\\dfrac{1}{2}\\left(\\dfrac{1}{x-1}+\\dfrac{1}{x+1}\\right)$",
+        "$\\dfrac{1}{x-1}+\\dfrac{1}{x+1}$"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "分解"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "求 $\\displaystyle\\int\\frac{x+1}{x^2-3x+2}dx$。",
+      "explain": "**第一步：分解分母**\n\n$$x^2-3x+2=(x-1)(x-2)$$\n\n**第二步：设部分分式**\n\n$$\\frac{x+1}{(x-1)(x-2)}=\\frac{A}{x-1}+\\frac{B}{x-2}$$\n\n通分比较分子：\n\n$$x+1=A(x-2)+B(x-1)$$\n\n**第三步：代特殊值求系数**\n\n令 $x=1$：$2=A(-1)\\Rightarrow A=-2$\n\n令 $x=2$：$3=B(1)\\Rightarrow B=3$\n\n**第四步：积分**\n\n$$\\int\\left(\\frac{-2}{x-1}+\\frac{3}{x-2}\\right)dx=-2\\ln|x-1|+3\\ln|x-2|+C$$\n\n**整理**：\n\n$$\\ln\\frac{|x-2|^3}{|x-1|^2}+C$$\n\n**技巧**：求系数时用「代特殊值」比解方程组快得多。",
+      "tags": [
+        "综合"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "choice",
+      "question": "$\\displaystyle\\int\\frac{dx}{x^2+2x+5}$ 的结果是？",
+      "explain": "分母配方：\n\n$$x^2+2x+5=(x+1)^2+4=(x+1)^2+2^2$$\n\n套公式 $$\\displaystyle\\int\\frac{du}{u^2+a^2}=\\frac1a\\arctan\\frac ua+C$$，$a=2$：\n\n$$\\frac12\\arctan\\frac{x+1}{2}+C$$\n\n**关键**：二次因式不能分解时，一律先配方再套 $\\arctan$ 公式。",
+      "options": [
+        "$\\dfrac12\\arctan\\dfrac{x+1}{2}+C$",
+        "$\\arctan(x+1)+C$",
+        "$\\ln(x^2+2x+5)+C$",
+        "$\\dfrac{1}{4}\\arctan\\dfrac{x+1}{2}+C$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "配方"
+      ]
+    }
+  ]
+}

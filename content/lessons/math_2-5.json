@@ -1,0 +1,73 @@
+{
+  "id": "math/2-5",
+  "title": "2.5 函数的微分",
+  "subtitle": "可微与可导 · 微分形式不变性 · 近似计算",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "微分的定义",
+      "md": "## 定义\n\n设 $y=f(x)$ 在 $x_0$ 的某邻域内有定义。若增量\n\n$$\\Delta y=f(x_0+\\Delta x)-f(x_0)$$\n\n可以写成\n\n$$\\Delta y=A\\Delta x+o(\\Delta x)$$\n\n其中 $A$ 与 $\\Delta x$ 无关，则称 $f$ 在 $x_0$ 处**可微**，$A\\Delta x$ 称为**微分**，记作\n\n$$dy=A\\Delta x$$\n\n## 可微与可导等价\n\n**定理**：$f$ 在 $x_0$ 可微 $\\iff$ $f$ 在 $x_0$ 可导，且\n\n$$A=f'(x_0)$$\n\n所以\n\n$$dy=f'(x_0)dx$$\n\n（这里 $dx=\\Delta x$，即自变量的微分就是它的增量。）\n\n## 几何意义\n\n微分 $dy=f'(x_0)dx$ 是**切线**上纵坐标的增量；$\\Delta y$ 是**曲线**上纵坐标的增量。\n\n两者的差 $o(\\Delta x)$ 就是「用切线代替曲线」的误差。这就是**以直代曲**。\n\n$$\\Delta y\\approx dy=f'(x_0)\\Delta x$$",
+      "svg": "<svg viewBox=\"0 0 300 180\" width=\"300\" xmlns=\"http://www.w3.org/2000/svg\">\n  <path d=\"M30 140 Q120 20 270 60\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2.4\"/>\n  <line x1=\"70\" y1=\"128\" x2=\"250\" y2=\"74\" stroke=\"#dc2626\" stroke-width=\"1.6\" stroke-dasharray=\"5 4\"/>\n  <line x1=\"120\" y1=\"140\" x2=\"120\" y2=\"60\" stroke=\"var(--line)\" stroke-width=\"1\"/>\n  <line x1=\"200\" y1=\"140\" x2=\"200\" y2=\"60\" stroke=\"var(--line)\" stroke-width=\"1\"/>\n  <circle cx=\"120\" cy=\"95\" r=\"3.5\" fill=\"#2563eb\"/>\n  <circle cx=\"200\" cy=\"72\" r=\"3.5\" fill=\"#2563eb\"/>\n  <line x1=\"120\" y1=\"95\" x2=\"200\" y2=\"95\" stroke=\"var(--sub)\" stroke-width=\"1\" stroke-dasharray=\"3 3\"/>\n  <line x1=\"200\" y1=\"95\" x2=\"200\" y2=\"72\" stroke=\"#16a34a\" stroke-width=\"2\"/>\n  <text x=\"152\" y=\"112\" font-size=\"11\" fill=\"var(--sub)\">dx</text>\n  <text x=\"206\" y=\"88\" font-size=\"11\" fill=\"#16a34a\">Δy</text>\n  <text x=\"212\" y=\"66\" font-size=\"11\" fill=\"#dc2626\">dy</text>\n</svg>"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$y=x^2$ 在 $x=1$ 处，当 $\\Delta x=0.01$ 时，$dy=$ {{1}}",
+      "explain": "先求导：$y'=2x$，在 $x=1$ 处 $y'=2$。\n\n$$dy=y'dx=2\\times0.01=0.02$$\n\n**对比真实增量**：\n\n$$\\Delta y=(1.01)^2-1=1.0201-1=0.0201$$\n\n差额 $0.0001$ 就是 $o(\\Delta x)$ 的部分。\n\n**注意**：$dx=\\Delta x$，但 $dy\\neq\\Delta y$（除非 $f$ 是线性的）。",
+      "blanks": [
+        [
+          "0.02"
+        ]
+      ],
+      "tags": [
+        "计算"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "下列说法正确的是？",
+      "explain": "**一元函数中，可导 $\\iff$ 可微**，这是定理。\n\n- A、B 都错，因为二者等价\n- D 错：连续推不出可导（$|x|$ 在 0 处连续但不可导）\n\n**注意**：多元函数里可导与可微**不**等价，那是下册的内容。一元函数这一步是等价的。",
+      "options": [
+        "可导不一定可微",
+        "可微不一定可导",
+        "可导与可微等价",
+        "连续必可微"
+      ],
+      "answer": [
+        2
+      ],
+      "tags": [
+        "概念"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "用微分近似计算 $\\sqrt{1.02}$（取 $x_0=1$）。",
+      "explain": "**第一步：设函数**\n\n$$f(x)=\\sqrt x,\\qquad f'(x)=\\frac{1}{2\\sqrt x}$$\n\n**第二步：取点**\n\n$x_0=1$，$\\Delta x=0.02$。\n\n$$f(1)=1,\\qquad f'(1)=\\frac12$$\n\n**第三步：用 $\\Delta y\\approx dy$**\n\n$$f(1.02)\\approx f(1)+f'(1)\\Delta x=1+\\frac12\\times0.02=1.01$$\n\n**真实值**：$\\sqrt{1.02}\\approx1.009950$，误差约 $5\\times10^{-5}$，精度够用。\n\n**通用公式**：\n\n$$f(x_0+\\Delta x)\\approx f(x_0)+f'(x_0)\\Delta x$$\n\n这就是**一次近似**（线性化），也是泰勒公式取一阶的结果。",
+      "tags": [
+        "近似计算"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "choice",
+      "question": "$y=\\sin(2x)$ 的微分 $dy$ 等于？",
+      "explain": "先求导（链式法则）：\n\n$$y'=\\cos(2x)\\cdot2=2\\cos(2x)$$\n\n所以\n\n$$dy=y'dx=2\\cos(2x)dx$$\n\n**易错**：漏掉内层导数 2。这是链式法则在微分里的直接体现。",
+      "options": [
+        "$\\cos(2x)dx$",
+        "$2\\cos(2x)dx$",
+        "$2\\sin(2x)dx$",
+        "$-2\\cos(2x)dx$"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "微分"
+      ]
+    }
+  ]
+}

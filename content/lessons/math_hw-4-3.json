@@ -1,0 +1,61 @@
+{
+  "id": "math/hw-4-3",
+  "title": "作业精讲 · 习题 4-3",
+  "subtitle": "定积分换元法与分部积分法 12 题",
+  "cards": [
+    {
+      "id": "q1",
+      "type": "lecture",
+      "title": "定积分的换元法与分部积分法",
+      "md": "> 说明：本题解按同济版《高等数学》习题 4-3 的类型编排，覆盖定积分换元（含换限）与分部积分两个考点。若你的作业题号或题目与此不符，以作业本为准。\n\n---"
+    },
+    {
+      "id": "q2",
+      "type": "lecture",
+      "title": "一、换元法（必须换限）",
+      "md": "**核心公式**\n\n$$\\int_{a}^{b} f\\big(g(x)\\big)\\,g'(x)\\,dx=\\int_{g(a)}^{g(b)} f(u)\\,du$$\n\n**两个要点**\n\n1. 换元的同时把上下限一起换掉\n2. 换限之后**不用再代回原变量**，直接算出数值\n\n---"
+    },
+    {
+      "id": "q3",
+      "type": "lecture",
+      "title": "第 1 题",
+      "md": "$$\\int_{0}^{\\frac{\\pi}{2}} \\sin^{2}x\\,dx$$\n\n**解**：用降幂公式 $\\sin^{2}x=\\dfrac{1-\\cos 2x}{2}$\n\n$$\n\\int_{0}^{\\frac{\\pi}{2}} \\sin^{2}x\\,dx\n=\\frac{1}{2}\\int_{0}^{\\frac{\\pi}{2}}\\left(1-\\cos 2x\\right)dx\n=\\frac{1}{2}\\left[x-\\frac{1}{2}\\sin 2x\\right]_{0}^{\\frac{\\pi}{2}}\n$$\n\n代入上下限：\n\n$$\n=\\frac{1}{2}\\left[\\left(\\frac{\\pi}{2}-0\\right)-(0-0)\\right]=\\frac{\\pi}{4}\n$$\n\n**答案**：$\\dfrac{\\pi}{4}$\n\n---"
+    },
+    {
+      "id": "q4",
+      "type": "lecture",
+      "title": "第 2 题",
+      "md": "$$\\int_{0}^{\\pi} \\sin^{3}x\\,dx$$\n\n**解**：拆成 $\\sin^{3}x=\\sin x\\left(1-\\cos^{2}x\\right)$\n\n令 $u=\\cos x$，则 $du=-\\sin x\\,dx$，即 $\\sin x\\,dx=-du$\n\n**换限**：$x=0$ 时 $u=1$；$x=\\pi$ 时 $u=-1$\n\n$$\n\\int_{0}^{\\pi}\\sin^{3}x\\,dx\n=\\int_{1}^{-1}\\left(1-u^{2}\\right)(-du)\n=\\int_{-1}^{1}\\left(1-u^{2}\\right)du\n$$\n\n$$\n=\\left[u-\\frac{u^{3}}{3}\\right]_{-1}^{1}\n=\\left(1-\\frac{1}{3}\\right)-\\left(-1+\\frac{1}{3}\\right)\n=\\frac{2}{3}+\\frac{2}{3}=\\frac{4}{3}\n$$\n\n**答案**：$\\dfrac{4}{3}$\n\n**易错**：换限时上下限反了，要再用 $\\int_{a}^{b}=-\\int_{b}^{a}$ 翻回来。\n\n---"
+    },
+    {
+      "id": "q5",
+      "type": "lecture",
+      "title": "第 3 题",
+      "md": "$$\\int_{0}^{1} \\frac{x}{1+x^{2}}\\,dx$$\n\n**解**：注意分子 $x$ 正好是分母导数的一半：$\\left(1+x^{2}\\right)'=2x$\n\n直接凑微分：\n\n$$\n\\int_{0}^{1}\\frac{x}{1+x^{2}}dx\n=\\frac{1}{2}\\int_{0}^{1}\\frac{2x}{1+x^{2}}dx\n=\\frac{1}{2}\\left[\\ln\\left(1+x^{2}\\right)\\right]_{0}^{1}\n$$\n\n$$\n=\\frac{1}{2}\\left(\\ln 2-\\ln 1\\right)=\\frac{1}{2}\\ln 2\n$$\n\n**答案**：$\\dfrac{1}{2}\\ln 2$\n\n---"
+    },
+    {
+      "id": "q6",
+      "type": "lecture",
+      "title": "第 4 题",
+      "md": "$$\\int_{0}^{4} \\frac{dx}{1+\\sqrt{x}}$$\n\n**解**：令 $t=\\sqrt{x}$，则 $x=t^{2}$，$dx=2t\\,dt$\n\n**换限**：$x=0$ 时 $t=0$；$x=4$ 时 $t=2$\n\n$$\n\\int_{0}^{4}\\frac{dx}{1+\\sqrt{x}}\n=\\int_{0}^{2}\\frac{2t\\,dt}{1+t}\n=2\\int_{0}^{2}\\frac{t+1-1}{1+t}dt\n=2\\int_{0}^{2}\\left(1-\\frac{1}{1+t}\\right)dt\n$$\n\n$$\n=2\\left[t-\\ln(1+t)\\right]_{0}^{2}\n=2\\left[(2-\\ln 3)-(0-0)\\right]\n=4-2\\ln 3\n$$\n\n**答案**：$4-2\\ln 3$\n\n---"
+    },
+    {
+      "id": "q7",
+      "type": "lecture",
+      "title": "第 5 题",
+      "md": "$$\\int_{0}^{a} \\sqrt{a^{2}-x^{2}}\\,dx \\quad (a>0)$$\n\n**解**：三角代换，令 $x=a\\sin t$，$dx=a\\cos t\\,dt$\n\n**换限**：$x=0$ 时 $t=0$；$x=a$ 时 $t=\\dfrac{\\pi}{2}$\n\n此时 $\\sqrt{a^{2}-x^{2}}=a\\cos t$\n\n$$\n\\int_{0}^{a}\\sqrt{a^{2}-x^{2}}dx\n=\\int_{0}^{\\frac{\\pi}{2}}a\\cos t\\cdot a\\cos t\\,dt\n=a^{2}\\int_{0}^{\\frac{\\pi}{2}}\\cos^{2}t\\,dt\n$$\n\n用第 1 题的结论 $\\int_{0}^{\\frac{\\pi}{2}}\\cos^{2}t\\,dt=\\dfrac{\\pi}{4}$：\n\n$$\n=a^{2}\\cdot\\frac{\\pi}{4}=\\frac{\\pi a^{2}}{4}\n$$\n\n**答案**：$\\dfrac{\\pi a^{2}}{4}$\n\n**几何意义**：这是半径为 $a$ 的四分之一圆的面积，结果对得上。\n\n---"
+    },
+    {
+      "id": "q8",
+      "type": "lecture",
+      "title": "二、分部积分",
+      "md": "**核心公式**\n\n$$\\int_{a}^{b} u\\,dv=\\Big[u\\,v\\Big]_{a}^{b}-\\int_{a}^{b} v\\,du$$\n\n选 $u$ 的顺序：**反对幂指三**（反三角、对数、幂、指数、三角，排前面的当 $u$）\n\n---"
+    },
+    {
+      "id": "q9",
+      "type": "lecture",
+      "title": "第 6 题",
+      "md": "$$\\int_{0}^{1} x e^{x}\\,dx$$\n\n**解**：取 $u=x$，$dv=e^{x}dx$，则 $du=dx$，$v=e^{x}$\n\n$$\n\\int_{0}^{1}xe^{x}dx\n=\\Big[xe^{x}\\Big]_{0}^{1}-\\int_{0}^{1}e^{x}dx\n=\\left(e-0\\right)-\\Big[e^{x}\\Big]_{0}^{1}\n$$\n\n$$\n=e-\\left(e-1\\right)=1\n$$\n\n**答案**：$1$\n\n---"
+    }
+  ]
+}

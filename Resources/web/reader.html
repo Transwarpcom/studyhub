@@ -102,7 +102,18 @@
 
   /* 公式 */
   .katex{font-size:1.02em}
-  .katex-display{margin:.75em 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
+  .katex-display{
+    margin:.8em 0;overflow-x:auto;overflow-y:hidden;padding:6px 2px 8px;
+    -webkit-overflow-scrolling:touch;scrollbar-width:thin;
+  }
+  .katex-display::-webkit-scrollbar{height:4px}
+  .katex-display::-webkit-scrollbar-thumb{background:var(--line);border-radius:2px}
+  .katex-display::-webkit-scrollbar-track{background:transparent}
+  /* 行内超长公式：允许横向滑动，不撑破版心 */
+  .md .katex{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;
+    vertical-align:middle;scrollbar-width:none}
+  .md .katex::-webkit-scrollbar{display:none}
+  .md .katex-display .katex{overflow:visible;max-width:none}
 
   /* 选项 */
   .opts{margin-top:10px}

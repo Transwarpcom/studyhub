@@ -1,0 +1,108 @@
+{
+  "id": "math/4-2",
+  "title": "4.2 换元积分法",
+  "subtitle": "第一类（凑微分）· 第二类（三角代换）",
+  "cards": [
+    {
+      "id": "ac1",
+      "type": "lecture",
+      "title": "凑微分的本质",
+      "md": "## 公式\n\n$$\\int f[\\varphi(x)]\\varphi'(x)dx=\\int f(u)du\\Big|_{u=\\varphi(x)}$$\n\n用微分写更直观：\n\n$$\\varphi'(x)dx=d[\\varphi(x)]$$\n\n所以凑微分就是**把被积表达式里的一部分塞进 $d$ 的后面**。\n\n## 例子\n\n$$\\int 2x e^{x^2}dx=\\int e^{x^2}d(x^2)=e^{x^2}+C$$\n\n$$\\int \\frac{2x}{1+x^2}dx=\\int\\frac{d(1+x^2)}{1+x^2}=\\ln(1+x^2)+C$$\n\n$$\\int \\sin^3x\\cos x\\,dx=\\int\\sin^3x\\,d(\\sin x)=\\frac{\\sin^4x}{4}+C$$\n\n## 常见凑法表\n\n| 被积式里的部分 | 凑成 |\n|---|---|\n| $x\\,dx$ | $\\frac12d(x^2)$ |\n| $\\frac{dx}{x}$ | $d(\\ln x)$ |\n| $e^xdx$ | $d(e^x)$ |\n| $\\cos x\\,dx$ | $d(\\sin x)$ |\n| $\\sin x\\,dx$ | $-d(\\cos x)$ |\n| $\\frac{dx}{\\sqrt x}$ | $2d(\\sqrt x)$ |\n| $\\frac{dx}{1+x^2}$ | $d(\\arctan x)$ |\n\n> 判断标准：凑完之后，$d$ 后面那一坨的导数，正好是被积式里剩下的部分。"
+    },
+    {
+      "id": "aq1",
+      "type": "blank",
+      "question": "$\\displaystyle\\int x e^{x^2}dx=$ {{1}}",
+      "explain": "$x\\,dx=\\frac12d(x^2)$，所以\n\n$$\\int xe^{x^2}dx=\\frac12\\int e^{x^2}d(x^2)=\\frac12e^{x^2}+C$$\n\n**验证**：$$\\left(\\frac12e^{x^2}\\right)'=\\frac12e^{x^2}\\cdot2x=xe^{x^2}$$ ✓",
+      "blanks": [
+        [
+          "1/2 e^{x^2}+C",
+          "(1/2)e^{x^2}+C",
+          "0.5e^{x^2}+C",
+          "1/2e^(x^2)+C"
+        ]
+      ],
+      "tags": [
+        "凑微分"
+      ]
+    },
+    {
+      "id": "aq2",
+      "type": "choice",
+      "question": "$\\displaystyle\\int\\frac{\\ln x}{x}dx$ 等于？",
+      "explain": "$\\dfrac{dx}{x}=d(\\ln x)$，所以\n\n$$\\int\\frac{\\ln x}{x}dx=\\int\\ln x\\,d(\\ln x)=\\frac{(\\ln x)^2}{2}+C$$\n\n把 $\\ln x$ 看成一个整体 $u$，就是 $\\int u\\,du=\\frac{u^2}{2}$。",
+      "options": [
+        "$\\dfrac{(\\ln x)^2}{2}+C$",
+        "$\\ln(\\ln x)+C$",
+        "$\\dfrac1x+C$",
+        "$(\\ln x)^2+C$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "凑微分"
+      ]
+    },
+    {
+      "id": "aq3",
+      "type": "text",
+      "question": "求 $\\displaystyle\\int\\frac{dx}{x^2+4x+13}$。",
+      "explain": "**第一步：配方**\n\n$$x^2+4x+13=(x+2)^2+9=(x+2)^2+3^2$$\n\n**第二步：凑成 $\\arctan$ 的标准形式**，令 $u=x+2$，$a=3$：\n\n$$\\int\\frac{du}{u^2+9}=\\frac13\\arctan\\frac{u}{3}+C$$\n\n**第三步：回代**\n\n$$\\frac13\\arctan\\frac{x+2}{3}+C$$\n\n**通用套路**：二次三项式先配方，凑成 $u^2+a^2$ 或 $u^2-a^2$ 或 $a^2-u^2$，再套公式。",
+      "tags": [
+        "配方"
+      ]
+    },
+    {
+      "id": "bc1",
+      "type": "lecture",
+      "title": "三角代换三件套",
+      "md": "## 什么时候用\n\n被积函数里出现下面三种根式时，直接上三角代换：\n\n| 根式 | 代换 | 用的恒等式 |\n|---|---|---|\n| $\\sqrt{a^2-x^2}$ | $x=a\\sin t$ | $1-\\sin^2t=\\cos^2t$ |\n| $\\sqrt{a^2+x^2}$ | $x=a\\tan t$ | $1+\\tan^2t=\\sec^2t$ |\n| $\\sqrt{x^2-a^2}$ | $x=a\\sec t$ | $\\sec^2t-1=\\tan^2t$ |\n\n## 完整流程\n\n1. 换元，$dx$ 也要换（$dx=\\varphi'(t)dt$）\n2. 用恒等式把根号开掉\n3. 积分\n4. **回代**：用直角三角形把 $t$ 换回 $x$\n\n**回代技巧**：画直角三角形。$x=a\\sin t$ 就画一个斜边 $a$、对边 $x$ 的三角形，邻边自然就是 $\\sqrt{a^2-x^2}$。\n\n## 例子\n\n$$\\int\\sqrt{a^2-x^2}dx,\\quad x=a\\sin t,\\ dx=a\\cos t\\,dt$$\n\n$$\\int a\\cos t\\cdot a\\cos t\\,dt=a^2\\int\\cos^2t\\,dt=a^2\\int\\frac{1+\\cos2t}{2}dt$$\n\n$$=\\frac{a^2}{2}t+\\frac{a^2}{4}\\sin2t+C=\\frac{a^2}{2}\\arcsin\\frac xa+\\frac{x}{2}\\sqrt{a^2-x^2}+C$$",
+      "svg": "<svg viewBox=\"0 0 240 150\" width=\"240\" xmlns=\"http://www.w3.org/2000/svg\">\n  <polygon points=\"40,120 190,120 190,40\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\"/>\n  <rect x=\"178\" y=\"108\" width=\"12\" height=\"12\" fill=\"none\" stroke=\"var(--sub)\" stroke-width=\"1.2\"/>\n  <text x=\"106\" y=\"140\" font-size=\"12\" fill=\"var(--text)\">√(a²−x²)</text>\n  <text x=\"196\" y=\"86\" font-size=\"12\" fill=\"var(--text)\">x</text>\n  <text x=\"96\" y=\"76\" font-size=\"12\" fill=\"#2563eb\">a</text>\n  <text x=\"58\" y=\"112\" font-size=\"12\" fill=\"var(--sub)\">t</text>\n  <path d=\"M62 120 A22 22 0 0 0 58 108\" fill=\"none\" stroke=\"var(--sub)\" stroke-width=\"1.2\"/>\n</svg>"
+    },
+    {
+      "id": "bq1",
+      "type": "choice",
+      "question": "$\\displaystyle\\int\\frac{dx}{\\sqrt{9-x^2}}$ 等于？",
+      "explain": "这就是基本积分表第 19 条，$a=3$：\n\n$$\\arcsin\\frac x3+C$$\n\n**没有系数**。用代换验证：$x=3\\sin t$，$dx=3\\cos t\\,dt$，$\\sqrt{9-x^2}=3\\cos t$，\n\n$$\\int\\frac{3\\cos t}{3\\cos t}dt=\\int dt=t+C=\\arcsin\\frac x3+C$$\n\n系数恰好约掉。",
+      "options": [
+        "$\\arcsin\\dfrac x3+C$",
+        "$3\\arcsin\\dfrac x3+C$",
+        "$\\dfrac13\\arcsin\\dfrac x3+C$",
+        "$\\arcsin 3x+C$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "三角代换"
+      ]
+    },
+    {
+      "id": "bq2",
+      "type": "text",
+      "question": "求 $\\displaystyle\\int\\frac{dx}{x^2\\sqrt{x^2+1}}$。",
+      "explain": "**令 $x=\\tan t$**，$dx=\\sec^2t\\,dt$，$\\sqrt{x^2+1}=\\sec t$。\n\n$$\\int\\frac{\\sec^2t}{\\tan^2t\\cdot\\sec t}dt=\\int\\frac{\\sec t}{\\tan^2t}dt=\\int\\frac{1/\\cos t}{\\sin^2t/\\cos^2t}dt=\\int\\frac{\\cos t}{\\sin^2t}dt$$\n\n再令 $u=\\sin t$，$du=\\cos t\\,dt$：\n\n$$\\int\\frac{du}{u^2}=-\\frac1u+C=-\\frac{1}{\\sin t}+C$$\n\n**回代**：$x=\\tan t$，直角三角形对边 $x$、邻边 $1$、斜边 $\\sqrt{x^2+1}$，所以 $\\sin t=\\dfrac{x}{\\sqrt{x^2+1}}$。\n\n$$-\\frac{\\sqrt{x^2+1}}{x}+C$$\n\n**验证**：求导应得 $\\dfrac{1}{x^2\\sqrt{x^2+1}}$。这一步务必自己做一遍。",
+      "tags": [
+        "三角代换",
+        "综合"
+      ]
+    },
+    {
+      "id": "bq3",
+      "type": "blank",
+      "question": "$\\displaystyle\\int\\sqrt{1-x^2}\\,dx=$ {{1}}（用 $x=\\sin t$）",
+      "explain": "$x=\\sin t$，$dx=\\cos t\\,dt$，$\\sqrt{1-x^2}=\\cos t$：\n\n$$\\int\\cos^2t\\,dt=\\int\\frac{1+\\cos2t}{2}dt=\\frac t2+\\frac{\\sin2t}{4}+C$$\n\n用 $\\sin2t=2\\sin t\\cos t=2x\\sqrt{1-x^2}$：\n\n$$=\\frac12\\arcsin x+\\frac12x\\sqrt{1-x^2}+C$$\n\n**这个结果要背**，它是圆面积公式的来源（第 5 章会再用到）。",
+      "blanks": [
+        [
+          "1/2 arcsinx + 1/2 x√(1-x^2)+C",
+          "(1/2)arcsin x+(1/2)x√(1-x^2)+C",
+          "arcsinx/2 + x√(1-x^2)/2 + C"
+        ]
+      ],
+      "tags": [
+        "三角代换"
+      ]
+    }
+  ]
+}

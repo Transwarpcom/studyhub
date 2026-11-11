@@ -1,0 +1,83 @@
+{
+  "id": "math/1-2",
+  "title": "1.2 数列的极限",
+  "subtitle": "ε-N 语言 · 几何意义 · 用定义证明",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "ε-N 定义",
+      "md": "## 数列极限的定义\n\n设 $\\{a_n\\}$ 是数列，$A$ 是常数。若对任意给定的 $\\varepsilon>0$，总存在正整数 $N$，使得当 $n>N$ 时恒有\n\n$$|a_n-A|<\\varepsilon$$\n\n则称数列 $\\{a_n\\}$ **收敛于** $A$，记作 $\\lim\\limits_{n\\to\\infty}a_n=A$。\n\n这句话的骨架只有三个词：**任意、存在、恒有**。\n\n- 任意：$\\varepsilon$ 是别人给的，多小都得接住，你不能挑。\n- 存在：$N$ 是你找的，只要找得到，多大都行。\n- 恒有：$n>N$ 之后**每一项**都要落进带子里，不能只有前几项听话。\n\n> 易错点：$N$ 依赖 $\\varepsilon$，写成 $N(\\varepsilon)$ 才对；$N$ 不是唯一的，找到了就不用找最小的。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "几何意义：一条越收越紧的带子",
+      "md": "## 把绝对值拆开\n\n$$|a_n-A|<\\varepsilon \\iff A-\\varepsilon<a_n<A+\\varepsilon$$\n\n以 $A$ 为中心、宽 $2\\varepsilon$ 开一条带子。不管这条带子多窄，总有一个下标 $N$，从 $a_{N+1}$ 开始，后面的点全在带子里，一个都跑不出去。\n\n下图里蓝带是 $(A-\\varepsilon,\\,A+\\varepsilon)$，红点从某一项之后全部落进带内。",
+      "svg": "<svg viewBox=\"0 0 330 150\" width=\"330\" xmlns=\"http://www.w3.org/2000/svg\">\n  <rect x=\"138\" y=\"46\" width=\"86\" height=\"58\" fill=\"#2563eb\" opacity=\"0.13\"/>\n  <line x1=\"138\" y1=\"46\" x2=\"138\" y2=\"104\" stroke=\"#2563eb\" stroke-width=\"1.3\" stroke-dasharray=\"4 3\"/>\n  <line x1=\"224\" y1=\"46\" x2=\"224\" y2=\"104\" stroke=\"#2563eb\" stroke-width=\"1.3\" stroke-dasharray=\"4 3\"/>\n  <line x1=\"20\" y1=\"104\" x2=\"312\" y2=\"104\" stroke=\"var(--sub)\" stroke-width=\"1.2\"/>\n  <polygon points=\"312,104 304,100 304,108\" fill=\"var(--sub)\"/>\n  <text x=\"112\" y=\"40\" font-size=\"12\" fill=\"#2563eb\">A−ε</text>\n  <text x=\"214\" y=\"40\" font-size=\"12\" fill=\"#2563eb\">A+ε</text>\n  <text x=\"176\" y=\"40\" font-size=\"13\" fill=\"var(--text)\">A</text>\n  <circle cx=\"36\" cy=\"96\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"66\" cy=\"88\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"96\" cy=\"76\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"126\" cy=\"60\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"156\" cy=\"82\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"186\" cy=\"70\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"216\" cy=\"80\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"246\" cy=\"74\" r=\"4\" fill=\"#dc2626\"/>\n  <circle cx=\"276\" cy=\"76\" r=\"4\" fill=\"#dc2626\"/>\n  <text x=\"20\" y=\"128\" font-size=\"11.5\" fill=\"var(--sub)\">a₁</text>\n  <text x=\"238\" y=\"128\" font-size=\"11.5\" fill=\"var(--sub)\">n &gt; N 之后全部落在带内</text>\n  <text x=\"150\" y=\"128\" font-size=\"11.5\" fill=\"var(--sub)\">N</text>\n</svg>"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "下面哪一句才是「$\\lim\\limits_{n\\to\\infty}a_n=A$」的正确表述？",
+      "explain": "极限定义是「任意 ε，存在 N」的顺序，不能换。\n\n- A 把「任意」给了 $N$、把「存在」给了 $\\varepsilon$，意思是「总能找到一个够松的带子」，任何有界数列都满足，等于没说。\n- C 的 $\\varepsilon$ 依赖 $N$，带子可以随 $N$ 变宽，也等于没说。\n- D 只要存在一组就行，比定义弱得多。\n\n**记法：ε 是敌人给的，N 是自己找的。**",
+      "options": [
+        "存在 $\\varepsilon>0$，对任意 $N$，当 $n>N$ 时 $|a_n-A|<\\varepsilon$",
+        "对任意 $\\varepsilon>0$，存在 $N$，当 $n>N$ 时 $|a_n-A|<\\varepsilon$",
+        "对任意 $N$，存在 $\\varepsilon>0$，当 $n>N$ 时 $|a_n-A|<\\varepsilon$",
+        "存在 $\\varepsilon>0$ 和 $N$，当 $n>N$ 时 $|a_n-A|<\\varepsilon$"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "定义辨析"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "blank",
+      "question": "$\\lim\\limits_{n\\to\\infty}\\dfrac{2n+1}{n}=$ {{1}}",
+      "explain": "把分子分母同除以 $n$：\n\n$$\\frac{2n+1}{n}=2+\\frac{1}{n}\\to 2$$\n\n所以极限是 $2$。\n\n用定义验证：给定 $\\varepsilon>0$，要 $\\left|\\frac{2n+1}{n}-2\\right|=\\frac1n<\\varepsilon$，取 $N=\\left[\\frac1\\varepsilon\\right]$ 即可。",
+      "blanks": [
+        [
+          "2"
+        ]
+      ],
+      "tags": [
+        "计算",
+        "ε-N"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列数列中，**收敛**的有哪些？",
+      "explain": "- $1/n\\to 0$，收敛。\n- $(-1)^n$ 在 $1$ 和 $-1$ 之间跳，不收敛（有界但不收敛的典型）。\n- $\\frac{n}{n+1}=1-\\frac1{n+1}\\to 1$，收敛。\n- $n^2\\to+\\infty$，发散。\n- $\\frac{(-1)^n}{n}\\to 0$，正负交替但绝对值趋于 0，收敛。\n\n**判断口诀：看绝对值能不能被压到 0，而不是看符号跳不跳。**",
+      "options": [
+        "$a_n=\\dfrac{1}{n}$",
+        "$a_n=(-1)^n$",
+        "$a_n=\\dfrac{n}{n+1}$",
+        "$a_n=n^2$",
+        "$a_n=\\dfrac{(-1)^n}{n}$"
+      ],
+      "answer": [
+        0,
+        2,
+        4
+      ],
+      "tags": [
+        "收敛判定"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "用定义证明 $\\lim\\limits_{n\\to\\infty}\\dfrac{1}{n}=0$。",
+      "explain": "**证明**\n\n任给 $\\varepsilon>0$，要使\n\n$$\\left|\\frac1n-0\\right|=\\frac1n<\\varepsilon$$\n\n只需 $n>\\frac1\\varepsilon$。取 $N=\\left[\\frac1\\varepsilon\\right]+1$，则当 $n>N$ 时必有 $n>\\frac1\\varepsilon$，从而 $\\frac1n<\\varepsilon$。\n\n由定义，$\\lim\\limits_{n\\to\\infty}\\frac1n=0$。$\\blacksquare$\n\n**写证明的三步模板**\n\n1. 任给 $\\varepsilon>0$（一句话不能省）\n2. 解不等式 $|a_n-A|<\\varepsilon$，反解出 $n>g(\\varepsilon)$\n3. 取 $N=[g(\\varepsilon)]+1$，回写「当 $n>N$ 时……由定义得证」\n\n第 2 步是关键：先把不等式当等式解出临界值，再向上取整。",
+      "tags": [
+        "证明题"
+      ]
+    }
+  ]
+}

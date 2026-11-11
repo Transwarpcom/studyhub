@@ -1,0 +1,82 @@
+{
+  "id": "math/1-4",
+  "title": "1.4 无穷小与无穷大",
+  "subtitle": "定义 · 等价无穷小 · 比较阶",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "无穷小是什么",
+      "md": "## 定义\n\n若 $\\lim\\limits_{x\\to x_0}f(x)=0$，则称 $f(x)$ 是 $x\\to x_0$ 时的**无穷小**。\n\n注意三点：\n\n1. 无穷小是一个**变量**，不是「很小的数」。$0.000001$ 再小也是常数，不是无穷小。\n2. 必须说清楚**在哪个过程中**。$\\frac1x$ 在 $x\\to\\infty$ 时是无穷小，在 $x\\to 0$ 时是无穷大。\n3. 常数 $0$ 是无穷小（唯一一个常数无穷小）。\n\n**基本性质**\n\n- 有限个无穷小之和、之积仍是无穷小\n- **有界函数 × 无穷小 = 无穷小**（这条最常用）\n- $\\lim f(x)=A \\iff f(x)=A+\\alpha$，其中 $\\alpha$ 是无穷小"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "无穷小的比较：谁跑得更快",
+      "md": "## 阶的比较\n\n设 $\\alpha,\\beta$ 都是无穷小，且 $\\beta\\neq 0$：\n\n| $\\lim\\dfrac{\\alpha}{\\beta}$ | 结论 |\n|---|---|\n| $0$ | $\\alpha$ 是 $\\beta$ 的**高阶**无穷小，记 $\\alpha=o(\\beta)$ |\n| $\\infty$ | $\\alpha$ 是 $\\beta$ 的**低阶**无穷小 |\n| $c\\neq 0$ | **同阶**无穷小 |\n| $1$ | **等价**无穷小，记 $\\alpha\\sim\\beta$ |\n\n## 必须背下来的等价无穷小（$x\\to 0$）\n\n$$\\sin x\\sim x,\\quad \\tan x\\sim x,\\quad \\arcsin x\\sim x,\\quad \\arctan x\\sim x$$\n$$1-\\cos x\\sim \\frac{x^2}{2},\\quad \\ln(1+x)\\sim x,\\quad e^x-1\\sim x$$\n$$(1+x)^\\alpha-1\\sim \\alpha x,\\quad \\sqrt[n]{1+x}-1\\sim \\frac{x}{n}$$\n\n> 等价替换只能用在**乘除**里。加减法里直接换会出错，例如 $\\frac{\\sin x - x}{x^3}$，分子换掉就变成 $0$，但真实极限是 $-\\frac16$。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "当 $x\\to 0$ 时，$1-\\cos x$ 与 $x^2$ 的关系是？",
+      "explain": "$$\\lim_{x\\to0}\\frac{1-\\cos x}{x^2}=\\frac12$$\n\n比值是 $\\frac12$，既不是 $0$（高阶）也不是 $1$（等价），所以是**同阶但不等价**。\n\n但 $1-\\cos x \\sim \\dfrac{x^2}{2}$，做题时把它替换成 $\\frac{x^2}{2}$ 才是正确的等价无穷小。",
+      "options": [
+        "$1-\\cos x$ 是 $x^2$ 的高阶无穷小",
+        "$1-\\cos x$ 与 $x^2$ 是等价无穷小",
+        "$1-\\cos x$ 与 $x^2$ 是同阶但不等价的无穷小",
+        "$1-\\cos x$ 是 $x^2$ 的低阶无穷小"
+      ],
+      "answer": [
+        2
+      ],
+      "tags": [
+        "等价无穷小"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "blank",
+      "question": "$\\lim\\limits_{x\\to 0}\\dfrac{\\sin 3x}{x}=$ {{1}}",
+      "explain": "用 $\\sin 3x\\sim 3x$：\n\n$$\\lim_{x\\to0}\\frac{\\sin 3x}{x}=\\lim_{x\\to0}\\frac{3x}{x}=3$$\n\n也可以用第一重要极限：$$\\dfrac{\\sin 3x}{x}=3\\cdot\\dfrac{\\sin 3x}{3x}\\to 3\\cdot 1=3$$。\n\n**看到 $\\sin$ 里是 $kx$，答案就是 $k$。**",
+      "blanks": [
+        [
+          "3"
+        ]
+      ],
+      "tags": [
+        "计算"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列替换中，**正确**的有哪些？（均为 $x\\to0$）",
+      "explain": "- $\\sqrt{1+x}-1\\sim\\frac{x}{2}$，D 错。\n- $$\\tan x-\\sin x=\\sin x\\left(\\frac{1}{\\cos x}-1\\right)\\sim x\\cdot\\frac{x^2}{2}=\\frac{x^3}{2}$$，是 $\\frac{x^3}{2}$ 不是 $x^3$，E 错（差一个系数）。\n\nA、B、C 都是标准等价无穷小，必背。",
+      "options": [
+        "$\\sin x\\sim x$",
+        "$e^x-1\\sim x$",
+        "$\\ln(1+x)\\sim x$",
+        "$\\sqrt{1+x}-1\\sim x$",
+        "$\\tan x-\\sin x\\sim x^3$"
+      ],
+      "answer": [
+        0,
+        1,
+        2
+      ],
+      "tags": [
+        "等价无穷小"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "求 $\\lim\\limits_{x\\to 0}\\dfrac{\\tan x-\\sin x}{x^3}$。",
+      "explain": "**第一步：提公因子**\n\n$$\\tan x-\\sin x=\\sin x\\left(\\frac{1}{\\cos x}-1\\right)=\\sin x\\cdot\\frac{1-\\cos x}{\\cos x}$$\n\n**第二步：等价替换（整体是乘除，可以换）**\n\n$$\\sin x\\sim x,\\qquad 1-\\cos x\\sim\\frac{x^2}{2},\\qquad \\cos x\\to 1$$\n\n**第三步：代入**\n\n$$\\frac{x\\cdot\\frac{x^2}{2}}{1}=\\frac{x^3}{2}$$\n\n所以\n\n$$\\lim_{x\\to0}\\frac{\\tan x-\\sin x}{x^3}=\\frac12$$\n\n**易错点**：一开始直接用 $\\tan x\\sim x,\\ \\sin x\\sim x$，分子变成 $x-x=0$，得到错误答案 $0$。加减法里必须先变形再替换。",
+      "tags": [
+        "计算",
+        "易错"
+      ]
+    }
+  ]
+}

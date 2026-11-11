@@ -1,5 +1,5 @@
 {
-  "id": "math/ch02/03",
+  "id": "math/2-3",
   "title": "2.3 高阶导数",
   "subtitle": "二阶导 · n 阶导公式",
   "cards": [
@@ -13,12 +13,12 @@
       "id": "q1",
       "type": "blank",
       "question": "$y=\\sin x$，则 $y^{(2026)}=$ {{1}}",
-      "explain": "2026 除以 4 余 2。\n\n$$\\sin^{(n)}x=\\sin\\left(x+\\frac{n\\pi}{2}\\right)$$\n\n$$\\sin\\left(x+\\frac{2026\\pi}{2}\\right)=\\sin(x+1013\\pi)=\\sin(x+\\pi)=-\\sin x$$\n\n等等，$1013\\pi$ 是奇数个 $\\pi$，所以结果是 $-\\sin x$。\n\n**再核一遍**：$n=2$ 时 $(\\sin x)''=-\\sin x$，公式给 $\\sin(x+\\pi)=-\\sin x$ ✓。$2026\\equiv2\\pmod 4$，与 $n=2$ 同类，答案 $-\\sin x$。\n\n**答案**：$-\\sin x$。",
+      "explain": "用公式 $(\\sin x)^{(n)}=\\sin\\left(x+\\dfrac{n\\pi}{2}\\right)$。\n\n$$2026=4\\times506+2$$\n\n所以\n\n$$\\sin^{(2026)}x=\\sin\\left(x+2026\\cdot\\frac\\pi2\\right)=\\sin(x+1013\\pi)$$\n\n$1013$ 是奇数，$\\sin(x+1013\\pi)=\\sin(x+\\pi)=-\\sin x$。\n\n**验算**：$n=2$ 时 $(\\sin x)''=-\\sin x$，与公式一致；$2026\\equiv2\\pmod 4$，落在同一类。\n\n**答案**：$-\\sin x$。",
       "blanks": [
         [
-          "sinx",
-          "sin x",
-          "sin(x)"
+          "-sinx",
+          "-sin x",
+          "-\\sin x"
         ]
       ],
       "tags": [

@@ -1,0 +1,63 @@
+{
+  "id": "math/2-4",
+  "title": "2.4 隐函数及由参数方程所确定的函数的导数",
+  "subtitle": "隐函数 · 参数方程 · 对数求导",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "隐函数求导：两边同时对 x 求导",
+      "md": "## 基本方法\n\n方程 $F(x,y)=0$ 确定了 $y=y(x)$。把 $y$ 看成 $x$ 的函数，**两边同时对 $x$ 求导**，遇到 $y$ 就用链式法则乘一个 $y'$，最后解出 $y'$。\n\n**例**：$x^2+y^2=1$\n\n$$2x+2yy'=0\\Rightarrow y'=-\\frac xy$$\n\n**例**：$e^y+xy=e$\n\n$$e^y\\cdot y'+y+xy'=0\\Rightarrow y'=-\\frac{y}{e^y+x}$$\n\n## 参数方程求导\n\n$$\\begin{cases}x=\\varphi(t)\\\\ y=\\psi(t)\\end{cases}\\qquad \\frac{dy}{dx}=\\frac{\\psi'(t)}{\\varphi'(t)}$$\n\n二阶导：\n\n$$\\frac{d^2y}{dx^2}=\\frac{d}{dt}\\left(\\frac{\\psi'(t)}{\\varphi'(t)}\\right)\\cdot\\frac{1}{\\varphi'(t)}$$\n\n> 二阶导**最容易错**的地方：算完 $\\frac{dy}{dx}$ 后，再对 $t$ 求导，还要**除以 $\\varphi'(t)$**。漏掉这一步是这类题的头号失分点。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "对数求导法",
+      "md": "## 什么时候用\n\n两种情况：\n\n1. **幂指函数** $y=u(x)^{v(x)}$\n2. **多个因子连乘除**，直接求导会很啰嗦\n\n## 做法\n\n两边取对数，把指数和乘除变成加减，再隐函数求导。\n\n**例**：$y=x^x$\n\n$$\\ln y=x\\ln x$$\n$$\\frac{y'}{y}=\\ln x+1$$\n$$y'=x^x(\\ln x+1)$$\n\n**例**：$y=\\sqrt{\\dfrac{(x+1)(x-2)}{(x+3)}}$\n\n$$\\ln y=\\frac12\\left[\\ln(x+1)+\\ln(x-2)-\\ln(x+3)\\right]$$\n$$\\frac{y'}{y}=\\frac12\\left(\\frac{1}{x+1}+\\frac{1}{x-2}-\\frac{1}{x+3}\\right)$$\n\n再乘回 $y$ 即可。\n\n**幂指函数的通用结论**：$y=u^v$，则 $y'=u^v\\left(v'\\ln u+v\\dfrac{u'}{u}\\right)$。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "由 $x^2+xy+y^2=3$ 确定的 $y$，在点 $(1,1)$ 处的 $y'$ 等于？",
+      "explain": "两边对 $x$ 求导：\n\n$$2x+y+xy'+2yy'=0$$\n\n在 $(1,1)$ 处代入：\n\n$$2+1+y'+2y'=0\\Rightarrow 3+3y'=0\\Rightarrow y'=-1$$\n\n**注意**：$xy$ 求导是 $y+xy'$（乘积法则），这是最常见的漏项。",
+      "options": [
+        "$-1$",
+        "$1$",
+        "$-\\dfrac12$",
+        "$0$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "隐函数"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "blank",
+      "question": "$\\begin{cases}x=t^2\\\\ y=t^3\\end{cases}$，则 $\\dfrac{dy}{dx}=$ {{1}}",
+      "explain": "$$\\frac{dy}{dx}=\\frac{(t^3)'}{(t^2)'}=\\frac{3t^2}{2t}=\\frac{3t}{2}$$\n\n**如果题目要二阶导**：\n\n$$\\frac{d^2y}{dx^2}=\\frac{d}{dt}\\left(\\frac{3t}{2}\\right)\\cdot\\frac{1}{2t}=\\frac32\\cdot\\frac{1}{2t}=\\frac{3}{4t}$$\n\n注意最后除以 $\\varphi'(t)=2t$，这一步不能漏。",
+      "blanks": [
+        [
+          "3t/2",
+          "1.5t",
+          "3t/2 (t≠0)",
+          "\\frac{3t}{2}"
+        ]
+      ],
+      "tags": [
+        "参数方程"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "求 $y=x^{\\sin x}$（$x>0$）的导数。",
+      "explain": "**幂指函数，取对数**\n\n$$\\ln y=\\sin x\\cdot\\ln x$$\n\n两边对 $x$ 求导：\n\n$$\\frac{y'}{y}=\\cos x\\cdot\\ln x+\\sin x\\cdot\\frac1x$$\n\n所以\n\n$$y'=x^{\\sin x}\\left(\\cos x\\ln x+\\frac{\\sin x}{x}\\right)$$\n\n**易错**：不能分别用幂函数和指数函数的公式。$x^{\\sin x}$ 底数和指数都在变，必须取对数。\n\n**也可以用 $e$ 改写**：$y=e^{\\sin x\\ln x}$，然后链式法则，结果一样。",
+      "tags": [
+        "对数求导"
+      ]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 4,
   "updated": "2026-11-11",
   "title": "学习台",
   "tree": [
@@ -8,169 +8,331 @@
       "title": "高等数学 A1",
       "icon": "function",
       "kind": "folder",
-      "summary": "同济第 8 版上册 · 第 1–4 章",
+      "summary": "同济第 8 版上册 · 1.1 至 5.1 全 29 节 + 作业真题",
       "children": [
         {
-          "id": "math/ch01",
-          "title": "第 1 章 函数与极限",
+          "id": "math/1",
+          "title": "第一章 函数与极限",
           "icon": "folder.fill",
           "kind": "folder",
-          "summary": "极限定义 · 无穷小 · 两个重要极限",
+          "summary": "1.1 · 1.2 · 1.3 · 1.4 · 1.5 · 1.6…",
           "children": [
             {
-              "id": "math/ch01/01",
-              "title": "1.1 数列极限的定义",
+              "id": "math/1-1",
+              "title": "1.1 映射与函数",
               "kind": "lesson",
-              "bundle": "math/ch01/01",
+              "bundle": "math/1-1",
+              "summary": "映射三要素 · 函数特性 · 反函数与复合函数",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/1-2",
+              "title": "1.2 数列的极限",
+              "kind": "lesson",
+              "bundle": "math/1-2",
               "summary": "ε-N 语言 · 几何意义 · 用定义证明",
               "badge": "6 卡"
             },
             {
-              "id": "math/ch01/02",
-              "title": "1.2 无穷小与无穷大",
+              "id": "math/1-3",
+              "title": "1.3 函数的极限",
               "kind": "lesson",
-              "bundle": "math/ch01/02",
+              "bundle": "math/1-3",
+              "summary": "ε-δ 定义 · 左右极限 · 无穷远处",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/1-4",
+              "title": "1.4 无穷小与无穷大",
+              "kind": "lesson",
+              "bundle": "math/1-4",
               "summary": "定义 · 等价无穷小 · 比较阶",
               "badge": "6 卡"
             },
             {
-              "id": "math/ch01/03",
-              "title": "1.3 两个重要极限",
+              "id": "math/1-5",
+              "title": "1.5 极限运算法则",
               "kind": "lesson",
-              "bundle": "math/ch01/03",
+              "bundle": "math/1-5",
+              "summary": "四则运算 · 复合 · 五种基本求法",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/1-6",
+              "title": "1.6 极限存在准则 两个重要极限",
+              "kind": "lesson",
+              "bundle": "math/1-6",
               "summary": "sin x/x · (1+1/x)^x",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/1-7",
+              "title": "1.7 无穷小的比较",
+              "kind": "lesson",
+              "bundle": "math/1-7",
+              "summary": "阶 · 等价无穷小 · 替换规则",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/1-8",
+              "title": "1.8 函数的连续性与间断点",
+              "kind": "lesson",
+              "bundle": "math/1-8",
+              "summary": "定义 · 三类间断点 · 判别",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/1-9",
+              "title": "1.9 连续函数的运算与初等函数的连续性",
+              "kind": "lesson",
+              "bundle": "math/1-9",
+              "summary": "四则 · 复合 · 初等函数",
+              "badge": "5 卡"
+            },
+            {
+              "id": "math/1-10",
+              "title": "1.10 闭区间上连续函数的性质",
+              "kind": "lesson",
+              "bundle": "math/1-10",
+              "summary": "有界性 · 最值定理 · 零点定理 · 介值定理",
               "badge": "6 卡"
             }
           ]
         },
         {
-          "id": "math/ch02",
-          "title": "第 2 章 导数与微分",
+          "id": "math/2",
+          "title": "第二章 导数与微分",
           "icon": "folder.fill",
           "kind": "folder",
-          "summary": "导数概念 · 求导法则 · 隐函数",
+          "summary": "2.1 · 2.2 · 2.3 · 2.4 · 2.5",
           "children": [
             {
-              "id": "math/ch02/01",
-              "title": "2.1 导数的概念",
+              "id": "math/2-1",
+              "title": "2.1 导数概念",
               "kind": "lesson",
-              "bundle": "math/ch02/01",
+              "bundle": "math/2-1",
               "summary": "定义 · 几何意义 · 可导与连续",
               "badge": "6 卡"
             },
             {
-              "id": "math/ch02/02",
-              "title": "2.2 求导法则",
+              "id": "math/2-2",
+              "title": "2.2 函数的求导法则",
               "kind": "lesson",
-              "bundle": "math/ch02/02",
+              "bundle": "math/2-2",
               "summary": "四则 · 复合 · 反函数",
               "badge": "6 卡"
             },
             {
-              "id": "math/ch02/03",
+              "id": "math/2-3",
               "title": "2.3 高阶导数",
               "kind": "lesson",
-              "bundle": "math/ch02/03",
+              "bundle": "math/2-3",
               "summary": "二阶导 · n 阶导公式",
               "badge": "3 卡"
             },
             {
-              "id": "math/ch02/04",
-              "title": "2.4 隐函数与参数方程求导",
+              "id": "math/2-4",
+              "title": "2.4 隐函数及由参数方程所确定的函数的导数",
               "kind": "lesson",
-              "bundle": "math/ch02/04",
+              "bundle": "math/2-4",
               "summary": "隐函数 · 参数方程 · 对数求导",
+              "badge": "5 卡"
+            },
+            {
+              "id": "math/2-5",
+              "title": "2.5 函数的微分",
+              "kind": "lesson",
+              "bundle": "math/2-5",
+              "summary": "可微与可导 · 微分形式不变性 · 近似计算",
               "badge": "5 卡"
             }
           ]
         },
         {
-          "id": "math/ch03",
-          "title": "第 3 章 微分中值定理与导数的应用",
+          "id": "math/3",
+          "title": "第三章 微分中值定理与导数的应用",
           "icon": "folder.fill",
           "kind": "folder",
-          "summary": "中值定理 · 洛必达 · 泰勒 · 单调极值",
+          "summary": "3.1 · 3.2 · 3.3 · 3.4 · 3.5 · 3.6…",
           "children": [
             {
-              "id": "math/ch03/01",
+              "id": "math/3-1",
               "title": "3.1 微分中值定理",
               "kind": "lesson",
-              "bundle": "math/ch03/01",
+              "bundle": "math/3-1",
               "summary": "罗尔 · 拉格朗日 · 柯西",
               "badge": "6 卡"
             },
             {
-              "id": "math/ch03/02",
+              "id": "math/3-2",
               "title": "3.2 洛必达法则",
               "kind": "lesson",
-              "bundle": "math/ch03/02",
+              "bundle": "math/3-2",
               "summary": "0/0 · ∞/∞ · 七种未定式",
               "badge": "5 卡"
             },
             {
-              "id": "math/ch03/03",
+              "id": "math/3-3",
               "title": "3.3 泰勒公式",
               "kind": "lesson",
-              "bundle": "math/ch03/03",
+              "bundle": "math/3-3",
               "summary": "展开 · 佩亚诺余项 · 求极限",
               "badge": "5 卡"
             },
             {
-              "id": "math/ch03/04",
-              "title": "3.4 单调性与曲线的凹凸性",
+              "id": "math/3-4",
+              "title": "3.4 函数的单调性与曲线的凹凸性",
               "kind": "lesson",
-              "bundle": "math/ch03/04",
+              "bundle": "math/3-4",
               "summary": "判据 · 拐点 · 图形描绘",
               "badge": "5 卡"
             },
             {
-              "id": "math/ch03/05",
-              "title": "3.5 函数的极值与最值",
+              "id": "math/3-5",
+              "title": "3.5 函数的极值与最大值最小值",
               "kind": "lesson",
-              "bundle": "math/ch03/05",
+              "bundle": "math/3-5",
               "summary": "必要条件 · 三判别法 · 应用题",
               "badge": "4 卡"
+            },
+            {
+              "id": "math/3-6",
+              "title": "3.6 函数图形的描绘",
+              "kind": "lesson",
+              "bundle": "math/3-6",
+              "summary": "渐近线 · 列表法 · 作图步骤",
+              "badge": "4 卡"
+            },
+            {
+              "id": "math/3-7",
+              "title": "3.7 曲率",
+              "kind": "lesson",
+              "bundle": "math/3-7",
+              "summary": "弧微分 · 曲率公式 · 曲率圆",
+              "badge": "4 卡"
+            },
+            {
+              "id": "math/3-8",
+              "title": "3.8 方程的近似解",
+              "kind": "lesson",
+              "bundle": "math/3-8",
+              "summary": "二分法 · 切线法 · 割线法",
+              "badge": "3 卡"
             }
           ]
         },
         {
-          "id": "math/ch04",
-          "title": "第 4 章 不定积分",
+          "id": "math/4",
+          "title": "第四章 不定积分",
           "icon": "folder.fill",
           "kind": "folder",
-          "summary": "基本积分表 · 换元 · 分部",
+          "summary": "4.1 · 4.2 · 4.3 · 4.4 · 4.5",
           "children": [
             {
-              "id": "math/ch04/01",
+              "id": "math/4-1",
               "title": "4.1 不定积分的概念与性质",
               "kind": "lesson",
-              "bundle": "math/ch04/01",
+              "bundle": "math/4-1",
               "summary": "原函数 · 基本积分表 · 线性性质",
               "badge": "6 卡"
             },
             {
-              "id": "math/ch04/02",
-              "title": "4.2 第一类换元法（凑微分）",
+              "id": "math/4-2",
+              "title": "4.2 换元积分法",
               "kind": "lesson",
-              "bundle": "math/ch04/02",
-              "summary": "原理 · 常见凑法 · 换元回代",
-              "badge": "4 卡"
+              "bundle": "math/4-2",
+              "summary": "第一类（凑微分）· 第二类（三角代换）",
+              "badge": "8 卡"
             },
             {
-              "id": "math/ch04/03",
-              "title": "4.3 第二类换元法",
+              "id": "math/4-3",
+              "title": "4.3 分部积分法",
               "kind": "lesson",
-              "bundle": "math/ch04/03",
-              "summary": "三角代换 · 根式代换",
-              "badge": "4 卡"
-            },
-            {
-              "id": "math/ch04/04",
-              "title": "4.4 分部积分法",
-              "kind": "lesson",
-              "bundle": "math/ch04/04",
+              "bundle": "math/4-3",
               "summary": "选 u 口诀 · 循环积分 · 递推",
               "badge": "5 卡"
+            },
+            {
+              "id": "math/4-4",
+              "title": "4.4 有理函数的积分",
+              "kind": "lesson",
+              "bundle": "math/4-4",
+              "summary": "部分分式 · 四种情形 · 待定系数",
+              "badge": "4 卡"
+            },
+            {
+              "id": "math/4-5",
+              "title": "4.5 积分表的使用",
+              "kind": "lesson",
+              "bundle": "math/4-5",
+              "summary": "查表 · 变形 · 递推",
+              "badge": "3 卡"
+            }
+          ]
+        },
+        {
+          "id": "math/5",
+          "title": "第五章 定积分（5.1 起）",
+          "icon": "folder.fill",
+          "kind": "folder",
+          "summary": "5.1",
+          "children": [
+            {
+              "id": "math/5-1",
+              "title": "5.1 定积分的概念与性质",
+              "kind": "lesson",
+              "bundle": "math/5-1",
+              "summary": "分割求和取极限 · 几何意义 · 七条性质",
+              "badge": "6 卡"
+            }
+          ]
+        },
+        {
+          "id": "math/hw",
+          "title": "作业真题",
+          "icon": "pencil.and.ruler.fill",
+          "kind": "folder",
+          "summary": "你发过的作业与课堂题，全部带完整过程",
+          "children": [
+            {
+              "id": "math/hw-4-2",
+              "title": "作业精讲 · 习题 4-2",
+              "kind": "lesson",
+              "bundle": "math/hw-4-2",
+              "summary": "换元积分法 16 题全解（教材 P202-203）",
+              "badge": "10 卡"
+            },
+            {
+              "id": "math/hw-4-3",
+              "title": "作业精讲 · 习题 4-3",
+              "kind": "lesson",
+              "bundle": "math/hw-4-3",
+              "summary": "定积分换元法与分部积分法 12 题",
+              "badge": "9 卡"
+            },
+            {
+              "id": "math/hw-4-3b",
+              "title": "作业精讲 · 黑板 8 题",
+              "kind": "lesson",
+              "bundle": "math/hw-4-3b",
+              "summary": "分部积分专项（含选 u 口诀与三个高频错点）",
+              "badge": "8 卡"
+            },
+            {
+              "id": "math/hw-4-4",
+              "title": "作业精讲 · 4.4 计算题",
+              "kind": "lesson",
+              "bundle": "math/hw-4-4",
+              "summary": "有理函数积分 4 题全解",
+              "badge": "6 卡"
+            },
+            {
+              "id": "math/hw-class6",
+              "title": "作业精讲 · 课堂 6 题",
+              "kind": "lesson",
+              "bundle": "math/hw-class6",
+              "summary": "综合技巧：三角代换 / 倒代换 / 拆项",
+              "badge": "7 卡"
             }
           ]
         }

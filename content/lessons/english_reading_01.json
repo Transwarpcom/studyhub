@@ -53,17 +53,9 @@
     },
     {
       "id": "q3",
-      "type": "blank",
+      "type": "text",
       "question": "用一句话概括下面这句的主干（中文）：\\n\\n`The idea that remote work will permanently replace the traditional office, which gained popularity during the pandemic, has gradually lost support among managers.`",
       "explain": "**拆句**\n\n- `that remote work will permanently replace...` 是 idea 的同位语从句\n- `which gained popularity during the pandemic` 是非限制性定语从句，修饰 idea\n- 主干只剩：`The idea has gradually lost support among managers.`\n\n**译文**：这个观点在管理者中逐渐失去了支持。\n\n**要能识别**：两个逗号夹住的 which 从句可以直接跳过，不影响主干理解。阅读题里大量长句都是这个结构。",
-      "blanks": [
-        [
-          "这一想法已逐渐失去管理者的支持",
-          "这个观点在管理者中逐渐失去支持",
-          "该观点已逐渐失去管理层的支持",
-          "这一观念逐渐失去支持"
-        ]
-      ],
       "tags": [
         "长难句"
       ]

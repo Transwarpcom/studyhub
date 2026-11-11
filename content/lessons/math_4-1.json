@@ -1,5 +1,5 @@
 {
-  "id": "math/ch04/01",
+  "id": "math/4-1",
   "title": "4.1 不定积分的概念与性质",
   "subtitle": "原函数 · 基本积分表 · 线性性质",
   "cards": [
@@ -35,7 +35,7 @@
       "id": "q2",
       "type": "choice",
       "question": "$\\displaystyle\\int\\frac{dx}{\\sqrt{4-x^2}}$ 等于？",
-      "explain": "套公式 $\\displaystyle\\int\\frac{dx}{\\sqrt{a^2-x^2}}=\\arcsin\\frac xa+C$，这里 $a=2$：\n\n$$\\arcsin\\frac x2+C$$\n\n**注意**：这个公式**没有** $\\frac1a$ 系数，别和第 18 条（$\\arctan$ 那条）搞混。\n\n对照：$\\displaystyle\\int\\frac{dx}{a^2+x^2}=\\frac1a\\arctan\\frac xa+C$ 才有系数。",
+      "explain": "套公式 $$\\displaystyle\\int\\frac{dx}{\\sqrt{a^2-x^2}}=\\arcsin\\frac xa+C$$，这里 $a=2$：\n\n$$\\arcsin\\frac x2+C$$\n\n**注意**：这个公式**没有** $\\frac1a$ 系数，别和第 18 条（$\\arctan$ 那条）搞混。\n\n对照：$$\\displaystyle\\int\\frac{dx}{a^2+x^2}=\\frac1a\\arctan\\frac xa+C$$ 才有系数。",
       "options": [
         "$\\arcsin\\dfrac x2+C$",
         "$2\\arcsin\\dfrac x2+C$",
@@ -53,7 +53,7 @@
       "id": "q3",
       "type": "multi",
       "question": "下列积分结果正确的有？",
-      "explain": "C 错：正确定果是 $\\ln|x|+C$，加了绝对值才对（$x<0$ 时 $\\ln x$ 没定义）。\n\n其余三项正确。D 用凑微分：$\\int e^{2x}dx=\\frac12\\int e^{2x}d(2x)=\\frac12e^{2x}+C$。",
+      "explain": "C 错：正确结果是 $\\ln|x|+C$，加了绝对值才对（$x<0$ 时 $\\ln x$ 没定义）。\n\n其余三项正确。D 用凑微分：$\\int e^{2x}dx=\\frac12\\int e^{2x}d(2x)=\\frac12e^{2x}+C$。",
       "options": [
         "$\\displaystyle\\int \\tan x\\,dx=-\\ln|\\cos x|+C$",
         "$\\displaystyle\\int \\sec^2x\\,dx=\\tan x+C$",

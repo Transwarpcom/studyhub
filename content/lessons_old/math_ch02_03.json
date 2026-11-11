@@ -1,0 +1,47 @@
+{
+  "id": "math/ch02/03",
+  "title": "2.3 高阶导数",
+  "subtitle": "二阶导 · n 阶导公式",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "高阶导数的定义与常用公式",
+      "md": "## 定义\n\n$$y''=(y')',\\qquad y^{(n)}=(y^{(n-1)})'$$\n\n二阶导的物理意义是**加速度**；几何上判断凹凸性（第 3 章用）。\n\n## 必记的 $n$ 阶导公式\n\n$$(e^x)^{(n)}=e^x$$\n$$(a^x)^{(n)}=a^x(\\ln a)^n$$\n$$(\\sin x)^{(n)}=\\sin\\left(x+\\frac{n\\pi}{2}\\right)$$\n$$(\\cos x)^{(n)}=\\cos\\left(x+\\frac{n\\pi}{2}\\right)$$\n$$\\left(\\frac{1}{1+x}\\right)^{(n)}=\\frac{(-1)^n n!}{(1+x)^{n+1}}$$\n$$(x^n)^{(n)}=n!,\\qquad (x^n)^{(n+1)}=0$$\n\n## 莱布尼茨公式\n\n$$(uv)^{(n)}=\\sum_{k=0}^{n}C_n^k u^{(n-k)}v^{(k)}$$\n\n和牛顿二项式完全同构，做题时只需要展开前几项（因为 $v$ 的高阶导很快变 0）。"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$y=\\sin x$，则 $y^{(2026)}=$ {{1}}",
+      "explain": "用公式 $(\\sin x)^{(n)}=\\sin\\left(x+\\dfrac{n\\pi}{2}\\right)$。\n\n$$2026=4\\times506+2$$\n\n所以\n\n$$\\sin^{(2026)}x=\\sin\\left(x+2026\\cdot\\frac\\pi2\\right)=\\sin(x+1013\\pi)$$\n\n$1013$ 是奇数，$\\sin(x+1013\\pi)=\\sin(x+\\pi)=-\\sin x$。\n\n**验算**：$n=2$ 时 $(\\sin x)''=-\\sin x$，与公式一致；$2026\\equiv2\\pmod 4$，落在同一类。\n\n**答案**：$-\\sin x$。",
+      "blanks": [
+        [
+          "-sinx",
+          "-sin x",
+          "-\\sin x"
+        ]
+      ],
+      "tags": [
+        "n阶导"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$y=x^2e^x$ 的 $y''$ 等于？",
+      "explain": "一阶：\n\n$$y'=2xe^x+x^2e^x=e^x(x^2+2x)$$\n\n二阶：\n\n$$y''=e^x(x^2+2x)+e^x(2x+2)=e^x(x^2+4x+2)$$\n\n**核对**：对 $x^2e^x$ 用莱布尼茨，$n=2$：$e^x(x^2+2\\cdot2x+2)$，一致。",
+      "options": [
+        "$e^x(x^2+4x+2)$",
+        "$e^x(x^2+2x)$",
+        "$e^x(x^2+4x)$",
+        "$e^x(x^2+2)$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "高阶导"
+      ]
+    }
+  ]
+}

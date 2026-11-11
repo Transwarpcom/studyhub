@@ -56,7 +56,7 @@
     {
       "id": "q3",
       "type": "blank",
-      "question": "填出括号内词的正确形式：\\n\\nThe ______ (demonstrate) of the new device attracted many investors.",
+      "question": "填出括号内词的正确形式：\\n\\nThe {{1}} (demonstrate) of the new device attracted many investors.",
       "explain": "空格前是 `The`，后面是 `of`，需要**名词**。\n\ndemonstrate（动词）→ demonstration（名词，演示、示威）。\n\n**词性判断法**：`the ___ of` 中间几乎一定是名词。常见后缀：-tion, -ment, -ance, -ness。",
       "blanks": [
         [

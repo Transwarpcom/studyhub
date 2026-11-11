@@ -50,7 +50,7 @@
     {
       "id": "q3",
       "type": "blank",
-      "question": "把下面的意思改写成更书面的一句（英文）：\\n\\n`I don't think it's worth spending so much time on it.`\\n\\n→ `I doubt whether it is ______ spending so much time on.`",
+      "question": "把下面的意思改写成更书面的一句（英文）：\\n\\n`I don't think it's worth spending so much time on it.`\\n\\n→ `I doubt whether it is {{1}} spending so much time on.`",
       "explain": "填 `worth` 或 `worthwhile` 都可以。\n\n- `be worth doing`：值得做\n- `be worthwhile to do / doing`：值得做\n\n**这是四级听力/阅读里最常见的同义替换之一**：\n\n- `It's a waste of time` ↔ `not worth doing`\n- `It's useful` ↔ `worthwhile`\n\n选项里出现 `worthwhile`，原文大概率是 `worth` 或 `useful`。",
       "blanks": [
         [

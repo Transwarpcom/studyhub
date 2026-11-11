@@ -1,0 +1,83 @@
+{
+  "id": "math/1-6",
+  "title": "1.6 极限存在准则 两个重要极限",
+  "subtitle": "sin x/x · (1+1/x)^x",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "第一重要极限",
+      "md": "## 结论\n\n$$\\lim_{x\\to 0}\\frac{\\sin x}{x}=1$$\n\n它的价值不在这个式子本身，而在于它给出了一整类等价无穷小：$\\sin\\Box\\sim\\Box$（$\\Box\\to0$）。\n\n## 为什么成立（几何思路）\n\n在单位圆里，设圆心角 $x\\in\\left(0,\\frac{\\pi}{2}\\right)$，比较三块面积：\n\n$$\\triangle OAB < \\text{扇形}OAB < \\triangle OAC$$\n\n即\n\n$$\\frac12\\sin x<\\frac12 x<\\frac12\\tan x$$\n\n同除以 $\\frac12\\sin x$：\n\n$$1<\\frac{x}{\\sin x}<\\frac{1}{\\cos x}$$\n\n两边取倒数：$\\cos x<\\frac{\\sin x}{x}<1$。令 $x\\to0$，$\\cos x\\to1$，由夹逼准则得 $\\frac{\\sin x}{x}\\to1$。",
+      "svg": "<svg viewBox=\"0 0 260 200\" width=\"260\" xmlns=\"http://www.w3.org/2000/svg\">\n  <circle cx=\"110\" cy=\"110\" r=\"80\" fill=\"none\" stroke=\"var(--sub)\" stroke-width=\"1.3\"/>\n  <line x1=\"110\" y1=\"110\" x2=\"190\" y2=\"110\" stroke=\"var(--sub)\" stroke-width=\"1.2\"/>\n  <line x1=\"110\" y1=\"110\" x2=\"167\" y2=\"55\" stroke=\"#2563eb\" stroke-width=\"1.8\"/>\n  <line x1=\"190\" y1=\"110\" x2=\"190\" y2=\"34\" stroke=\"#16a34a\" stroke-width=\"1.8\"/>\n  <line x1=\"167\" y1=\"55\" x2=\"190\" y2=\"34\" stroke=\"#dc2626\" stroke-width=\"1.2\" stroke-dasharray=\"3 3\"/>\n  <path d=\"M150 110 A40 40 0 0 0 138 82\" fill=\"none\" stroke=\"#2563eb\" stroke-width=\"2\"/>\n  <text x=\"128\" y=\"128\" font-size=\"13\" fill=\"var(--text)\">x</text>\n  <text x=\"196\" y=\"112\" font-size=\"12\" fill=\"var(--sub)\">A</text>\n  <text x=\"164\" y=\"50\" font-size=\"12\" fill=\"#2563eb\">B</text>\n  <text x=\"194\" y=\"30\" font-size=\"12\" fill=\"#16a34a\">C</text>\n  <text x=\"14\" y=\"128\" font-size=\"12\" fill=\"var(--sub)\">O</text>\n  <text x=\"70\" y=\"188\" font-size=\"11.5\" fill=\"var(--sub)\">sin x &lt; x &lt; tan x</text>\n</svg>"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "第二重要极限与 e",
+      "md": "## 结论\n\n$$\\lim_{x\\to\\infty}\\left(1+\\frac1x\\right)^x=e\\approx2.71828$$\n\n等价写法：\n\n$$\\lim_{x\\to 0}(1+x)^{\\frac1x}=e$$\n\n## 识别信号\n\n只要看到 **$1^\\infty$ 型**，第一反应就是把它凑成 $(1+\\frac1\\Box)^{\\Box}$。\n\n**标准套路**：若 $u(x)\\to0$，$v(x)\\to\\infty$，且 $u\\cdot v\\to A$，则\n\n$$(1+u)^{v}\\to e^{A}$$\n\n## 例子\n\n$$\\lim_{n\\to\\infty}\\left(1+\\frac{2}{n}\\right)^n=\\lim_{n\\to\\infty}\\left[\\left(1+\\frac2n\\right)^{\\frac n2}\\right]^2=e^2$$\n\n这里 $\\Box=\\frac n2$，指数 $n=2\\cdot\\frac n2$，把「多出来的 $2$」提到外面当指数。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "$\\lim\\limits_{x\\to 0}\\dfrac{\\sin 2x}{3x}$ 等于？",
+      "explain": "$$\\frac{\\sin 2x}{3x}=\\frac{2}{3}\\cdot\\frac{\\sin 2x}{2x}\\to\\frac23\\cdot1=\\frac23$$\n\n**口诀：系数照抄，$x$ 的系数提到分子。** $\\frac{\\sin kx}{mx}\\to\\frac{k}{m}$。",
+      "options": [
+        "$\\dfrac{2}{3}$",
+        "$\\dfrac{3}{2}$",
+        "$1$",
+        "$0$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "计算"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "blank",
+      "question": "$$\\lim\\limits_{n\\to\\infty}\\left(1+\\dfrac{2}{n}\\right)^{n}=$$ {{1}}",
+      "explain": "凑标准形式：\n\n$$\\left(1+\\frac2n\\right)^n=\\left[\\left(1+\\frac2n\\right)^{\\frac n2}\\right]^2\\to e^2$$\n\n用公式 $u=\\frac2n\\to0$，$v=n\\to\\infty$，$uv=2$，所以极限是 $e^{2}$。",
+      "blanks": [
+        [
+          "e^2",
+          "e²",
+          "e2"
+        ]
+      ],
+      "tags": [
+        "第二个重要极限"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列极限中，结果等于 $e$ 的有哪些？",
+      "explain": "- C：指数是 $2x$，$uv=2$，结果是 $e^2$。\n- D：$u=2x$，$v=\\frac1x$，$uv=2$，结果是 $e^2$。\n\n只有 A、B 是标准形式，$uv=1$，等于 $e$。\n\n**判断只看 $u\\cdot v$ 的极限，不要看单个因子。**",
+      "options": [
+        "$\\lim\\limits_{x\\to\\infty}\\left(1+\\dfrac1x\\right)^x$",
+        "$\\lim\\limits_{x\\to 0}(1+x)^{\\frac1x}$",
+        "$\\lim\\limits_{x\\to\\infty}\\left(1+\\dfrac1x\\right)^{2x}$",
+        "$\\lim\\limits_{x\\to 0}(1+2x)^{\\frac1x}$"
+      ],
+      "answer": [
+        0,
+        1
+      ],
+      "tags": [
+        "第二个重要极限"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "求 $$\\lim\\limits_{x\\to\\infty}\\left(\\dfrac{x+2}{x-1}\\right)^{x}$$。",
+      "explain": "**第一步：拆成 $1+u$ 的形式**\n\n$$\\frac{x+2}{x-1}=1+\\frac{3}{x-1}$$\n\n**第二步：凑指数**\n\n$$\\left(1+\\frac{3}{x-1}\\right)^{x}=\\left[\\left(1+\\frac{3}{x-1}\\right)^{\\frac{x-1}{3}}\\right]^{\\frac{3x}{x-1}}$$\n\n**第三步：取极限**\n\n括号内 $\\to e$；指数 $\\dfrac{3x}{x-1}\\to3$。\n\n所以原式 $=e^{3}$。\n\n**通用结论**：$\\left(\\frac{ax+b}{ax+c}\\right)^x\\to e^{\\frac{b-c}{a}}$，本题 $a=1,b=2,c=-1$，得 $e^{3}$。",
+      "tags": [
+        "计算",
+        "综合"
+      ]
+    }
+  ]
+}

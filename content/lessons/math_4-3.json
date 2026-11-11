@@ -1,0 +1,74 @@
+{
+  "id": "math/4-3",
+  "title": "4.3 分部积分法",
+  "subtitle": "选 u 口诀 · 循环积分 · 递推",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "公式与怎么选 u",
+      "md": "## 公式\n\n$$\\int u\\,dv=uv-\\int v\\,du$$\n\n也就是\n\n$$\\int u(x)v'(x)dx=u(x)v(x)-\\int v(x)u'(x)dx$$\n\n它的作用是**把难积的搬到好积的一边**。\n\n## 选 $u$ 的口诀：反对幂指三\n\n优先把下面这些当 $u$（越靠前越优先）：\n\n1. **反**三角函数（$\\arcsin,\\arctan$）\n2. **对**数函数（$\\ln$）\n3. **幂**函数（$x^n$）\n4. **指**数函数（$e^x,a^x$）\n5. **三**角函数（$\\sin,\\cos$）\n\n规则：**排在前面的当 $u$，剩下的连 $dx$ 一起当 $dv$。**\n\n## 三个典型\n\n$$\\int x e^xdx:\\quad u=x,\\ dv=e^xdx\\Rightarrow xe^x-e^x+C$$\n\n$$\\int x\\ln x\\,dx:\\quad u=\\ln x,\\ dv=x\\,dx\\Rightarrow\\frac{x^2}{2}\\ln x-\\frac{x^2}{4}+C$$\n\n$$\\int\\arctan x\\,dx:\\quad u=\\arctan x,\\ dv=dx\\Rightarrow x\\arctan x-\\frac12\\ln(1+x^2)+C$$\n\n## 循环积分\n\n$\\int e^x\\sin x\\,dx$ 这类，做两次分部积分会回到原式，移项解方程即可：\n\n$$\\int e^x\\sin x\\,dx=\\frac{e^x(\\sin x-\\cos x)}{2}+C$$\n\n**注意**：移项后要除以系数，别忘了 $+C$。"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$\\displaystyle\\int x\\cos x\\,dx=$ {{1}}",
+      "explain": "按口诀，幂函数优先当 $u$：\n\n$$u=x,\\quad dv=\\cos x\\,dx\\Rightarrow v=\\sin x$$\n\n$$\\int x\\cos x\\,dx=x\\sin x-\\int\\sin x\\,dx=x\\sin x+\\cos x+C$$\n\n**验证**：求导得 $\\sin x+x\\cos x-\\sin x=x\\cos x$ ✓",
+      "blanks": [
+        [
+          "xsinx+cosx+C",
+          "x sin x+cos x+C",
+          "xsinx+cosx+c"
+        ]
+      ],
+      "tags": [
+        "分部积分"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$\\displaystyle\\int \\ln x\\,dx$ 等于？",
+      "explain": "$\\ln x$ 没有直接公式，用分部积分，令 $u=\\ln x$，$dv=dx$：\n\n$$\\int\\ln x\\,dx=x\\ln x-\\int x\\cdot\\frac1x dx=x\\ln x-x+C$$\n\n**这是必背结论**。同类还有 $\\int\\arctan x\\,dx$、$\\int\\arcsin x\\,dx$，都是「$u$ 取反三角/对数，$dv=dx$」。",
+      "options": [
+        "$x\\ln x-x+C$",
+        "$\\dfrac1x+C$",
+        "$x\\ln x+x+C$",
+        "$\\dfrac{(\\ln x)^2}{2}+C$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "分部积分"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "求 $\\displaystyle\\int e^x\\cos x\\,dx$。",
+      "explain": "**第一次分部**：$u=e^x$，$dv=\\cos x\\,dx$\n\n$$I=e^x\\sin x-\\int e^x\\sin x\\,dx$$\n\n**第二次分部**（对 $\\int e^x\\sin x\\,dx$）：$u=e^x$，$dv=\\sin x\\,dx$\n\n$$\\int e^x\\sin x\\,dx=-e^x\\cos x+\\int e^x\\cos x\\,dx=-e^x\\cos x+I$$\n\n代回：\n\n$$I=e^x\\sin x+e^x\\cos x-I$$\n\n$$2I=e^x(\\sin x+\\cos x)$$\n\n$$I=\\frac{e^x(\\sin x+\\cos x)}{2}+C$$\n\n**要点**：两次分部必须**同一种选 u 的方式**（都取 $e^x$），否则会绕回原点。",
+      "tags": [
+        "循环积分"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "choice",
+      "question": "$\\displaystyle\\int x^2e^xdx$ 需要分部积分几次？",
+      "explain": "$x^2$ 每分部一次降一阶：$x^2\\to x\\to1$，所以两次就够。\n\n$$\\int x^2e^xdx=e^x(x^2-2x+2)+C$$\n\n**规律**：$\\int x^ne^xdx$ 需要 $n$ 次分部积分；$\\int x^n\\sin x\\,dx$ 同理。",
+      "options": [
+        "$1$ 次",
+        "$2$ 次",
+        "$3$ 次",
+        "不需要"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "次数判断"
+      ]
+    }
+  ]
+}

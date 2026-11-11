@@ -1,0 +1,79 @@
+{
+  "id": "math/1-5",
+  "title": "1.5 极限运算法则",
+  "subtitle": "四则运算 · 复合 · 五种基本求法",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "四则运算法则",
+      "md": "## 定理\n\n若 $\\lim f(x)=A$，$\\lim g(x)=B$（同一极限过程），则\n\n$$\\lim[f(x)\\pm g(x)]=A\\pm B$$\n$$\\lim[f(x)g(x)]=AB$$\n$$\\lim\\frac{f(x)}{g(x)}=\\frac AB\\quad(B\\neq0)$$\n\n**推论**：\n\n- $\\lim[Cf(x)]=C\\lim f(x)$\n- $\\lim[f(x)]^n=[\\lim f(x)]^n$\n- 有限个无穷小的和、积仍是无穷小\n- **有界函数 × 无穷小 = 无穷小**\n\n## 使用前提\n\n**每个部分的极限都必须存在**。若 $\\lim f$ 不存在，不能拆。\n\n反例：$\\lim\\limits_{x\\to\\infty}(\\sin x-\\sin x)=0$，但拆成 $\\lim\\sin x-\\lim\\sin x$ 两项都不存在，不能拆。\n\n## 复合函数的极限\n\n若 $\\lim\\limits_{x\\to x_0}g(x)=u_0$，且 $f$ 在 $u_0$ 处连续，则\n\n$$\\lim_{x\\to x_0}f[g(x)]=f\\left[\\lim_{x\\to x_0}g(x)\\right]=f(u_0)$$\n\n也就是「**连续函数可以把极限号搬到里面**」。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "求极限的五种基本方法",
+      "md": "## 方法一：直接代入\n\n多项式、有理函数在分母不为 0 时，直接代入。\n\n## 方法二：约分（$\\frac00$ 型，因式分解）\n\n$$\\lim_{x\\to1}\\frac{x^2-1}{x-1}=\\lim_{x\\to1}(x+1)=2$$\n\n## 方法三：有理化（含根号）\n\n$$\\lim_{x\\to0}\\frac{\\sqrt{1+x}-1}{x}=\\lim_{x\\to0}\\frac{(\\sqrt{1+x}-1)(\\sqrt{1+x}+1)}{x(\\sqrt{1+x}+1)}=\\lim_{x\\to0}\\frac{x}{x(\\sqrt{1+x}+1)}=\\frac12$$\n\n## 方法四：除以最高次（$x\\to\\infty$ 型）\n\n$$\\lim_{x\\to\\infty}\\frac{2x^2+3}{5x^2-x}=\\frac25$$\n\n## 方法五：通分（$\\infty-\\infty$ 型）\n\n$$\\lim_{x\\to1}\\left(\\frac{1}{x-1}-\\frac{2}{x^2-1}\\right)=\\lim_{x\\to1}\\frac{(x+1)-2}{x^2-1}=\\lim_{x\\to1}\\frac{x-1}{(x-1)(x+1)}=\\frac12$$\n\n## 判断流程\n\n1. 先代入，能算就直接算\n2. 得 $\\frac00$ → 约分/有理化/等价无穷小\n3. 得 $\\frac{\\infty}{\\infty}$ → 除以最高次\n4. 得 $\\infty-\\infty$ → 通分\n5. 得 $0\\cdot\\infty$ → 变形为 $\\frac00$ 或 $\\frac\\infty\\infty$"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$\\lim\\limits_{x\\to3}\\dfrac{x^2-9}{x-3}=$ {{1}}",
+      "explain": "$\\frac00$ 型，因式分解：\n\n$$\\frac{x^2-9}{x-3}=\\frac{(x-3)(x+3)}{x-3}=x+3$$\n\n代入 $x=3$：\n\n$$\\lim_{x\\to3}(x+3)=6$$\n\n也可以用洛必达（后面会学）：$\\dfrac{2x}{1}\\Big|_{x=3}=6$，结果一致。",
+      "blanks": [
+        [
+          "6"
+        ]
+      ],
+      "tags": [
+        "约分"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$\\lim\\limits_{x\\to0}\\dfrac{\\sqrt{4+x}-2}{x}$ 等于？",
+      "explain": "$\\frac00$ 型，分子有理化：乘以 $\\dfrac{\\sqrt{4+x}+2}{\\sqrt{4+x}+2}$。\n\n$$\\frac{(\\sqrt{4+x}-2)(\\sqrt{4+x}+2)}{x(\\sqrt{4+x}+2)}=\\frac{(4+x)-4}{x(\\sqrt{4+x}+2)}=\\frac{1}{\\sqrt{4+x}+2}$$\n\n令 $x\\to0$：\n\n$$\\frac{1}{2+2}=\\frac14$$\n\n**有理化的目的**：把分子里的根号消掉，让 $x$ 能约掉。",
+      "options": [
+        "$\\dfrac14$",
+        "$\\dfrac12$",
+        "$1$",
+        "不存在"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "有理化"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列极限计算正确的有？",
+      "explain": "- A：同次，系数比 $\\frac32$ ✓\n- B：分子次数 2 > 分母次数 1，极限是 $\\infty$，不是 0 ✗\n- C：$\\dfrac{(x-2)(x+2)}{x-2}=x+2\\to4$ ✓\n- D：$\\sin x$ 有界，$\\frac1x\\to0$，由「有界×无穷小」得 $0$，不是 1 ✗\n\nD 是最容易错的：$\\frac{\\sin x}{x}$ 在 $x\\to0$ 时才是 1，$x\\to\\infty$ 时是 0。**看清极限过程**。",
+      "options": [
+        "$\\lim\\limits_{x\\to\\infty}\\dfrac{3x+1}{2x-5}=\\dfrac32$",
+        "$\\lim\\limits_{x\\to\\infty}\\dfrac{x^2}{x+1}=0$",
+        "$\\lim\\limits_{x\\to2}\\dfrac{x^2-4}{x-2}=4$",
+        "$\\lim\\limits_{x\\to\\infty}\\dfrac{\\sin x}{x}=1$"
+      ],
+      "answer": [
+        0,
+        2
+      ],
+      "tags": [
+        "综合"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "求 $$\\lim\\limits_{x\\to1}\\left(\\dfrac{1}{x-1}-\\dfrac{2}{x^2-1}\\right)$$。",
+      "explain": "代入得 $\\infty-\\infty$，先通分。\n\n**第一步：通分**\n\n$$\\frac{1}{x-1}-\\frac{2}{x^2-1}=\\frac{x+1-2}{x^2-1}=\\frac{x-1}{(x-1)(x+1)}$$\n\n**第二步：约分**\n\n$$=\\frac{1}{x+1}\\quad(x\\neq1)$$\n\n**第三步：代入**\n\n$$\\lim_{x\\to1}\\frac{1}{x+1}=\\frac12$$\n\n**要点**：$\\infty-\\infty$ 型不是「无穷减无穷等于 0」，必须通分后看分子分母的阶。\n\n**易错**：注意 $x^2-1=(x-1)(x+1)$ 这个分解，通分时要用到。",
+      "tags": [
+        "通分"
+      ]
+    }
+  ]
+}

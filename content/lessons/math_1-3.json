@@ -1,0 +1,79 @@
+{
+  "id": "math/1-3",
+  "title": "1.3 函数的极限",
+  "subtitle": "ε-δ 定义 · 左右极限 · 无穷远处",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "x 趋于有限值时函数的极限",
+      "md": "## 定义（ε-δ 语言）\n\n设函数 $f(x)$ 在点 $x_0$ 的某个去心邻域内有定义。若对任意给定的 $\\varepsilon>0$，总存在 $\\delta>0$，使得当\n\n$$0<|x-x_0|<\\delta$$\n\n时，恒有\n\n$$|f(x)-A|<\\varepsilon$$\n\n则称 $A$ 为 $f(x)$ 当 $x\\to x_0$ 时的极限，记作\n\n$$\\lim_{x\\to x_0}f(x)=A$$\n\n## 和数列极限的对照\n\n| | 数列 $\\lim\\limits_{n\\to\\infty}a_n=A$ | 函数 $\\lim\\limits_{x\\to x_0}f(x)=A$ |\n|---|---|---|\n| 自变量控制 | $n>N$ | $0<|x-x_0|<\\delta$ |\n| 距离控制 | $\\|a_n-A\\|<\\varepsilon$ | $\\|f(x)-A\\|<\\varepsilon$ |\n| 关键 | $N$ 依赖 $\\varepsilon$ | $\\delta$ 依赖 $\\varepsilon$ |\n\n**注意 $0<|x-x_0|$**：这表示 $x\\neq x_0$。极限**与函数在 $x_0$ 点的取值无关**，甚至可以在 $x_0$ 处无定义。\n\n## 几何意义\n\n不管给多窄的水平带子 $(A-\\varepsilon,A+\\varepsilon)$，总能找到 $x_0$ 的一个去心邻域，使其中所有点的函数值都落在这条带子里。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "左右极限与无穷远处的极限",
+      "md": "## 左极限与右极限\n\n- 左极限：$x$ 从左侧趋近，记 $\\lim\\limits_{x\\to x_0^-}f(x)=f(x_0^-)$\n- 右极限：$\\lim\\limits_{x\\to x_0^+}f(x)=f(x_0^+)$\n\n**重要定理**：\n\n$$\\lim_{x\\to x_0}f(x)=A\\iff f(x_0^-)=f(x_0^+)=A$$\n\n这是判断**分段函数在分界点极限是否存在**的标准工具。\n\n**例**：$f(x)=\\begin{cases}x-1,&x<0\\\\0,&x=0\\\\x+1,&x>0\\end{cases}$\n\n$f(0^-)=-1$，$f(0^+)=1$，左右不等，所以 $\\lim\\limits_{x\\to0}f(x)$ **不存在**。\n\n## $x\\to\\infty$ 时的极限\n\n若对任意 $\\varepsilon>0$，存在 $X>0$，当 $|x|>X$ 时 $|f(x)-A|<\\varepsilon$，则称\n\n$$\\lim_{x\\to\\infty}f(x)=A$$\n\n类似可定义 $x\\to+\\infty$ 与 $x\\to-\\infty$。\n\n**例**：$\\lim\\limits_{x\\to\\infty}\\dfrac{1}{x}=0$。\n\n**注意**：$\\lim\\limits_{x\\to\\infty}\\arctan x$ 不存在，因为左右两端分别趋于 $\\pm\\frac\\pi2$；但 $\\lim\\limits_{x\\to+\\infty}\\arctan x=\\frac\\pi2$。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "$\\lim\\limits_{x\\to 1}\\dfrac{x^2-1}{x-1}$ 等于？",
+      "explain": "直接代入得 $\\frac00$，不能直接算。\n\n**因式分解**：\n\n$$\\frac{x^2-1}{x-1}=\\frac{(x-1)(x+1)}{x-1}=x+1\\quad(x\\neq1)$$\n\n所以\n\n$$\\lim_{x\\to1}\\frac{x^2-1}{x-1}=\\lim_{x\\to1}(x+1)=2$$\n\n**关键**：$x\\to1$ 时 $x\\neq1$，可以约掉 $x-1$。极限值与 $x=1$ 处是否有定义无关。",
+      "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "不存在"
+      ],
+      "answer": [
+        2
+      ],
+      "tags": [
+        "约分"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "multi",
+      "question": "设 $$f(x)=\\begin{cases}2x,&x<1\\\\ a,&x=1\\\\ x+1,&x>1\\end{cases}$$，要使 $\\lim\\limits_{x\\to1}f(x)$ 存在，下列哪些 $a$ 的取值可以？",
+      "explain": "先算左右极限：\n\n- 左：$\\lim\\limits_{x\\to1^-}2x=2$\n- 右：$\\lim\\limits_{x\\to1^+}(x+1)=2$\n\n左右相等，所以极限**存在且等于 2**，无论 $a$ 取什么。\n\n**关键理解**：极限只看去心邻域，$f(1)=a$ 的取值**不影响极限**。\n\n所以 $a$ 可以任意——这也说明「$a=2$ 时函数连续」是另一回事（那是连续性的要求）。",
+      "options": [
+        "$a=1$",
+        "$a=2$",
+        "$a=3$",
+        "任意 $a$ 都可以"
+      ],
+      "answer": [
+        1,
+        3
+      ],
+      "tags": [
+        "左右极限"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "blank",
+      "question": "$\\lim\\limits_{x\\to\\infty}\\dfrac{3x^2+2x-1}{x^2-x+4}=$ {{1}}",
+      "explain": "分子分母同除以 $x^2$：\n\n$$\\frac{3+\\frac2x-\\frac1{x^2}}{1-\\frac1x+\\frac4{x^2}}\\to\\frac{3+0-0}{1-0+0}=3$$\n\n**通用结论**（有理函数 $x\\to\\infty$）：\n\n- 分子次数 < 分母次数：极限 $0$\n- 分子次数 = 分母次数：极限 = 最高次项系数之比\n- 分子次数 > 分母次数：极限 $\\infty$\n\n本题两次，系数比 $3:1$，答案 $3$。",
+      "blanks": [
+        [
+          "3"
+        ]
+      ],
+      "tags": [
+        "无穷远"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "用 ε-δ 定义证明 $\\lim\\limits_{x\\to2}(3x-1)=5$。",
+      "explain": "**证明**\n\n任给 $\\varepsilon>0$，要使\n\n$$|(3x-1)-5|=|3x-6|=3|x-2|<\\varepsilon$$\n\n只需\n\n$$|x-2|<\\frac{\\varepsilon}{3}$$\n\n取 $\\delta=\\dfrac{\\varepsilon}{3}$，则当 $0<|x-2|<\\delta$ 时，有\n\n$$|(3x-1)-5|=3|x-2|<3\\delta=\\varepsilon$$\n\n由定义，$\\lim\\limits_{x\\to2}(3x-1)=5$。$\\blacksquare$\n\n**三步模板**\n\n1. 任给 $\\varepsilon>0$\n2. 从 $|f(x)-A|<\\varepsilon$ 反解出 $|x-x_0|<g(\\varepsilon)$\n3. 取 $\\delta=g(\\varepsilon)$，回写结论\n\n**技巧**：先把 $|f(x)-A|$ 化成「常数 $\\times|x-x_0|$」的形式，$\\delta$ 就一目了然。",
+      "tags": [
+        "证明"
+      ]
+    }
+  ]
+}

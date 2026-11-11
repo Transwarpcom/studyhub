@@ -1,0 +1,49 @@
+{
+  "id": "math/hw-class6",
+  "title": "作业精讲 · 课堂 6 题",
+  "subtitle": "综合技巧：三角代换 / 倒代换 / 拆项",
+  "cards": [
+    {
+      "id": "k1",
+      "type": "lecture",
+      "title": "(1) $\\displaystyle\\int\\frac{dx}{\\sqrt{e^{2x}",
+      "md": "**根式代换。** 令\n\n$$u=\\sqrt{e^{2x}-1},\\qquad u^2=e^{2x}-1$$\n\n两边微分：$2u\\,du=2e^{2x}dx$，即\n\n$$dx=\\frac{u\\,du}{e^{2x}}=\\frac{u\\,du}{u^2+1}$$\n\n代入原积分，分子上的 $\\dfrac{1}{u}$ 与 $dx$ 里的 $u$ 正好约掉：\n\n$$\\int\\frac{1}{\\sqrt{e^{2x}-1}}dx=\\int\\frac{1}{u}\\cdot\\frac{u\\,du}{u^2+1}=\\int\\frac{du}{u^2+1}=\\arctan u+C$$\n\n回代 $u=\\sqrt{e^{2x}-1}$：\n\n$$\\boxed{\\arctan\\sqrt{e^{2x}-1}+C}$$\n\n**求导回验：**\n\n$$\\left(\\arctan\\sqrt{e^{2x}-1}\\right)'=\\frac{1}{1+(e^{2x}-1)}\\cdot\\frac{2e^{2x}}{2\\sqrt{e^{2x}-1}}=\\frac{e^{2x}}{e^{2x}\\sqrt{e^{2x}-1}}=\\frac{1}{\\sqrt{e^{2x}-1}}\\ \\checkmark$$\n\n---"
+    },
+    {
+      "id": "k2",
+      "type": "lecture",
+      "title": "(2) $\\displaystyle\\int\\frac{\\cos 2x}{1+\\sin ",
+      "md": "**化简分母。** 由 $\\sin x\\cos x=\\dfrac{1}{2}\\sin2x$ 得\n\n$$1+\\sin x\\cos x=1+\\frac{1}{2}\\sin2x=\\frac{2+\\sin2x}{2}$$\n\n于是\n\n$$\\int\\frac{\\cos2x}{1+\\sin x\\cos x}dx=\\int\\frac{2\\cos2x}{2+\\sin2x}dx$$\n\n令 $u=2+\\sin2x$，则 $du=2\\cos2x\\,dx$：\n\n$$\\int\\frac{du}{u}=\\ln|u|+C$$\n\n因 $2+\\sin2x\\ge1>0$，绝对值可去：\n\n$$\\boxed{\\ln\\left(2+\\sin2x\\right)+C}$$\n\n---"
+    },
+    {
+      "id": "k3",
+      "type": "lecture",
+      "title": "(3) $\\displaystyle\\int\\frac{1+x^2}{1+x^4}dx$",
+      "md": "**分子分母同除 $x^2$**（这类题的关键）：\n\n$$\\int\\frac{1+x^2}{1+x^4}dx=\\int\\frac{1+\\dfrac{1}{x^2}}{x^2+\\dfrac{1}{x^2}}dx$$\n\n令 $u=x-\\dfrac{1}{x}$，则 $du=\\left(1+\\dfrac{1}{x^2}\\right)dx$，且\n\n$$x^2+\\frac{1}{x^2}=\\left(x-\\frac{1}{x}\\right)^2+2=u^2+2$$\n\n$$\\int\\frac{du}{u^2+2}=\\frac{1}{\\sqrt2}\\arctan\\frac{u}{\\sqrt2}+C$$\n\n$$\\boxed{\\frac{1}{\\sqrt2}\\arctan\\frac{x^2-1}{\\sqrt2\\,x}+C}$$\n\n---"
+    },
+    {
+      "id": "k4",
+      "type": "lecture",
+      "title": "(4) $\\displaystyle\\int x^3\\sqrt{1+x^2}\\,dx$",
+      "md": "令 $u=1+x^2$，则 $du=2x\\,dx$，$x^2=u-1$。把 $x^3dx$ 拆成 $x^2\\cdot x\\,dx$：\n\n$$x^3dx=(u-1)\\cdot\\frac{du}{2}$$\n\n$$\\int x^3\\sqrt{1+x^2}dx=\\frac{1}{2}\\int(u-1)\\sqrt u\\,du=\\frac{1}{2}\\int\\left(u^{3/2}-u^{1/2}\\right)du$$\n\n$$\\frac{1}{2}\\left(\\frac{2}{5}u^{5/2}-\\frac{2}{3}u^{3/2}\\right)+C=\\frac{1}{5}u^{5/2}-\\frac{1}{3}u^{3/2}+C$$\n\n$$\\boxed{\\frac{1}{5}(1+x^2)^{5/2}-\\frac{1}{3}(1+x^2)^{3/2}+C}$$\n\n也可整理为 $\\boxed{\\dfrac{1}{15}(3x^2-2)(1+x^2)^{3/2}+C}$。\n\n---"
+    },
+    {
+      "id": "k5",
+      "type": "lecture",
+      "title": "(5) $\\displaystyle\\int\\frac{x^3}{9+x^2}dx$",
+      "md": "**假分式先做除法。** 因 $x^3=x(9+x^2)-9x$，故\n\n$$\\frac{x^3}{9+x^2}=x-\\frac{9x}{9+x^2}$$\n\n$$\\int\\frac{x^3}{9+x^2}dx=\\int x\\,dx-9\\int\\frac{x\\,dx}{9+x^2}$$\n\n后一项凑微分，因 $d(9+x^2)=2x\\,dx$：\n\n$$-9\\int\\frac{x\\,dx}{9+x^2}=-\\frac{9}{2}\\int\\frac{d(9+x^2)}{9+x^2}=-\\frac{9}{2}\\ln(9+x^2)$$\n\n$$\\boxed{\\frac{x^2}{2}-\\frac{9}{2}\\ln(9+x^2)+C}$$\n\n**求导回验：** $$\\left(\\dfrac{x^2}{2}-\\dfrac{9}{2}\\ln(9+x^2)\\right)'=x-\\dfrac{9x}{9+x^2}=\\dfrac{x(9+x^2)-9x}{9+x^2}=\\dfrac{x^3}{9+x^2}\\ \\checkmark$$\n\n---"
+    },
+    {
+      "id": "k6",
+      "type": "lecture",
+      "title": "(6) $\\displaystyle\\int\\frac{dx}{x\\sqrt{x^2-9",
+      "md": "**三角代换。** 令 $x=3\\sec t$（$0<t<\\dfrac{\\pi}{2}$），则\n\n$$dx=3\\sec t\\tan t\\,dt,\\qquad \\sqrt{x^2-9}=3\\tan t$$\n\n$$\\int\\frac{dx}{x\\sqrt{x^2-9}}=\\int\\frac{3\\sec t\\tan t}{3\\sec t\\cdot3\\tan t}dt=\\frac{1}{3}\\int dt=\\frac{t}{3}+C$$\n\n由 $\\sec t=\\dfrac{x}{3}$ 得 $t=\\arccos\\dfrac{3}{x}$：\n\n$$\\boxed{\\frac{1}{3}\\arccos\\frac{3}{x}+C\\quad(x>3)}$$\n\n---"
+    },
+    {
+      "id": "k7",
+      "type": "lecture",
+      "title": "六题考点对照",
+      "md": "| 题号 | 方法 | 关键一步 |\n|---|---|---|\n| (1) | 根式代换 | 令 $u=\\sqrt{e^{2x}-1}$，则 $dx=\\dfrac{u\\,du}{u^2+1}$ |\n| (2) | 凑微分 | 用 $\\sin x\\cos x=\\frac12\\sin2x$ 化分母 |\n| (3) | 倒代换 | 同除 $x^2$，令 $u=x-\\frac1x$ |\n| (4) | 根式代换 | 令 $u=1+x^2$，$x^2=u-1$ |\n| (5) | 代数变形 | 假分式先除，拆成 $x-\\frac{9x}{9+x^2}$ |\n| (6) | 三角代换 | 令 $x=3\\sec t$，根式化为 $3\\tan t$ |"
+    }
+  ]
+}

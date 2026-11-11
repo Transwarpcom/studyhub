@@ -1,0 +1,67 @@
+{
+  "id": "math/hw-4-2",
+  "title": "作业精讲 · 习题 4-2",
+  "subtitle": "换元积分法 16 题全解（教材 P202-203）",
+  "cards": [
+    {
+      "id": "p1",
+      "type": "lecture",
+      "title": "第 1 题　填入适当的系数使等式成立",
+      "md": "基本依据：$d\\,f(x)=f'(x)\\,dx$，故只需让右端求导后等于左端。\n\n**(1)** $dx=\\dfrac{1}{a}\\,d(ax)$\n　因 $d(ax)=a\\,dx$。\n\n**(2)** $dx=\\dfrac{1}{7}\\,d(7x-3)$\n　因 $d(7x-3)=7\\,dx$。\n\n**(3)** $x\\,dx=\\dfrac{1}{2}\\,d(x^2)$\n　因 $d(x^2)=2x\\,dx$。\n\n**(4)** $x\\,dx=\\dfrac{1}{10}\\,d(5x^2)$\n　因 $d(5x^2)=10x\\,dx$。\n\n**(5)** $x\\,dx=-\\dfrac{1}{2}\\,d(1-x^2)$\n　因 $d(1-x^2)=-2x\\,dx$。\n\n**(6)** $x^3\\,dx=\\dfrac{1}{12}\\,d(3x^4-2)$\n　因 $d(3x^4-2)=12x^3\\,dx$。\n\n**(7)** $e^{2x}\\,dx=\\dfrac{1}{2}\\,d(e^{2x})$\n　因 $d(e^{2x})=2e^{2x}\\,dx$。\n\n**(8)** $e^{-x/2}\\,dx=-2\\,d(1+e^{-x/2})$\n　因 $d(1+e^{-x/2})=-\\dfrac{1}{2}e^{-x/2}\\,dx$。\n\n**(9)** $$\\sin\\dfrac{3x}{2}\\,dx=-\\dfrac{2}{3}\\,d\\left(\\cos\\dfrac{3x}{2}\\right)$$\n　因 $$d\\left(\\cos\\dfrac{3x}{2}\\right)=-\\dfrac{3}{2}\\sin\\dfrac{3x}{2}\\,dx$$。\n\n**(10)** $\\dfrac{dx}{x}=\\dfrac{1}{5}\\,d(5\\ln|x|)$\n　因 $d(5\\ln|x|)=\\dfrac{5}{x}\\,dx$。\n\n**(11)** $\\dfrac{dx}{x}=-\\dfrac{1}{5}\\,d(3-5\\ln|x|)$\n　因 $d(3-5\\ln|x|)=-\\dfrac{5}{x}\\,dx$。\n\n**(12)** $\\dfrac{dx}{1+9x^2}=\\dfrac{1}{3}\\,d(\\arctan 3x)$\n　因 $d(\\arctan 3x)=\\dfrac{3}{1+9x^2}\\,dx$。\n\n**(13)** $\\dfrac{dx}{\\sqrt{1-x^2}}=-\\,d(1-\\arcsin x)$\n　因 $d(1-\\arcsin x)=-\\dfrac{dx}{\\sqrt{1-x^2}}$。\n\n**(14)** $$\\dfrac{x\\,dx}{\\sqrt{1-x^2}}=-\\,d\\left(\\sqrt{1-x^2}\\right)$$\n　因 $d\\left(\\sqrt{1-x^2}\\right)=\\dfrac{-x}{\\sqrt{1-x^2}}\\,dx$。\n\n---"
+    },
+    {
+      "id": "p3",
+      "type": "lecture",
+      "title": "(1) $\\displaystyle\\int e^{5t}\\,dt$",
+      "md": "令 $u=5t$，$dt=\\dfrac{1}{5}du$：\n$$\\int e^{5t}dt=\\frac{1}{5}\\int e^u du=\\frac{1}{5}e^u+C=\\boxed{\\frac{1}{5}e^{5t}+C}$$"
+    },
+    {
+      "id": "p4",
+      "type": "lecture",
+      "title": "(2) $\\displaystyle\\int(3-2x)^3\\,dx$",
+      "md": "令 $u=3-2x$，$du=-2\\,dx$，即 $dx=-\\dfrac{1}{2}du$：\n$$\\int(3-2x)^3dx=-\\frac{1}{2}\\int u^3du=-\\frac{u^4}{8}+C=\\boxed{-\\frac{1}{8}(3-2x)^4+C}$$"
+    },
+    {
+      "id": "p5",
+      "type": "lecture",
+      "title": "(3) $\\displaystyle\\int\\frac{dx}{1-2x}$",
+      "md": "令 $u=1-2x$，$du=-2\\,dx$：\n$$\\int\\frac{dx}{1-2x}=-\\frac{1}{2}\\int\\frac{du}{u}=-\\frac{1}{2}\\ln|u|+C=\\boxed{-\\frac{1}{2}\\ln|1-2x|+C}$$"
+    },
+    {
+      "id": "p6",
+      "type": "lecture",
+      "title": "(4) $\\displaystyle\\int\\frac{dx}{\\sqrt[3]",
+      "md": "令 $u=2-3x$，$du=-3\\,dx$：\n$$\\int u^{-1/3}\\left(-\\frac{1}{3}\\right)du=-\\frac{1}{3}\\cdot\\frac{3}{2}u^{2/3}+C=\\boxed{-\\frac{1}{2}(2-3x)^{2/3}+C}$$"
+    },
+    {
+      "id": "p7",
+      "type": "lecture",
+      "title": "(5) $\\displaystyle\\int\\left(\\sin ax-e^{x",
+      "md": "拆成两项分别换元：$\\displaystyle\\int\\sin ax\\,dx=-\\frac{1}{a}\\cos ax$，$\\displaystyle\\int e^{x/b}dx=b\\,e^{x/b}$。\n$$\\boxed{-\\frac{1}{a}\\cos ax-b\\,e^{x/b}+C}$$"
+    },
+    {
+      "id": "p8",
+      "type": "lecture",
+      "title": "(6) $\\displaystyle\\int\\frac{\\sin\\sqrt{t}",
+      "md": "令 $u=\\sqrt t$，$du=\\dfrac{dt}{2\\sqrt t}$，即 $\\dfrac{dt}{\\sqrt t}=2du$：\n$$\\int\\frac{\\sin\\sqrt t}{\\sqrt t}dt=2\\int\\sin u\\,du=-2\\cos u+C=\\boxed{-2\\cos\\sqrt t+C}$$"
+    },
+    {
+      "id": "p9",
+      "type": "lecture",
+      "title": "(7) $\\displaystyle\\int xe^{-x^2}dx$",
+      "md": "令 $u=-x^2$，$du=-2x\\,dx$，即 $x\\,dx=-\\dfrac{1}{2}du$：\n$$\\int xe^{-x^2}dx=-\\frac{1}{2}\\int e^u du=-\\frac{1}{2}e^{-x^2}+C=\\boxed{-\\frac{1}{2}e^{-x^2}+C}$$"
+    },
+    {
+      "id": "p10",
+      "type": "lecture",
+      "title": "(8) $\\displaystyle\\int x\\cos(x^2)\\,dx$",
+      "md": "令 $u=x^2$，$du=2x\\,dx$：\n$$\\int x\\cos x^2dx=\\frac{1}{2}\\int\\cos u\\,du=\\frac{1}{2}\\sin u+C=\\boxed{\\frac{1}{2}\\sin(x^2)+C}$$"
+    },
+    {
+      "id": "p11",
+      "type": "lecture",
+      "title": "(9) $\\displaystyle\\int\\frac{x\\,dx}{\\sqrt",
+      "md": "令 $u=2-3x^2$，$du=-6x\\,dx$，即 $x\\,dx=-\\dfrac{1}{6}du$：\n$$\\int\\frac{x\\,dx}{\\sqrt{2-3x^2}}=-\\frac{1}{6}\\int u^{-1/2}du=-\\frac{1}{6}\\cdot2u^{1/2}+C=\\boxed{-\\frac{1}{3}\\sqrt{2-3x^2}+C}$$"
+    }
+  ]
+}

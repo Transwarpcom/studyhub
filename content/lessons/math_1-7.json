@@ -1,0 +1,85 @@
+{
+  "id": "math/1-7",
+  "title": "1.7 无穷小的比较",
+  "subtitle": "阶 · 等价无穷小 · 替换规则",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "高阶、同阶、等价",
+      "md": "## 定义\n\n设 $\\alpha,\\beta$ 是同一过程中的无穷小，且 $\\beta\\neq0$。\n\n| $\\lim\\dfrac{\\alpha}{\\beta}$ | 结论 | 记号 |\n|---|---|---|\n| $0$ | $\\alpha$ 是 $\\beta$ 的**高阶**无穷小 | $\\alpha=o(\\beta)$ |\n| $\\infty$ | $\\alpha$ 是 $\\beta$ 的**低阶**无穷小 | — |\n| $c\\neq0,c\\neq1$ | **同阶**无穷小 | $\\alpha=O(\\beta)$ |\n| $1$ | **等价**无穷小 | $\\alpha\\sim\\beta$ |\n\n## 直观理解\n\n同趋于 0，但**速度不同**。\n\n- $x^2$ 比 $x$ 快（$x\\to0$ 时 $x^2$ 是 $x$ 的高阶无穷小）\n- $\\sin x$ 和 $x$ 一样快（等价）\n- $\\sqrt x$ 比 $x$ 慢（低阶）\n\n## 常用等价无穷小（$x\\to0$）\n\n$$\\sin x\\sim x,\\quad \\tan x\\sim x,\\quad \\arcsin x\\sim x,\\quad \\arctan x\\sim x$$\n$$1-\\cos x\\sim\\frac{x^2}{2},\\quad \\ln(1+x)\\sim x,\\quad e^x-1\\sim x$$\n$$(1+x)^\\alpha-1\\sim\\alpha x,\\quad \\sqrt[n]{1+x}-1\\sim\\frac{x}{n}$$\n\n> 这张表必须背到条件反射。考试里 80% 的极限题都能靠它秒掉。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "替换的边界：什么时候不能换",
+      "md": "## 铁律：只能在乘除中替换\n\n**正确**（整体是乘除）：\n\n$$\\lim_{x\\to0}\\frac{\\sin 2x}{x}=\\lim_{x\\to0}\\frac{2x}{x}=2$$\n\n**错误**（加减中直接换）：\n\n$$\\lim_{x\\to0}\\frac{\\tan x-\\sin x}{x^3}\\neq\\lim_{x\\to0}\\frac{x-x}{x^3}=0$$\n\n正确做法是先变形：\n\n$$\\tan x-\\sin x=\\sin x\\left(\\frac{1}{\\cos x}-1\\right)=\\sin x\\cdot\\frac{1-\\cos x}{\\cos x}\\sim x\\cdot\\frac{x^2/2}{1}=\\frac{x^3}{2}$$\n\n所以极限是 $\\dfrac12$。\n\n## 为什么加减不能换\n\n等价无穷小只保证**比值**趋于 1，不保证**差值**是高阶无穷小。$\\sin x$ 和 $x$ 的差是 $-\\frac{x^3}{6}$，被减掉之后暴露出来的正是这个三阶项——直接换等于把它抹掉了。\n\n## 安全做法\n\n1. 能提公因式就提，把加减变成乘除\n2. 变成乘除后再替换\n3. 实在不行用泰勒展开（第 3 章）"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "当 $x\\to0$ 时，下列哪一组是**等价**无穷小？",
+      "explain": "逐项算比值：\n\n- $\\dfrac{\\sin x}{x}\\to1$ ✓ 等价\n- $\\dfrac{1-\\cos x}{x}=\\dfrac{x^2/2}{x}=\\dfrac x2\\to0$，是高阶 ✗\n- $\\dfrac{x}{x^2}=\\dfrac1x\\to\\infty$，是低阶 ✗\n- $\\dfrac{\\ln(1+x)}{x^2}=\\dfrac{x}{x^2}=\\dfrac1x\\to\\infty$ ✗\n\n**判据只有一条：比值极限是否为 1。**",
+      "options": [
+        "$\\sin x$ 与 $x$",
+        "$1-\\cos x$ 与 $x$",
+        "$x$ 与 $x^2$",
+        "$\\ln(1+x)$ 与 $x^2$"
+      ],
+      "answer": [
+        0
+      ],
+      "tags": [
+        "等价"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "blank",
+      "question": "当 $x\\to0$ 时，$\\sqrt{1+x}-1$ 与 $x$ 相比是 {{1}} 阶无穷小（填「同」或「高」或「低」），具体地 $\\sqrt{1+x}-1\\sim$ {{2}}",
+      "explain": "用 $(1+x)^\\alpha-1\\sim\\alpha x$，取 $\\alpha=\\frac12$：\n\n$$\\sqrt{1+x}-1\\sim\\frac{x}{2}$$\n\n比值 $\\dfrac{x/2}{x}=\\dfrac12$，是同阶（但不等价，因为极限不是 1）。\n\n**注意区分**：「同阶」和「等价」不是一回事——等价要求比值恰好为 1。",
+      "blanks": [
+        [
+          "同"
+        ],
+        [
+          "x/2",
+          "0.5x",
+          "x/2 "
+        ]
+      ],
+      "tags": [
+        "公式"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列计算**正确**的有？",
+      "explain": "- A：$\\dfrac{3x}{5x}=\\dfrac35$ ✓\n- B：$\\dfrac{x^2/2}{x^2}=\\dfrac12$ ✓\n- C：$x-\\sin x\\sim\\dfrac{x^3}{6}$，极限是 $\\dfrac16$，不是 0 ✗\n- D：$\\ln(1+2x)\\sim2x$，$\\dfrac{2x}{x}=2$ ✓\n\nC 是经典陷阱：$x-\\sin x$ 不能直接换成 $x-x=0$，必须用更高阶的展开。",
+      "options": [
+        "$\\lim\\limits_{x\\to0}\\dfrac{\\sin 3x}{\\tan 5x}=\\dfrac35$",
+        "$\\lim\\limits_{x\\to0}\\dfrac{1-\\cos x}{x^2}=\\dfrac12$",
+        "$\\lim\\limits_{x\\to0}\\dfrac{x-\\sin x}{x^3}=0$",
+        "$\\lim\\limits_{x\\to0}\\dfrac{\\ln(1+2x)}{x}=2$"
+      ],
+      "answer": [
+        0,
+        1,
+        3
+      ],
+      "tags": [
+        "替换"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "求 $\\lim\\limits_{x\\to0}\\dfrac{\\sqrt{1+x\\sin x}-1}{1-\\cos x}$。",
+      "explain": "**第一步：分子用 $(1+u)^\\alpha-1\\sim\\alpha u$**\n\n令 $u=x\\sin x\\to0$，$\\alpha=\\frac12$：\n\n$$\\sqrt{1+x\\sin x}-1\\sim\\frac12 x\\sin x$$\n\n**第二步：分母用 $1-\\cos x\\sim\\dfrac{x^2}{2}$**\n\n**第三步：整体是乘除，可以替换**\n\n$$\\lim_{x\\to0}\\frac{\\frac12 x\\sin x}{\\frac{x^2}{2}}=\\lim_{x\\to0}\\frac{x\\sin x}{x^2}=\\lim_{x\\to0}\\frac{\\sin x}{x}=1$$\n\n**答案**：$1$。\n\n**要点**：两次替换都只在**乘除结构**里进行，安全。这是这类题的标准套路。",
+      "tags": [
+        "综合"
+      ]
+    }
+  ]
+}

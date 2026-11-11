@@ -1,0 +1,74 @@
+{
+  "id": "math/1-9",
+  "title": "1.9 连续函数的运算与初等函数的连续性",
+  "subtitle": "四则 · 复合 · 初等函数",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "连续性对运算的封闭性",
+      "md": "## 四则运算\n\n若 $f,g$ 在 $x_0$ 连续，则\n\n$$f\\pm g,\\quad fg,\\quad \\frac fg\\ (g(x_0)\\neq0)$$\n\n在 $x_0$ 也都连续。\n\n## 反函数\n\n若 $y=f(x)$ 在区间 $I$ 上**单调且连续**，则其反函数 $x=f^{-1}(y)$ 在对应区间上也单调连续。\n\n## 复合函数\n\n若 $u=g(x)$ 在 $x_0$ 连续且 $g(x_0)=u_0$，而 $f(u)$ 在 $u_0$ 连续，则复合函数 $f[g(x)]$ 在 $x_0$ 连续。\n\n**这条定理的实战价值**：求极限时可以「把极限号搬进连续函数里」。\n\n$$\\lim_{x\\to0}\\ln\\frac{\\sin x}{x}=\\ln\\left(\\lim_{x\\to0}\\frac{\\sin x}{x}\\right)=\\ln1=0$$\n\n## 初等函数的连续性定理\n\n**一切初等函数在其定义区间内都是连续的。**\n\n这意味着：求初等函数在定义区间内某点的极限，**直接代入**即可。\n\n$$\\lim_{x\\to2}\\frac{x^2+1}{\\ln x}=\\frac{5}{\\ln2}$$\n\n（因为 $x=2$ 在定义区间内）"
+    },
+    {
+      "id": "q1",
+      "type": "blank",
+      "question": "$\\lim\\limits_{x\\to1}\\dfrac{\\ln x}{x-1}=$ {{1}}",
+      "explain": "$\\frac00$ 型。用等价无穷小：令 $t=x-1\\to0$，则 $x=1+t$，\n\n$$\\ln x=\\ln(1+t)\\sim t=x-1$$\n\n所以\n\n$$\\lim_{x\\to1}\\frac{\\ln x}{x-1}=\\lim_{x\\to1}\\frac{x-1}{x-1}=1$$\n\n**另一个视角**：这正好是 $\\ln x$ 在 $x=1$ 处的导数定义，$(\\ln x)'|_{x=1}=1$。",
+      "blanks": [
+        [
+          "1"
+        ]
+      ],
+      "tags": [
+        "代入"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$\\lim\\limits_{x\\to0}\\sqrt{1+x^2}$ 等于？",
+      "explain": "$\\sqrt{1+x^2}$ 是初等函数，在 $x=0$ 处有定义且连续。\n\n**直接代入**：\n\n$$\\sqrt{1+0^2}=1$$\n\n**通用原则**：初等函数在定义区间内求极限 = 直接代入。不要一看到极限就条件反射地找洛必达或等价无穷小。",
+      "options": [
+        "$0$",
+        "$1$",
+        "$2$",
+        "不存在"
+      ],
+      "answer": [
+        1
+      ],
+      "tags": [
+        "初等函数"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "multi",
+      "question": "下列极限可以「直接把极限号搬进函数」的有？",
+      "explain": "「搬进去」要求外层函数在**内层极限值处连续**。\n\n- A：$\\ln$ 在 $u=1$ 连续（内层 $1+x\\to1$），可以 ✓\n- B：这里 $\\dfrac{\\sin x}{x}$ 本身就是待求的极限，没有外层函数可搬 ✗\n- C：$\\arctan$ 在 $1$ 连续，直接代入得 $\\frac\\pi4$ ✓\n- D：内层 $\\dfrac{\\sin x}{x}\\to1$，$\\sqrt{u}$ 在 $u=1$ 连续，得 $\\sqrt1=1$ ✓\n\nD 是标准套路：先算内层极限，再套连续的外层函数。",
+      "options": [
+        "$\\lim\\limits_{x\\to0}\\ln(1+x)$",
+        "$\\lim\\limits_{x\\to0}\\dfrac{\\sin x}{x}$",
+        "$\\lim\\limits_{x\\to1}\\arctan x$",
+        "$\\lim\\limits_{x\\to0}\\sqrt{\\dfrac{\\sin x}{x}}$"
+      ],
+      "answer": [
+        0,
+        2,
+        3
+      ],
+      "tags": [
+        "复合"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "求 $\\lim\\limits_{x\\to0}\\left(1+3x\\right)^{\\frac{2}{x}}$。",
+      "explain": "这是 $1^\\infty$ 型。**取对数**把指数变下来：\n\n$$L=\\lim_{x\\to0}\\frac{2}{x}\\ln(1+3x)$$\n\n用 $\\ln(1+3x)\\sim3x$：\n\n$$L=\\lim_{x\\to0}\\frac{2\\cdot3x}{x}=6$$\n\n所以原极限\n\n$$=e^{6}$$\n\n**另一种写法**（直接凑第二个重要极限）：\n\n$$\\left(1+3x\\right)^{\\frac2x}=\\left[\\left(1+3x\\right)^{\\frac1{3x}}\\right]^{6}\\to e^{6}$$\n\n**要点**：$u\\to0$，$v\\to\\infty$，$uv\\to6$，答案 $e^{6}$。",
+      "tags": [
+        "1^∞"
+      ]
+    }
+  ]
+}
