@@ -1,0 +1,72 @@
+name: StudyHub
+options:
+  bundleIdPrefix: cn.medwarp
+  deploymentTarget:
+    iOS: "16.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+
+settings:
+  base:
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    SWIFT_VERSION: "5.9"
+    IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+    ENABLE_USER_SCRIPT_SANDBOXING: "NO"
+    CLANG_ENABLE_MODULES: "YES"
+
+targets:
+  StudyHub:
+    type: application
+    platform: iOS
+    sources:
+      - path: Sources
+      - path: Resources/web
+        type: folder
+      - path: Resources/Assets.xcassets
+    info:
+      path: Resources/Info.plist
+      properties:
+        CFBundleDisplayName: 学习台
+        CFBundleName: StudyHub
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+        NSCameraUsageDescription: 用相机拍摄题目，上传给老师讲解
+        NSPhotoLibraryUsageDescription: 从相册选择题目照片上传给老师
+        NSPhotoLibraryAddUsageDescription: 保存学习资料图片
+        NSMicrophoneUsageDescription: 录制语音提问（可选）
+        UIApplicationSupportsIndirectInputEvents: true
+        UIRequiresFullScreen: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: cn.medwarp.studyhub
+        PRODUCT_NAME: StudyHub
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: "NO"
+        CODE_SIGN_IDENTITY: ""
+        CODE_SIGNING_REQUIRED: "NO"
+        CODE_SIGNING_ALLOWED: "NO"
+        DEVELOPMENT_TEAM: ""
+
+schemes:
+  StudyHub:
+    build:
+      targets:
+        StudyHub: all
+    run:
+      config: Release
+    archive:
+      config: Release

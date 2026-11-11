@@ -1,0 +1,54 @@
+name: Build IPA
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Show schemes
+        run: xcodebuild -list -project StudyHub.xcodeproj
+
+      - name: Build (unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project StudyHub.xcodeproj \
+            -scheme StudyHub \
+            -sdk iphoneos \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build 2>&1 | tail -60
+
+      - name: Package IPA
+        run: |
+          set -e
+          APP="build/Build/Products/Release-iphoneos/StudyHub.app"
+          ls -la "$APP" | head -30
+          mkdir -p Payload
+          cp -R "$APP" Payload/
+          zip -qry StudyHub-unsigned.ipa Payload
+          ls -lh StudyHub-unsigned.ipa
+          echo "--- bundle contains ---"
+          unzip -l StudyHub-unsigned.ipa | grep -cE "SC_Info|mobileprovision" || true
+          unzip -l StudyHub-unsigned.ipa | grep -E "reader.html|katex.min.js|AppIcon" | head -10
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StudyHub-ipa
+          path: StudyHub-unsigned.ipa
+          retention-days: 30
