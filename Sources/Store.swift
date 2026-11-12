@@ -607,7 +607,7 @@ final class Store: ObservableObject {
         await HubClient.shared.logout()
         loggedIn = false
         username = ""
-        lastSyncMsg = nil
+        syncMsg = nil
     }
 
     /// 本地 → 云端
