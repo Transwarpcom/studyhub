@@ -32,6 +32,25 @@ final class HubClient {
         set { defaults.set(newValue, forKey: "hub.token") }
     }
 
+    /// 一次性迁移：把历史版本留下的服务器地址清掉，改用 BuildConfig 的新默认值，
+    /// 否则旧地址会一直覆盖默认值（表现为登录 404 no route）。
+    static func migrateServerAddressIfNeeded() {
+        let key = "hub.baseURL"
+        let d = UserDefaults.standard
+        guard let cur = d.string(forKey: key), !cur.isEmpty else { return }
+        let legacy = [
+            "https://html.medwarp.cn/study-api",
+            "https://us.medwarp.cn/study-api",
+            "https://html.medwarp.cn",
+            "https://us.medwarp.cn",
+        ]
+        if legacy.contains(where: { cur.hasPrefix($0) }) {
+            d.removeObject(forKey: key)
+            d.removeObject(forKey: "hub.activeBase")
+            print("[migrate] 旧服务器地址已清除：\(cur) → \(BuildConfig.defaultBaseURL)")
+        }
+    }
+
     // MARK: 内容源（主服务器失效时自动切 GitHub 静态镜像）
 
     /// GitHub 上的静态镜像（content 目录直接跑 raw）

@@ -43,6 +43,14 @@ struct SettingsView: View {
                         hint = "已保存"
                         Task { await store.refresh() }
                     }
+                    Button("恢复默认服务器") {
+                        UserDefaults.standard.removeObject(forKey: "hub.baseURL")
+                        UserDefaults.standard.removeObject(forKey: "hub.activeBase")
+                        base = BuildConfig.defaultBaseURL
+                        hint = "已恢复为 \(BuildConfig.defaultBaseURL)"
+                        Task { await store.refresh() }
+                    }
+                    .foregroundColor(.orange)
                     if let hint {
                         Text(hint).font(.caption).foregroundColor(.secondary)
                     }
