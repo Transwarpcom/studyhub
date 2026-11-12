@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>学习台</title>
+<link rel="stylesheet" href="katex/katex.min.css">
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#1a1d26;--sub:#6b7280;--line:#e5e7eb;--accent:#2563eb;--ok:#16a34a;--bad:#dc2626}
+@media(prefers-color-scheme:dark){:root{--bg:#0e1117;--card:#161b22;--text:#e6edf3;--sub:#8b949e;--line:#30363d;--accent:#58a6ff}}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif;padding-bottom:64px}
+a{color:var(--accent);text-decoration:none}
+.hd{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;gap:10px}
+.hd h1{font-size:16px;margin:0;flex:1;font-weight:650}
+.hd button{background:none;border:none;color:var(--accent);font-size:13.5px;padding:6px 4px}
+.wrap{padding:14px;max-width:820px;margin:0 auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.row{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.row:last-child{border-bottom:none}
+.row .t{flex:1;min-width:0}
+.row .t b{font-weight:560;font-size:14.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row .t small{color:var(--sub);font-size:11.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.badge{font-size:10.5px;color:var(--sub);background:var(--bg);border:1px solid var(--line);padding:1px 7px;border-radius:20px;white-space:nowrap}
+.prog{font-size:11px;color:var(--accent);white-space:nowrap}
+.tab{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.tab a{flex:1;text-align:center;padding:9px 0 7px;font-size:11px;color:var(--sub)}
+.tab a.on{color:var(--accent)}
+.tab a i{display:block;font-size:18px;font-style:normal;line-height:1.2}
+h2{font-size:17px;margin:18px 0 10px}
+.q{font-size:15.5px;line-height:1.8;margin-bottom:12px}
+.q .katex{font-size:1.03em}
+.opt{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:8px;font-size:14.5px;color:var(--text);cursor:pointer;transition:.12s}
+.opt:active{transform:scale(.99)}
+.opt.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 8%,var(--card))}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--card))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--card))}
+input[type=text],input[type=password]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:15px;margin-bottom:9px}
+.btn{width:100%;padding:12px;border:none;border-radius:11px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer}
+.btn:disabled{background:var(--line);color:var(--sub)}
+.btn.ghost{background:var(--card);border:1.5px solid var(--line);color:var(--text)}
+.muted{color:var(--sub);font-size:12.5px}
+.err{color:var(--bad);font-size:12.5px;margin:6px 0}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);background:#000c;color:#fff;padding:9px 16px;border-radius:20px;font-size:13px;z-index:99;opacity:0;transition:.2s;pointer-events:none}
+.toast.on{opacity:1}
+.skel{height:14px;background:var(--line);border-radius:6px;margin:8px 0;animation:p 1.2s infinite}
+@keyframes p{50%{opacity:.45}}
+.crumb{font-size:12.5px;color:var(--sub);margin-bottom:10px}
+.crumb a{color:var(--sub)}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <button id="back" style="display:none" onclick="back()">‹ 返回</button>
+  <h1 id="title">学习台</h1>
+  <button id="authBtn" onclick="route('/me')">登录</button>
+</div>
+
+<main class="wrap" id="app"></main>
+
+<nav class="tab">
+  <a href="#/home" data-t="home"><i>🏠</i>今日</a>
+  <a href="#/lib" data-t="lib"><i>📚</i>课程</a>
+  <a href="#/wrong" data-t="wrong"><i>✍️</i>错题</a>
+  <a href="#/me" data-t="me"><i>👤</i>我的</a>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script src="katex/katex.min.js"></script>
+<script>
+// ============ 配置 ============
+const BASE = location.origin + (location.pathname.startsWith('/web') ? '/web' : '');
+const API  = BASE.replace(/\/web$/, '') || '';
+const LS = {
+  get k(){return 'sh.'+this._k}, _k:'',
+  token(){return localStorage.getItem('sh.token')||''},
+  setToken(t){localStorage.setItem('sh.token',t||'')},
+  user(){return localStorage.getItem('sh.user')||''},
+  setUser(u){localStorage.setItem('sh.user',u||'')},
+  cache(k,v){try{localStorage.setItem('sh.c.'+k,JSON.stringify(v))}catch(e){}},
+  get(k){try{return JSON.parse(localStorage.getItem('sh.c.'+k))}catch(e){return null}}
+};
+
+let state = {
+  manifest: null,
+  lessons: {},      // id -> lesson
+  progress: {},     // "lid|cid" -> bool
+  wrongs: [],
+  path: [],
+  quiz: null,
+  user: LS.user(),
+  token: LS.token(),
+  registerOpen: false,
+};
+
+// ============ 工具 ============
+function el(html){const d=document.createElement('div');d.innerHTML=html.trim();return d.firstElementChild}
+function esc(s){return String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('on'),1600)}
+function renderMath(root){ if(!window.katex) return;
+  root.querySelectorAll('[data-tex]').forEach(n=>{
+    try{katex.render(n.getAttribute('data-tex'), n, {throwOnError:false, displayMode:n.hasAttribute('data-block')})}catch(e){}
+  });
+}
+async function api(path, opt={}){
+  const h = {'Content-Type':'application/json'};
+  if(state.token) h['Authorization'] = 'Bearer ' + state.token;
+  const r = await fetch(API+path, {...opt, headers:{...h, ...(opt.headers||{})}});
+  let d = null;
+  try{ d = await r.json() }catch(e){}
+  if(!r.ok) throw new Error((d&&(d.message||d.error)) || ('HTTP '+r.statusCode||r.status));
+  return d;
+}
+
+// ============ 路由 ============
+function route(p){ location.hash = '#' + p }
+window.addEventListener('hashchange', paint);
+window.addEventListener('DOMContentLoaded', init);
+
+async function init(){
+  await loadManifest();
+  paint();
+  await restoreAuth();
+}
+
+function parseHash(){
+  const h = (location.hash||'#/home').slice(1);
+  const [p, q] = h.split('?');
+  const qs = new URLSearchParams(q||'');
+  return {p, qs};
+}
+
+async function paint(){
+  const {p, qs} = parseHash();
+  document.querySelectorAll('.tab a').forEach(a=>{
+    const t = a.dataset.t;
+    a.classList.toggle('on', p.startsWith('/'+t) || (t==='lib' && p.startsWith('/lesson')));
+  });
+  const app = document.getElementById('app');
+  const back = document.getElementById('back');
+  const title = document.getElementById('title');
+  back.style.display = (p==='/home'||p==='/lib'||p==='/wrong'||p==='/me') ? 'none' : 'block';
+
+  if(p==='/home') { title.textContent='今日'; app.innerHTML='<div class="skel"></div>'; return paintHome(app) }
+  if(p==='/lib')  { title.textContent='课程'; return paintLib(app, qs.get('id')||'') }
+  if(p==='/lesson'){ title.textContent=''; return paintLesson(app, qs.get('id')||'') }
+  if(p==='/quiz') { title.textContent='练习'; return paintQuiz(app, qs.get('id')||'') }
+  if(p==='/wrong'){ title.textContent='错题本'; return paintWrong(app) }
+  if(p==='/me')   { title.textContent='我的'; return paintMe(app) }
+  route('/home');
+}
+
+function back(){ history.length>1 ? history.back() : route('/lib') }
+
+// ============ 数据 ============
+async function loadManifest(){
+  const cached = LS.get('manifest');
+  if(cached) state.manifest = cached;
+  try{
+    const r = await fetch(API + '/manifest');
+    if(r.ok){ state.manifest = await r.json(); LS.cache('manifest', state.manifest) }
+  }catch(e){}
+}
+function findNode(id, nodes=state.manifest?.tree||[]){
+  for(const n of nodes){
+    if(n.id===id) return n;
+    if(n.children){ const f = findNode(id, n.children); if(f) return f }
+  }
+  return null;
+}
+function flatLessons(nodes=state.manifest?.tree||[], out=[]){
+  for(const n of nodes){
+    if((n.kind||'')==='lesson') out.push(n);
+    if(n.children) flatLessons(n.children, out);
+  }
+  return out;
+}
+async function loadLesson(id){
+  if(state.lessons[id]) return state.lessons[id];
+  const c = LS.get('lesson.'+id);
+  if(c) state.lessons[id] = c;
+  try{
+    const d = await api('/lesson?id='+encodeURIComponent(id));
+    state.lessons[id] = d; LS.cache('lesson.'+id, d);
+    return d;
+  }catch(e){ return state.lessons[id] || null }
+}
+
+// ============ 页面 ============
+function paintHome(app){
+  const lessons = flatLessons();
+  const total = lessons.length;
+  const done = Object.keys(state.progress).filter(k=>state.progress[k]).length;
+  const wrongN = state.wrongs.length;
+  const today = new Date().toISOString().slice(0,10);
+  app.innerHTML = `
+    <div class="card">
+      <div style="font-size:13px;color:var(--sub)">${state.user ? '👤 '+esc(state.user) : '未登录（进度只存本机）'}</div>
+      <h2 style="margin:8px 0 6px">继续学习</h2>
+      <div class="muted">已答对 ${done} 题 · 错题 ${wrongN} 道 · 共 ${total} 节</div>
+    </div>
+    <div class="card">
+      <div class="row" onclick="route('/lib')">
+        <div class="t"><b>全部课程</b><small>高等数学 A1 · 大学英语</small></div>
+        <span class="badge">${total} 节</span>
+      </div>
+      <div class="row" onclick="route('/wrong')">
+        <div class="t"><b>错题本</b><small>答错自动收录，重做答对移除</small></div>
+        <span class="badge">${wrongN}</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="muted">最近更新：${esc(state.manifest?.updated||'-')}</div>
+    </div>`;
+}
+
+function paintLib(app, id){
+  const nodes = id ? (findNode(id)?.children||[]) : (state.manifest?.tree||[]);
+  const node = id ? findNode(id) : null;
+  let crumb = '';
+  if(node){
+    const chain = [];
+    (function walk(list, trail){
+      for(const n of list){
+        if(n.id===id){ chain.push(...trail, n); return true }
+        if(n.children && walk(n.children, [...trail, n])) return true;
+      }
+      return false;
+    })(state.manifest?.tree||[], []);
+    crumb = `<div class="crumb"><a href="#/lib">课程</a>` + chain.map(n=>` › <a href="#/lib?id=${encodeURIComponent(n.id)}">${esc(n.title)}</a>`).join('') + `</div>`;
+  }
+  if(!nodes.length){ app.innerHTML = crumb + '<div class="card muted">这一层还没有内容</div>'; return }
+
+  app.innerHTML = crumb + `<div class="card" id="list"></div>`;
+  const box = document.getElementById('list');
+  nodes.forEach(n=>{
+    const isL = (n.kind||'')==='lesson';
+    const kids = n.children?.length || 0;
+    const pct = isL ? lessonProgress(n.id) : 0;
+    const row = el(`<div class="row">
+      <div class="t"><b>${esc(n.title)}</b><small>${esc(n.summary||'')}</small></div>
+      ${isL && pct>0 ? `<span class="prog">${pct}%</span>` : ''}
+      ${n.badge ? `<span class="badge">${esc(n.badge)}</span>` : (kids ? `<span class="badge">${kids}</span>` : '')}
+    </div>`);
+    row.onclick = ()=> isL ? route('/lesson?id='+encodeURIComponent(n.id)) : route('/lib?id='+encodeURIComponent(n.id));
+    box.appendChild(row);
+  });
+}
+
+function lessonProgress(lid){
+  const ls = flatLessons();
+  const l = state.lessons[lid];
+  if(!l || !l.cards) return 0;
+  const total = l.cards.length;
+  if(!total) return 0;
+  const done = l.cards.filter(c=>state.progress[lid+'|'+c.id]).length;
+  return Math.round(done/total*100);
+}
+
+async function paintLesson(app, id){
+  const node = findNode(id);
+  document.getElementById('title').textContent = node?.title || '';
+  app.innerHTML = '<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+  const l = await loadLesson(id);
+  if(!l){ app.innerHTML = '<div class="card muted">加载失败，检查网络或服务器地址</div>'; return }
+
+  const cards = l.cards || [];
+  const parts = [];
+  if(l.intro) parts.push(`<div class="card q">${l.intro}</div>`);
+  cards.forEach((c,i)=>{
+    const key = id + '|' + c.id;
+    const st = state.progress[key];
+    parts.push(`<div class="card" data-card="${esc(c.id)}">
+      <div class="muted" style="margin-bottom:6px">${i+1} / ${cards.length} ${st===true?'· <span style="color:var(--ok)">已答对</span>':(st===false?'· <span style="color:var(--bad)">答错过</span>':'')}</div>
+      <div class="q">${c.q || c.question || ''}</div>
+      ${renderOptions(c, key)}
+      <div class="exp" style="display:none"></div>
+    </div>`);
+  });
+  app.innerHTML = parts.join('') || '<div class="card muted">这一节还没有卡片</div>';
+  renderMath(app);
+  app.querySelectorAll('.opt').forEach(b=>{
+    b.onclick = ()=> answer(b, id, cards);
+  });
+}
+
+function renderOptions(c, key){
+  if(c.type==='choice' || c.options){
+    return (c.options||[]).map((o,i)=>{
+      const v = Array.isArray(o) ? o[0] : (o.key ?? i);
+      const t = Array.isArray(o) ? o[1] : (o.text ?? o);
+      return `<button class="opt" data-v="${esc(v)}" data-tex="${esc(typeof t==='string'&&t.includes('\\')?t:'')}">${esc(typeof t==='string'?t:t)}</button>`;
+    }).join('');
+  }
+  return `<input type="text" class="fill" placeholder="输入答案">`;
+}
+
+function answer(btn, lid, cards){
+  const card = btn.closest('[data-card]');
+  const cid = card.dataset.card;
+  const cardData = cards.find(c=>c.id===cid);
+  const chosen = btn.dataset.v;
+  const correct = cardData.answer ?? cardData.a;
+  const ok = String(chosen || card.querySelector('.fill')?.value || '').trim() === String(correct).trim();
+
+  card.querySelectorAll('.opt').forEach(b=>{
+    b.classList.remove('sel');
+    if(b.dataset.v === String(correct)) b.classList.add('ok');
+    else if(b === btn) b.classList.add('bad');
+    b.disabled = true;
+  });
+  const exp = card.querySelector('.exp');
+  if(cardData.explain || cardData.exp){
+    exp.style.display='block';
+    exp.innerHTML = `<div class="muted" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--line)">${cardData.explain||cardData.exp}</div>`;
+    renderMath(exp);
+  }
+  record(lid, cid, ok, cardData);
+}
+
+function record(lid, cid, ok, card){
+  const key = lid + '|' + cid;
+  state.progress[key] = ok;
+  const i = state.wrongs.findIndex(w=>w.id===key);
+  if(ok){ if(i>=0) state.wrongs.splice(i,1) }
+  else if(i<0){
+    state.wrongs.unshift({id:key, lessonId:lid, lessonTitle:findNode(lid)?.title||lid,
+                          cardId:cid, preview:(card.q||card.question||'').slice(0,40), ts:Date.now()});
+  }
+  toast(ok ? '答对了' : '答错了，已进错题本');
+  if(state.token) pushProgress();
+  LS.cache('local.progress', state.progress);
+  LS.cache('local.wrongs', state.wrongs);
+}
+
+async function paintQuiz(app, id){ paintLesson(app, id) }
+
+function paintWrong(app){
+  if(!state.wrongs.length){
+    app.innerHTML = '<div class="card"><div class="muted">还没有错题。答错的选择题、填空题会自动进这里。</div></div>';
+    return;
+  }
+  app.innerHTML = `<div class="card" id="wl"></div>`;
+  const box = document.getElementById('wl');
+  state.wrongs.forEach(w=>{
+    const row = el(`<div class="row">
+      <div class="t"><b>${esc(w.preview||w.cardId)}</b><small>${esc(w.lessonTitle)}</small></div>
+      <span class="badge">重做</span>
+    </div>`);
+    row.onclick = ()=> route('/lesson?id='+encodeURIComponent(w.lessonId));
+    box.appendChild(row);
+  });
+}
+
+async function paintMe(app){
+  if(state.user){
+    app.innerHTML = `
+      <div class="card">
+        <div style="font-size:15px;font-weight:600">👤 ${esc(state.user)}</div>
+        <div class="muted" style="margin-top:4px">进度已绑定此账号，换设备登录即可同步</div>
+        <div class="muted" style="margin-top:2px">服务器：${esc(API)}</div>
+      </div>
+      <div class="card">
+        <button class="btn" id="syncBtn">立即同步</button>
+        <div style="height:9px"></div>
+        <button class="btn ghost" id="outBtn">退出登录</button>
+      </div>
+      <div class="card muted">课程内容与题目对所有人开放。登录只用于同步你自己的答题进度、错题和笔记，不同账号互相看不到。</div>`;
+    document.getElementById('syncBtn').onclick = async ()=>{
+      const b=document.getElementById('syncBtn'); b.disabled=true; b.textContent='同步中…';
+      try{ await pushProgress(); toast('已同步') }catch(e){ toast('同步失败：'+e.message) }
+      b.disabled=false; b.textContent='立即同步';
+    };
+    document.getElementById('outBtn').onclick = async ()=>{
+      try{ await api('/auth/logout',{method:'POST',body:'{}'}) }catch(e){}
+      state.token=''; state.user=''; LS.setToken(''); LS.setUser('');
+      toast('已退出'); route('/home');
+    };
+    return;
+  }
+  app.innerHTML = `
+    <div class="card">
+      <div style="font-weight:600;margin-bottom:10px">登录</div>
+      <input type="text" id="u" placeholder="用户名" autocomplete="username">
+      <input type="password" id="p" placeholder="密码" autocomplete="current-password">
+      <div class="err" id="e"></div>
+      <button class="btn" id="lb">登录</button>
+      <div style="height:9px"></div>
+      <button class="btn ghost" id="rb" ${state.registerOpen?'':'disabled'}>${state.registerOpen?'注册新账号':'注册暂未开放'}</button>
+    </div>
+    <div class="card muted">课程和题目不用登录也能看。登录后进度、错题、笔记才会存到账号里，换设备自动同步。</div>`;
+  document.getElementById('lb').onclick = ()=> doLogin();
+  document.getElementById('p').onkeydown = e=>{ if(e.key==='Enter') doLogin() };
+  document.getElementById('rb').onclick = ()=> doRegister();
+}
+
+async function doLogin(){
+  const u=document.getElementById('u').value.trim(), p=document.getElementById('p').value;
+  const e=document.getElementById('e'); e.textContent='';
+  if(!u||!p){ e.textContent='用户名和密码都要填'; return }
+  const b=document.getElementById('lb'); b.disabled=true; b.textContent='登录中…';
+  try{
+    const d = await api('/auth/login',{method:'POST',body:JSON.stringify({username:u,password:p})});
+    state.token=d.token; state.user=d.username; LS.setToken(d.token); LS.setUser(d.username);
+    toast('登录成功');
+    await pullProgress();
+    route('/home');
+  }catch(err){ e.textContent=err.message }
+  b.disabled=false; b.textContent='登录';
+}
+
+async function doRegister(){
+  const u=document.getElementById('u').value.trim(), p=document.getElementById('p').value;
+  const e=document.getElementById('e'); e.textContent='';
+  if(p.length<6){ e.textContent='密码至少 6 位'; return }
+  try{
+    const d = await api('/auth/register',{method:'POST',body:JSON.stringify({username:u,password:p})});
+    state.token=d.token; state.user=d.username; LS.setToken(d.token); LS.setUser(d.username);
+    toast('注册成功'); route('/home');
+  }catch(err){ e.textContent=err.message }
+}
+
+// ============ 进度 ============
+function localProgress(){
+  return {
+    progress: LS.get('local.progress') || {},
+    wrongs: LS.get('local.wrongs') || [],
+  };
+}
+
+async function pullProgress(){
+  if(!state.token) return;
+  try{
+    const d = await api('/progress');
+    const p = d.data || {};
+    Object.assign(state.progress, p.progress||{});
+    if(Array.isArray(p.wrongs)){
+      const have = new Set(state.wrongs.map(w=>w.id));
+      p.wrongs.forEach(w=>{ if(!have.has(w.id)) state.wrongs.push(w) });
+    }
+    LS.cache('local.progress', state.progress);
+    LS.cache('local.wrongs', state.wrongs);
+  }catch(e){}
+}
+
+async function pushProgress(){
+  if(!state.token) return;
+  await api('/progress',{method:'POST',body:JSON.stringify({
+    progress: state.progress,
+    wrongs: state.wrongs.map(w=>({id:w.id,lessonId:w.lessonId,lessonTitle:w.lessonTitle,cardId:w.cardId,preview:w.preview})),
+    notes: {},
+  })});
+}
+
+async function restoreAuth(){
+  const lp = localProgress();
+  state.progress = lp.progress || {};
+  state.wrongs = lp.wrongs || [];
+  try{
+    const c = await (await fetch(API+'/auth/config')).json();
+    state.registerOpen = !!c.registerOpen;
+  }catch(e){}
+  if(state.token){
+    try{
+      const d = await api('/auth/me');
+      state.user = d.username; LS.setUser(d.username);
+      await pullProgress();
+    }catch(e){ state.token=''; state.user=''; LS.setToken(''); LS.setUser('') }
+  }
+  const ab = document.getElementById('authBtn');
+  if(ab) ab.textContent = state.user ? state.user : '登录';
+  if(parseHash().p==='/me' || parseHash().p==='/home') paint();
+}
+</script>
+</body>
+</html>

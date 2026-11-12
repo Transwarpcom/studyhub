@@ -49,6 +49,7 @@ USERS = os.path.join(DATA_DIR, "users.json")
 SESSIONS = os.path.join(DATA_DIR, "sessions.json")
 PROGRESS_DIR = os.path.join(DATA_DIR, "progress")
 IPA_DIR = os.environ.get("IPA_DIR", os.path.join(DATA_DIR, "ipa"))
+WEB_DIR = os.environ.get("WEB_DIR", "/opt/studyhub/web")
 LOCK = threading.Lock()
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9_\-/\.]{1,120}$")
@@ -264,6 +265,39 @@ class Handler(BaseHTTPRequestHandler):
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
             data = read_json(progress_file(user), {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
             return self.send_body(200, {"ok": True, "username": user, "data": data})
+
+        # 网页版（静态 SPA）
+        if path == "/web" or path.startswith("/web/"):
+            rel = path[5:].lstrip("/") or "index.html"
+            if ".." in rel or rel.startswith("/"):
+                return self.send_body(400, {"ok": False, "error": "bad path"})
+            fp = os.path.join(WEB_DIR, rel)
+            if os.path.isdir(fp):
+                fp = os.path.join(fp, "index.html")
+            if not os.path.isfile(fp):
+                return self.send_body(404, {"ok": False, "error": "not found", "path": rel})
+            with open(fp, "rb") as f:
+                data = f.read()
+            low = fp.lower()
+            if low.endswith(".html"):
+                ctype = "text/html; charset=utf-8"
+            elif low.endswith(".js"):
+                ctype = "application/javascript; charset=utf-8"
+            elif low.endswith(".css"):
+                ctype = "text/css; charset=utf-8"
+            elif low.endswith(".woff2"):
+                ctype = "font/woff2"
+            elif low.endswith(".woff"):
+                ctype = "font/woff"
+            elif low.endswith(".ttf"):
+                ctype = "font/ttf"
+            elif low.endswith(".png"):
+                ctype = "image/png"
+            elif low.endswith(".svg"):
+                ctype = "image/svg+xml"
+            else:
+                ctype = "application/octet-stream"
+            return self.send_body(200, data, ctype)
 
         if path.startswith("/ipa/"):
             name = path.split("/")[-1]
