@@ -1,20 +1,34 @@
 #!/usr/bin/env python3
-"""学习台 StudyHub 内容服务
+"""学习台 StudyHub 内容服务 + 账号
 
 只依赖 Python 标准库。
+
+公开（无需登录）：
   GET  /health
   GET  /manifest            课程树
   GET  /lesson?id=<id>      单节内容
   GET  /replies             答疑回复
-  POST /upload              上传题目（图片/PDF/文本）
-  GET  /inbox               [admin] 待处理上传列表
-  POST /reply               [admin] 追加一条讲解回复
+  GET  /ipa/<name>          IPA / 页面分发
 
-认证：Authorization: Bearer <token>
+账号：
+  POST /auth/register       {"username","password"}  —— 需 REGISTER_OPEN=1
+  POST /auth/login          {"username","password"}  -> {"token","username"}
+  GET  /auth/me             Authorization: Bearer <token>
+  POST /auth/logout
+
+进度（按用户隔离）：
+  GET  /progress            当前用户进度
+  POST /progress            合并保存 {"progress":{...},"wrongs":[...],"notes":{...},"stats":{...}}
+
+管理：
+  POST /upload, GET /inbox, POST /reply, POST /mark  —— ADMIN_TOKEN
 """
+import hashlib
+import hmac
 import json
 import os
 import re
+import secrets
 import threading
 import time
 import uuid
@@ -26,18 +40,24 @@ CONTENT_DIR = os.environ.get("CONTENT_DIR", "/content")
 READER_TOKEN = os.environ.get("READER_TOKEN", "gaoshu2026")
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "admin-change-me")
 PORT = int(os.environ.get("PORT", "8099"))
+REGISTER_OPEN = os.environ.get("REGISTER_OPEN", "0") == "1"
 MAX_UPLOAD = 25 * 1024 * 1024
 
 INBOX = os.path.join(DATA_DIR, "inbox")
 REPLIES = os.path.join(DATA_DIR, "replies.json")
+USERS = os.path.join(DATA_DIR, "users.json")
+SESSIONS = os.path.join(DATA_DIR, "sessions.json")
+PROGRESS_DIR = os.path.join(DATA_DIR, "progress")
 IPA_DIR = os.environ.get("IPA_DIR", os.path.join(DATA_DIR, "ipa"))
 LOCK = threading.Lock()
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9_\-/\.]{1,120}$")
+SAFE_USER = re.compile(r"^[A-Za-z0-9_\-]{3,32}$")
 
 
 def ensure_dirs():
-    os.makedirs(INBOX, exist_ok=True)
+    for d in (INBOX, PROGRESS_DIR, IPA_DIR):
+        os.makedirs(d, exist_ok=True)
 
 
 def read_json(path, default):
@@ -61,6 +81,62 @@ def lesson_path(lid):
     name = lid.replace("/", "_")
     p = os.path.join(CONTENT_DIR, "lessons", name + ".json")
     return p if os.path.isfile(p) else None
+
+
+# ---------- 密码与会话 ----------
+
+def hash_password(password, salt=None):
+    salt = salt or secrets.token_hex(16)
+    dk = hashlib.scrypt(password.encode("utf-8"), salt=salt.encode("utf-8"),
+                        n=16384, r=8, p=1, dklen=32)
+    return salt, dk.hex()
+
+
+def verify_password(password, salt, expected):
+    _, got = hash_password(password, salt)
+    return hmac.compare_digest(got, expected)
+
+
+def load_users():
+    return read_json(USERS, {})
+
+
+def save_users(u):
+    write_json(USERS, u)
+
+
+def load_sessions():
+    return read_json(SESSIONS, {})
+
+
+def save_sessions(s):
+    write_json(SESSIONS, s)
+
+
+def new_session(username):
+    token = secrets.token_urlsafe(32)
+    with LOCK:
+        s = load_sessions()
+        # 清掉 30 天前的会话
+        now = time.time()
+        s = {k: v for k, v in s.items() if now - v.get("created", 0) < 30 * 86400}
+        s[token] = {"username": username, "created": now}
+        save_sessions(s)
+    return token
+
+
+def user_from_token(token):
+    if not token:
+        return None
+    s = load_sessions()
+    rec = s.get(token)
+    if not rec:
+        return None
+    return rec.get("username")
+
+
+def progress_file(username):
+    return os.path.join(PROGRESS_DIR, username + ".json")
 
 
 def parse_multipart(body, content_type):
@@ -94,7 +170,7 @@ def parse_multipart(body, content_type):
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "StudyHub/1.0"
+    server_version = "StudyHub/2.0"
     protocol_version = "HTTP/1.1"
 
     def log_message(self, format, *args):
@@ -111,6 +187,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
         self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.end_headers()
         self.wfile.write(body)
 
@@ -118,11 +196,24 @@ class Handler(BaseHTTPRequestHandler):
         h = self.headers.get("Authorization", "")
         return h[7:].strip() if h.startswith("Bearer ") else ""
 
-    def ok_auth(self, admin=False):
-        t = self.token()
-        if admin:
-            return t == ADMIN_TOKEN
-        return t in (READER_TOKEN, ADMIN_TOKEN)
+    def ok_admin(self):
+        return self.token() == ADMIN_TOKEN
+
+    def current_user(self):
+        return user_from_token(self.token())
+
+    def read_json_body(self):
+        n = int(self.headers.get("Content-Length") or 0)
+        if n > MAX_UPLOAD:
+            return None, None
+        body = self.rfile.read(n) if n else b""
+        try:
+            return json.loads(body.decode("utf-8")), body
+        except Exception:
+            return None, body
+
+    def do_OPTIONS(self):
+        return self.send_body(204, b"")
 
     # ---------- GET ----------
     def do_GET(self):
@@ -131,19 +222,17 @@ class Handler(BaseHTTPRequestHandler):
         qs = parse_qs(u.query)
 
         if path in ("/health", "/"):
-            return self.send_body(200, {"ok": True, "service": "studyhub", "time": int(time.time())})
+            return self.send_body(200, {"ok": True, "service": "studyhub",
+                                        "version": 2, "time": int(time.time())})
 
+        # 课程与题目：公开
         if path == "/manifest":
-            if not self.ok_auth():
-                return self.send_body(401, {"ok": False, "error": "unauthorized"})
             m = read_json(os.path.join(CONTENT_DIR, "manifest.json"), None)
             if m is None:
                 return self.send_body(500, {"ok": False, "error": "manifest missing"})
             return self.send_body(200, m)
 
         if path == "/lesson":
-            if not self.ok_auth():
-                return self.send_body(401, {"ok": False, "error": "unauthorized"})
             lid = (qs.get("id") or [""])[0]
             p = lesson_path(lid)
             if not p:
@@ -151,10 +240,30 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, read_json(p, {}))
 
         if path == "/replies":
-            if not self.ok_auth():
-                return self.send_body(401, {"ok": False, "error": "unauthorized"})
             data = read_json(REPLIES, {"version": 1, "replies": []})
             return self.send_body(200, data)
+
+        # 账号
+        if path == "/auth/me":
+            user = self.current_user()
+            if not user:
+                return self.send_body(401, {"ok": False, "error": "unauthorized"})
+            users = load_users()
+            rec = users.get(user, {})
+            return self.send_body(200, {"ok": True, "username": user,
+                                        "created": rec.get("created", 0),
+                                        "registerOpen": REGISTER_OPEN})
+
+        if path == "/auth/config":
+            return self.send_body(200, {"ok": True, "registerOpen": REGISTER_OPEN})
+
+        # 进度
+        if path == "/progress":
+            user = self.current_user()
+            if not user:
+                return self.send_body(401, {"ok": False, "error": "unauthorized"})
+            data = read_json(progress_file(user), {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
+            return self.send_body(200, {"ok": True, "username": user, "data": data})
 
         if path.startswith("/ipa/"):
             name = path.split("/")[-1]
@@ -173,14 +282,13 @@ class Handler(BaseHTTPRequestHandler):
             elif low.endswith(".png"):
                 ctype = "image/png"
             elif low.endswith(".plist"):
-                # iOS OTA 要求 manifest 是 xml，否则安装卡在云朵图标
                 ctype = "application/xml; charset=utf-8"
             else:
                 ctype = "application/octet-stream"
             return self.send_body(200, data, ctype)
 
         if path == "/inbox":
-            if not self.ok_auth(admin=True):
+            if not self.ok_admin():
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
             items = []
             for fn in sorted(os.listdir(INBOX), reverse=True):
@@ -189,7 +297,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, {"inbox": items[:100]})
 
         if path.startswith("/inbox/file/"):
-            if not self.ok_auth(admin=True):
+            if not self.ok_admin():
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
             name = path.split("/")[-1]
             if not re.match(r"^[A-Za-z0-9_\-\.]{1,120}$", name):
@@ -200,11 +308,12 @@ class Handler(BaseHTTPRequestHandler):
             with open(fp, "rb") as f:
                 data = f.read()
             ctype = "application/octet-stream"
-            if name.lower().endswith(".jpg") or name.lower().endswith(".jpeg"):
+            low = name.lower()
+            if low.endswith((".jpg", ".jpeg")):
                 ctype = "image/jpeg"
-            elif name.lower().endswith(".png"):
+            elif low.endswith(".png"):
                 ctype = "image/png"
-            elif name.lower().endswith(".pdf"):
+            elif low.endswith(".pdf"):
                 ctype = "application/pdf"
             return self.send_body(200, data, ctype)
 
@@ -214,13 +323,88 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self):
         u = urlparse(self.path)
         path = u.path
-        n = int(self.headers.get("Content-Length") or 0)
-        if n > MAX_UPLOAD:
-            return self.send_body(413, {"ok": False, "error": "too large"})
-        body = self.rfile.read(n) if n else b""
+
+        if path == "/auth/register":
+            payload, _ = self.read_json_body()
+            if payload is None:
+                return self.send_body(400, {"ok": False, "error": "bad json"})
+            if not REGISTER_OPEN:
+                return self.send_body(403, {"ok": False, "error": "register_closed",
+                                            "message": "注册暂未开放"})
+            username = (payload.get("username") or "").strip()
+            password = payload.get("password") or ""
+            if not SAFE_USER.match(username):
+                return self.send_body(400, {"ok": False, "error": "用户名需 3-32 位字母数字下划线连字符"})
+            if len(password) < 6:
+                return self.send_body(400, {"ok": False, "error": "密码至少 6 位"})
+            with LOCK:
+                users = load_users()
+                if username in users:
+                    return self.send_body(409, {"ok": False, "error": "用户名已存在"})
+                salt, h = hash_password(password)
+                users[username] = {"salt": salt, "hash": h, "created": int(time.time())}
+                save_users(users)
+            token = new_session(username)
+            return self.send_body(200, {"ok": True, "token": token, "username": username})
+
+        if path == "/auth/login":
+            payload, _ = self.read_json_body()
+            if payload is None:
+                return self.send_body(400, {"ok": False, "error": "bad json"})
+            username = (payload.get("username") or "").strip()
+            password = payload.get("password") or ""
+            users = load_users()
+            rec = users.get(username)
+            if not rec or not verify_password(password, rec.get("salt", ""), rec.get("hash", "")):
+                # 统一延迟，避免用户名枚举
+                time.sleep(0.35)
+                return self.send_body(401, {"ok": False, "error": "用户名或密码错误"})
+            token = new_session(username)
+            return self.send_body(200, {"ok": True, "token": token, "username": username})
+
+        if path == "/auth/logout":
+            t = self.token()
+            if t:
+                with LOCK:
+                    s = load_sessions()
+                    s.pop(t, None)
+                    save_sessions(s)
+            return self.send_body(200, {"ok": True})
+
+        if path == "/progress":
+            user = self.current_user()
+            if not user:
+                return self.send_body(401, {"ok": False, "error": "unauthorized"})
+            payload, _ = self.read_json_body()
+            if payload is None:
+                return self.send_body(400, {"ok": False, "error": "bad json"})
+            fp = progress_file(user)
+            with LOCK:
+                cur = read_json(fp, {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
+                # progress / notes：按 key 合并
+                for k in ("progress", "notes"):
+                    if isinstance(payload.get(k), dict):
+                        cur.setdefault(k, {}).update(payload[k])
+                # wrongs：按 id 去重合并
+                if isinstance(payload.get("wrongs"), list):
+                    have = {w.get("id") for w in cur.get("wrongs", []) if isinstance(w, dict)}
+                    for w in payload["wrongs"]:
+                        if isinstance(w, dict) and w.get("id") not in have:
+                            cur.setdefault("wrongs", []).append(w)
+                            have.add(w.get("id"))
+                # stats：覆盖
+                if isinstance(payload.get("stats"), dict):
+                    cur["stats"] = payload["stats"]
+                cur["updated"] = int(time.time())
+                write_json(fp, cur)
+            return self.send_body(200, {"ok": True, "count": len(cur.get("wrongs", []))})
 
         if path == "/upload":
-            if not self.ok_auth():
+            n = int(self.headers.get("Content-Length") or 0)
+            if n > MAX_UPLOAD:
+                return self.send_body(413, {"ok": False, "error": "too large"})
+            body = self.rfile.read(n) if n else b""
+            if not (self.ok_admin() or self.current_user()):
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
             form = parse_multipart(body, self.headers.get("Content-Type", ""))
             fname, fdata, _ = form.get("file__file", ("", b"", ""))
@@ -241,17 +425,17 @@ class Handler(BaseHTTPRequestHandler):
                 "note": form.get("note", ""),
                 "created": time.strftime("%Y-%m-%d %H:%M:%S"),
                 "status": "pending",
+                "from": self.current_user() or "admin",
             }
             write_json(os.path.join(INBOX, uid + ".json"), meta)
-            print("[upload] %s %s %d bytes note=%r" % (stored, fname, len(fdata), meta["note"]), flush=True)
+            print("[upload] %s %s %d bytes" % (stored, fname, len(fdata)), flush=True)
             return self.send_body(200, {"ok": True, "id": uid})
 
         if path == "/reply":
-            if not self.ok_auth(admin=True):
+            if not self.ok_admin():
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
-            try:
-                payload = json.loads(body.decode("utf-8"))
-            except Exception:
+            payload, _ = self.read_json_body()
+            if payload is None:
                 return self.send_body(400, {"ok": False, "error": "bad json"})
             with LOCK:
                 data = read_json(REPLIES, {"version": 1, "replies": []})
@@ -266,11 +450,10 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, {"ok": True, "version": data["version"]})
 
         if path == "/mark":
-            if not self.ok_auth(admin=True):
+            if not self.ok_admin():
                 return self.send_body(401, {"ok": False, "error": "unauthorized"})
-            try:
-                payload = json.loads(body.decode("utf-8"))
-            except Exception:
+            payload, _ = self.read_json_body()
+            if payload is None:
                 return self.send_body(400, {"ok": False, "error": "bad json"})
             uid = payload.get("id", "")
             fp = os.path.join(INBOX, uid + ".json")
@@ -288,7 +471,8 @@ def main():
     ensure_dirs()
     srv = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
     srv.daemon_threads = True
-    print("studyhub listening on %d  content=%s data=%s" % (PORT, CONTENT_DIR, DATA_DIR), flush=True)
+    print("studyhub v2 listening on %d  content=%s data=%s registerOpen=%s"
+          % (PORT, CONTENT_DIR, DATA_DIR, REGISTER_OPEN), flush=True)
     srv.serve_forever()
 
 

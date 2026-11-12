@@ -10,6 +10,24 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section("账号") {
+                    NavigationLink {
+                        AccountView().environmentObject(store)
+                    } label: {
+                        HStack(spacing: 10) {
+                            Image(systemName: store.loggedIn ? "person.crop.circle.fill.badge.checkmark" : "person.crop.circle")
+                                .foregroundColor(store.loggedIn ? .green : .secondary)
+                            VStack(alignment: .leading, spacing: 1) {
+                                Text(store.loggedIn ? store.username : "未登录")
+                                    .font(.system(size: 14, weight: .medium))
+                                Text(store.loggedIn ? "点此同步进度" : "登录后进度跨设备同步")
+                                    .font(.system(size: 11)).foregroundColor(.secondary)
+                            }
+                            Spacer()
+                        }
+                    }
+                }
+
                 Section("服务器") {
                     TextField("接口地址", text: $base)
                         .textInputAutocapitalization(.never)

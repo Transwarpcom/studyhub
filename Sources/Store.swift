@@ -498,6 +498,7 @@ final class Store: ObservableObject {
         if correct { st.correct += 1 }
         days[day] = st
         saveDays()
+        scheduleCloudSync()
 
         // 艾宾浩斯排期
         recordReview(key: key, lessonId: lessonId, lessonTitle: lessonTitle, correct: correct)
@@ -542,4 +543,139 @@ final class Store: ObservableObject {
             throw HubError.decode(resp.error ?? "上传失败")
         }
     }
+
+    // MARK: - 账号与云同步
+
+    @Published var username: String = ""
+    @Published var loggedIn: Bool = false
+    @Published var authBusy = false
+    @Published var authError: String?
+    @Published var registerOpen = false
+    @Published var syncing = false
+    @Published var syncMsg: String?
+
+    /// 启动时恢复登录态并校验 token
+    func refreshAuthState() async {
+        let c = HubClient.shared
+        if c.isLoggedIn {
+            if let u = await c.me() {
+                username = u
+                loggedIn = true
+            } else {
+                // token 失效
+                c.userToken = ""
+                c.username = ""
+                loggedIn = false
+                username = ""
+            }
+        } else {
+            loggedIn = false
+        }
+        registerOpen = await c.registerOpen()
+    }
+
+    func doLogin(_ name: String, _ password: String) async -> Bool {
+        authBusy = true; authError = nil
+        defer { authBusy = false }
+        do {
+            let u = try await HubClient.shared.login(username: name, password: password)
+            username = u
+            loggedIn = true
+            await syncDown()
+            return true
+        } catch {
+            authError = error.localizedDescription
+            return false
+        }
+    }
+
+    func doRegister(_ name: String, _ password: String) async -> Bool {
+        authBusy = true; authError = nil
+        defer { authBusy = false }
+        do {
+            let u = try await HubClient.shared.register(username: name, password: password)
+            username = u
+            loggedIn = true
+            return true
+        } catch {
+            authError = error.localizedDescription
+            return false
+        }
+    }
+
+    func doLogout() async {
+        await HubClient.shared.logout()
+        loggedIn = false
+        username = ""
+        lastSyncMsg = nil
+    }
+
+    /// 本地 → 云端
+    func syncUp() async {
+        guard loggedIn else { return }
+        syncing = true; syncMsg = "上传中…"
+        defer { syncing = false }
+        var stats: [String: Int] = [:]
+        stats["answered"] = progress.count
+        stats["wrongs"] = wrongs.count
+        stats["days"] = days.count
+        let p = HubClient.ProgressPayload(progress: progress,
+                                          wrongs: wrongs,
+                                          notes: notes,
+                                          stats: stats)
+        do {
+            try await HubClient.shared.pushProgress(p)
+            let f = DateFormatter(); f.dateFormat = "HH:mm"
+            syncMsg = "已同步 \(f.string(from: Date()))"
+            lastSync = Date()
+        } catch {
+            syncMsg = "同步失败：\(error.localizedDescription)"
+        }
+    }
+
+    /// 云端 → 本地（登录后自动跑一次）
+    func syncDown() async {
+        guard loggedIn else { return }
+        syncing = true; syncMsg = "拉取进度…"
+        defer { syncing = false }
+        do {
+            let remote = try await HubClient.shared.pullProgress()
+            if let rp = remote.progress, !rp.isEmpty {
+                for (k, v) in rp { progress[k] = v }
+                saveProgress()
+            }
+            if let rn = remote.notes, !rn.isEmpty {
+                for (k, v) in rn where notes[k] == nil { notes[k] = v }
+                saveNotes()
+            }
+            if let rw = remote.wrongs {
+                let have = Set(wrongs.map { $0.id })
+                let add = rw.filter { !have.contains($0.id) }
+                if !add.isEmpty {
+                    wrongs.append(contentsOf: add)
+                    saveWrongs()
+                }
+            }
+            syncMsg = "进度已同步"
+        } catch {
+            syncMsg = "拉取失败：\(error.localizedDescription)"
+        }
+    }
+
+
+    // MARK: - 自动同步（3 秒防抖）
+
+    private var pendingSync: DispatchWorkItem?
+
+    func scheduleCloudSync() {
+        guard loggedIn else { return }
+        pendingSync?.cancel()
+        let work = DispatchWorkItem { [weak self] in
+            guard let self else { return }
+            Task { await self.syncUp() }
+        }
+        pendingSync = work
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: work)
+    }
+
 }

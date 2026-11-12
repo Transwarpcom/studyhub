@@ -163,4 +163,152 @@ final class HubClient {
         return (try? JSONDecoder().decode(UploadResp.self, from: respData))
             ?? UploadResp(ok: false, id: nil, error: "返回格式不对")
     }
+
+    // MARK: - 账号
+
+    /// 用户 token（与旧的 reader token 分开存）
+    var userToken: String {
+        get { defaults.string(forKey: "hub.userToken") ?? "" }
+        set { defaults.set(newValue, forKey: "hub.userToken") }
+    }
+
+    var username: String {
+        get { defaults.string(forKey: "hub.username") ?? "" }
+        set { defaults.set(newValue, forKey: "hub.username") }
+    }
+
+    var isLoggedIn: Bool { !userToken.isEmpty }
+
+    struct AuthResp: Decodable {
+        let ok: Bool?
+        let token: String?
+        let username: String?
+        let error: String?
+        let message: String?
+    }
+
+    struct MeResp: Decodable {
+        let ok: Bool?
+        let username: String?
+        let registerOpen: Bool?
+        let error: String?
+    }
+
+    private func postJSON(_ path: String, _ payload: [String: Any], auth: Bool) async throws -> Data {
+        guard let u = URL(string: baseURL + path) else { throw HubError.badURL }
+        var req = URLRequest(url: u)
+        req.httpMethod = "POST"
+        req.timeoutInterval = 20
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if auth && !userToken.isEmpty {
+            req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
+        }
+        req.httpBody = try JSONSerialization.data(withJSONObject: payload)
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        if let h = resp as? HTTPURLResponse, h.statusCode >= 400 {
+            let text = String(data: Data(data.prefix(400)), encoding: .utf8) ?? ""
+            if let d = try? JSONDecoder().decode(AuthResp.self, from: data),
+               let m = d.message ?? d.error {
+                throw HubError.http(h.statusCode, m)
+            }
+            throw HubError.http(h.statusCode, text)
+        }
+        return data
+    }
+
+    @discardableResult
+    func login(username name: String, password: String) async throws -> String {
+        let data = try await postJSON("/auth/login", ["username": name, "password": password], auth: false)
+        let d = try JSONDecoder().decode(AuthResp.self, from: data)
+        guard let t = d.token, !t.isEmpty else {
+            throw HubError.decode(d.error ?? "登录失败")
+        }
+        userToken = t
+        username = d.username ?? name
+        return username
+    }
+
+    @discardableResult
+    func register(username name: String, password: String) async throws -> String {
+        let data = try await postJSON("/auth/register", ["username": name, "password": password], auth: false)
+        let d = try JSONDecoder().decode(AuthResp.self, from: data)
+        guard let t = d.token, !t.isEmpty else {
+            throw HubError.decode(d.error ?? "注册失败")
+        }
+        userToken = t
+        username = d.username ?? name
+        return username
+    }
+
+    /// 服务端注册开关
+    func registerOpen() async -> Bool {
+        guard let u = URL(string: baseURL + "/auth/config") else { return false }
+        var req = URLRequest(url: u)
+        req.timeoutInterval = 12
+        guard let (data, _) = try? await URLSession.shared.data(for: req),
+              let d = try? JSONDecoder().decode(MeResp.self, from: data) else { return false }
+        return d.registerOpen ?? false
+    }
+
+    /// 校验 token 是否还有效
+    func me() async -> String? {
+        guard !userToken.isEmpty, let u = URL(string: baseURL + "/auth/me") else { return nil }
+        var req = URLRequest(url: u)
+        req.timeoutInterval = 12
+        req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
+        guard let (data, resp) = try? await URLSession.shared.data(for: req),
+              (resp as? HTTPURLResponse)?.statusCode == 200,
+              let d = try? JSONDecoder().decode(MeResp.self, from: data) else { return nil }
+        return d.username
+    }
+
+    func logout() async {
+        _ = try? await postJSON("/auth/logout", [:], auth: true)
+        userToken = ""
+        username = ""
+    }
+
+    // MARK: - 进度
+
+    struct ProgressPayload: Codable {
+        var progress: [String: Bool]?
+        var wrongs: [WrongItem]?
+        var notes: [String: String]?
+        var stats: [String: Int]?
+    }
+
+    struct ProgressResp: Codable {
+        let ok: Bool?
+        let username: String?
+        let data: ProgressPayload?
+    }
+
+    func pullProgress() async throws -> ProgressPayload {
+        guard let u = URL(string: baseURL + "/progress") else { throw HubError.badURL }
+        var req = URLRequest(url: u)
+        req.timeoutInterval = 20
+        req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
+        let (data, resp) = try await URLSession.shared.data(for: req)
+        if let h = resp as? HTTPURLResponse, h.statusCode != 200 {
+            throw HubError.http(h.statusCode, String(data: Data(data.prefix(200)), encoding: .utf8) ?? "")
+        }
+        let d = try JSONDecoder().decode(ProgressResp.self, from: data)
+        return d.data ?? ProgressPayload()
+    }
+
+    func pushProgress(_ p: ProgressPayload) async throws {
+        var body: [String: Any] = [:]
+        if let x = p.progress { body["progress"] = x }
+        if let x = p.notes { body["notes"] = x }
+        if let x = p.stats { body["stats"] = x }
+        if let x = p.wrongs {
+            body["wrongs"] = x.map { w -> [String: Any] in
+                ["id": w.id, "lessonId": w.lessonId, "lessonTitle": w.lessonTitle,
+                 "cardId": w.cardId, "preview": w.preview,
+                 "ts": ISO8601DateFormatter().string(from: w.ts)]
+            }
+        }
+        _ = try await postJSON("/progress", body, auth: true)
+    }
+
 }

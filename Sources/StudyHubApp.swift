@@ -34,6 +34,7 @@ struct RootView: View {
         .task {
             StoreLocator.shared.store = store
             await store.bootstrap()
+            await store.refreshAuthState()
         }
     }
 }
