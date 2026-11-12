@@ -17,3 +17,4 @@ tools/*_ready.py
 out/
 
 out*/
+web/vendor/
