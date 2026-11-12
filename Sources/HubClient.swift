@@ -43,6 +43,8 @@ final class HubClient {
             "https://us.medwarp.cn/study-api",
             "https://html.medwarp.cn",
             "https://us.medwarp.cn",
+            "http://47.104.168.254:8099",
+            "http://47.104.168.254",
         ]
         if legacy.contains(where: { cur.hasPrefix($0) }) {
             d.removeObject(forKey: key)
@@ -129,7 +131,7 @@ final class HubClient {
 
     func get<T: Decodable>(_ path: String, as type: T.Type) async throws -> T {
         let req = try makeRequest(path)
-        let (data, resp) = try await URLSession.shared.data(for: req)
+        let (data, resp) = try await PinnedSession.shared.session.data(for: req)
         if let h = resp as? HTTPURLResponse, h.statusCode != 200 {
             let body = String(data: Data(data.prefix(300)), encoding: .utf8) ?? ""
             throw HubError.http(h.statusCode, body)
@@ -143,7 +145,7 @@ final class HubClient {
 
     func getRaw(_ path: String) async throws -> Data {
         let req = try makeRequest(path)
-        let (data, resp) = try await URLSession.shared.data(for: req)
+        let (data, resp) = try await PinnedSession.shared.session.data(for: req)
         if let h = resp as? HTTPURLResponse, h.statusCode != 200 {
             let body = String(data: Data(data.prefix(300)), encoding: .utf8) ?? ""
             throw HubError.http(h.statusCode, body)
@@ -174,7 +176,7 @@ final class HubClient {
         req.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         req.httpBody = body
 
-        let (respData, resp) = try await URLSession.shared.data(for: req)
+        let (respData, resp) = try await PinnedSession.shared.session.data(for: req)
         if let h = resp as? HTTPURLResponse, h.statusCode != 200 {
             let b = String(data: Data(respData.prefix(300)), encoding: .utf8) ?? ""
             throw HubError.http(h.statusCode, b)
@@ -223,7 +225,7 @@ final class HubClient {
             req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
         }
         req.httpBody = try JSONSerialization.data(withJSONObject: payload)
-        let (data, resp) = try await URLSession.shared.data(for: req)
+        let (data, resp) = try await PinnedSession.shared.session.data(for: req)
         if let h = resp as? HTTPURLResponse, h.statusCode >= 400 {
             let text = String(data: Data(data.prefix(400)), encoding: .utf8) ?? ""
             if let d = try? JSONDecoder().decode(AuthResp.self, from: data),
@@ -264,7 +266,7 @@ final class HubClient {
         guard let u = URL(string: baseURL + "/auth/config") else { return false }
         var req = URLRequest(url: u)
         req.timeoutInterval = 12
-        guard let (data, _) = try? await URLSession.shared.data(for: req),
+        guard let (data, _) = try? await PinnedSession.shared.session.data(for: req),
               let d = try? JSONDecoder().decode(MeResp.self, from: data) else { return false }
         return d.registerOpen ?? false
     }
@@ -275,7 +277,7 @@ final class HubClient {
         var req = URLRequest(url: u)
         req.timeoutInterval = 12
         req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
-        guard let (data, resp) = try? await URLSession.shared.data(for: req),
+        guard let (data, resp) = try? await PinnedSession.shared.session.data(for: req),
               (resp as? HTTPURLResponse)?.statusCode == 200,
               let d = try? JSONDecoder().decode(MeResp.self, from: data) else { return nil }
         return d.username
@@ -307,7 +309,7 @@ final class HubClient {
         var req = URLRequest(url: u)
         req.timeoutInterval = 20
         req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
-        let (data, resp) = try await URLSession.shared.data(for: req)
+        let (data, resp) = try await PinnedSession.shared.session.data(for: req)
         if let h = resp as? HTTPURLResponse, h.statusCode != 200 {
             throw HubError.http(h.statusCode, String(data: Data(data.prefix(200)), encoding: .utf8) ?? "")
         }

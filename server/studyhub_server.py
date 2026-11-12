@@ -50,6 +50,8 @@ SESSIONS = os.path.join(DATA_DIR, "sessions.json")
 PROGRESS_DIR = os.path.join(DATA_DIR, "progress")
 IPA_DIR = os.environ.get("IPA_DIR", os.path.join(DATA_DIR, "ipa"))
 WEB_DIR = os.environ.get("WEB_DIR", "/opt/studyhub/web")
+TLS_CERT = os.environ.get("TLS_CERT", "")
+TLS_KEY = os.environ.get("TLS_KEY", "")
 LOCK = threading.Lock()
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9_\-/\.]{1,120}$")
@@ -505,8 +507,16 @@ def main():
     ensure_dirs()
     srv = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
     srv.daemon_threads = True
-    print("studyhub v2 listening on %d  content=%s data=%s registerOpen=%s"
-          % (PORT, CONTENT_DIR, DATA_DIR, REGISTER_OPEN), flush=True)
+    scheme = "http"
+    if TLS_CERT and TLS_KEY and os.path.isfile(TLS_CERT) and os.path.isfile(TLS_KEY):
+        import ssl
+        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        ctx.minimum_version = ssl.TLSVersion.TLSv1_2
+        ctx.load_cert_chain(TLS_CERT, TLS_KEY)
+        srv.socket = ctx.wrap_socket(srv.socket, server_side=True)
+        scheme = "https"
+    print("studyhub v2 listening on %s://0.0.0.0:%d  content=%s data=%s registerOpen=%s"
+          % (scheme, PORT, CONTENT_DIR, DATA_DIR, REGISTER_OPEN), flush=True)
     srv.serve_forever()
 
 
