@@ -10,7 +10,7 @@ enum HubError: LocalizedError {
         case .badURL:
             return "服务器地址无效，去设置里检查一下"
         case .http(let code, let body):
-            if code == 401 { return "口令不对（401），去设置里改访问口令" }
+            if code == 401 { return "登录已失效（401），请重新登录" }
             return "服务器返回 \(code) \(body)"
         case .decode(let msg):
             return "数据解析失败：\(msg)"
@@ -25,11 +25,6 @@ final class HubClient {
     var baseURL: String {
         get { defaults.string(forKey: "hub.baseURL") ?? BuildConfig.defaultBaseURL }
         set { defaults.set(newValue, forKey: "hub.baseURL") }
-    }
-
-    var token: String {
-        get { defaults.string(forKey: "hub.token") ?? BuildConfig.defaultToken }
-        set { defaults.set(newValue, forKey: "hub.token") }
     }
 
     /// 一次性迁移：把历史版本留下的服务器地址清掉，改用 BuildConfig 的新默认值，
@@ -120,11 +115,10 @@ final class HubClient {
         r.httpMethod = method
         r.timeoutInterval = 30
         r.setValue("application/json", forHTTPHeaderField: "Accept")
-        let t = token.trimmingCharacters(in: .whitespacesAndNewlines)
+        // 课程内容公开，无需口令；登录后带上用户 token 便于服务端识别
+        let t = userToken.trimmingCharacters(in: .whitespacesAndNewlines)
         if !t.isEmpty {
             r.setValue("Bearer \(t)", forHTTPHeaderField: "Authorization")
-        } else {
-            r.setValue("Bearer public", forHTTPHeaderField: "Authorization")
         }
         return r
     }

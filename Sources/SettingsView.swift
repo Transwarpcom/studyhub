@@ -4,7 +4,6 @@ struct SettingsView: View {
     @EnvironmentObject var store: Store
 
     @State private var base = HubClient.shared.baseURL
-    @State private var token = HubClient.shared.token
     @State private var hint: String?
 
     var body: some View {
@@ -34,12 +33,8 @@ struct SettingsView: View {
                         .autocorrectionDisabled()
                         .keyboardType(.URL)
                         .font(.footnote)
-                    SecureField("访问口令", text: $token)
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
                     Button("保存并同步") {
                         HubClient.shared.baseURL = base.trimmingCharacters(in: .whitespacesAndNewlines)
-                        HubClient.shared.token = token.trimmingCharacters(in: .whitespacesAndNewlines)
                         hint = "已保存"
                         Task { await store.refresh() }
                     }

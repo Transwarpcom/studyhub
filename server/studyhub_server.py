@@ -21,7 +21,7 @@
   POST /progress            合并保存 {"progress":{...},"wrongs":[...],"notes":{...},"stats":{...}}
 
 管理：
-  POST /upload, GET /inbox, POST /reply, POST /mark  —— ADMIN_TOKEN
+  POST /upload, GET /inbox, POST /reply, POST /mark  —— 需要 admin 账号
 """
 import hashlib
 import hmac
@@ -37,8 +37,6 @@ from urllib.parse import urlparse, parse_qs
 
 DATA_DIR = os.environ.get("DATA_DIR", "/data")
 CONTENT_DIR = os.environ.get("CONTENT_DIR", "/content")
-READER_TOKEN = os.environ.get("READER_TOKEN", "gaoshu2026")
-ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "admin-change-me")
 PORT = int(os.environ.get("PORT", "8099"))
 REGISTER_OPEN = os.environ.get("REGISTER_OPEN", "0") == "1"
 MAX_UPLOAD = 25 * 1024 * 1024
@@ -200,7 +198,12 @@ class Handler(BaseHTTPRequestHandler):
         return h[7:].strip() if h.startswith("Bearer ") else ""
 
     def ok_admin(self):
-        return self.token() == ADMIN_TOKEN
+        """管理员 = users.json 里 role 为 admin 的账号"""
+        u = self.current_user()
+        if not u:
+            return False
+        rec = load_users().get(u, {})
+        return rec.get("role") == "admin"
 
     def current_user(self):
         return user_from_token(self.token())
@@ -255,6 +258,7 @@ class Handler(BaseHTTPRequestHandler):
             rec = users.get(user, {})
             return self.send_body(200, {"ok": True, "username": user,
                                         "created": rec.get("created", 0),
+                                        "role": rec.get("role", "user"),
                                         "registerOpen": REGISTER_OPEN})
 
         if path == "/auth/config":
@@ -378,7 +382,8 @@ class Handler(BaseHTTPRequestHandler):
                 if username in users:
                     return self.send_body(409, {"ok": False, "error": "用户名已存在"})
                 salt, h = hash_password(password)
-                users[username] = {"salt": salt, "hash": h, "created": int(time.time())}
+                users[username] = {"salt": salt, "hash": h,
+                                   "created": int(time.time()), "role": "user"}
                 save_users(users)
             token = new_session(username)
             return self.send_body(200, {"ok": True, "token": token, "username": username})
