@@ -52,6 +52,32 @@ TLS_CERT = os.environ.get("TLS_CERT", "")
 TLS_KEY = os.environ.get("TLS_KEY", "")
 LOCK = threading.Lock()
 
+# 长轮询等待者：username -> set(Event)。push 时直接唤醒，避免轮询文件。
+WAITERS = {}
+WAITER_LOCK = threading.Lock()
+
+
+def register_waiter(user):
+    ev = threading.Event()
+    with WAITER_LOCK:
+        WAITERS.setdefault(user, set()).add(ev)
+    return ev
+
+
+def drop_waiter(user, ev):
+    with WAITER_LOCK:
+        s = WAITERS.get(user)
+        if s:
+            s.discard(ev)
+            if not s:
+                WAITERS.pop(user, None)
+
+
+def notify_waiters(user):
+    with WAITER_LOCK:
+        for ev in list(WAITERS.get(user, ())):
+            ev.set()
+
 SAFE_ID = re.compile(r"^[A-Za-z0-9_\-/\.]{1,120}$")
 SAFE_USER = re.compile(r"^[A-Za-z0-9_\-]{3,32}$")
 
@@ -281,20 +307,36 @@ class Handler(BaseHTTPRequestHandler):
                 since = float((qs.get("since") or ["0"])[0])
             except Exception:
                 since = 0.0
-            deadline = time.time() + 25.0
             fp = progress_file(user)
-            while True:
-                data = read_json(fp, {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
-                if float(data.get("updated") or 0) > since:
-                    return self.send_body(200, {"ok": True, "username": user,
-                                                "updated": data.get("updated") or 0,
-                                                "data": data})
-                if time.time() >= deadline:
-                    # 超时返回空（客户端收到后立刻再发一轮）
-                    return self.send_body(200, {"ok": True, "username": user,
-                                                "updated": data.get("updated") or 0,
-                                                "data": None})
-                time.sleep(0.25)
+            # 先看有没有已经发生的变化
+            data = read_json(fp, {"progress": {}, "wrongs": {}, "notes": {}, "stats": {}})
+            if float(data.get("updated") or 0) > since:
+                return self.send_body(200, {"ok": True, "username": user,
+                                            "updated": data.get("updated") or 0,
+                                            "data": data})
+            # 没有变化就挂起，等 push 唤醒（最多 25 秒）
+            ev = register_waiter(user)
+            try:
+                ev.wait(timeout=25.0)
+            finally:
+                drop_waiter(user, ev)
+            data = read_json(fp, {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
+            changed = float(data.get("updated") or 0) > since
+            return self.send_body(200, {"ok": True, "username": user,
+                                        "updated": data.get("updated") or 0,
+                                        "data": data if changed else None})
+
+        # 网页版静态资源：不带 /web 前缀也认（浏览器会把相对路径解析到根）
+        if path in ("/app.css", "/app.js") or path.startswith("/vendor/") or path.startswith("/katex/"):
+            path = "/web" + path
+
+        # 访问 /web 时重定向到 /web/，保证相对路径基准正确
+        if path == "/web":
+            self.send_response(301)
+            self.send_header("Location", "/web/")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
 
         # 网页版（静态 SPA）
         if path == "/web" or path.startswith("/web/"):
@@ -462,6 +504,7 @@ class Handler(BaseHTTPRequestHandler):
                     cur["stats"] = payload["stats"]
                 cur["updated"] = time.time()
                 write_json(fp, cur)
+            notify_waiters(user)
             return self.send_body(200, {"ok": True, "count": len(cur.get("wrongs", []))})
 
         if path == "/upload":
