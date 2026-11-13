@@ -704,6 +704,7 @@ function pageMe(app) {
     };
     $('#outBtn').onclick = function () {
       api('/auth/logout', { method: 'POST', body: '{}' }).catch(function () {});
+      stopPolling();
       S.token = ''; S.user = '';
       localStorage.removeItem(LS.token);
       localStorage.removeItem(LS.user);
@@ -753,9 +754,10 @@ function doLogin() {
       S.token = d.token; S.user = d.username;
       localStorage.setItem(LS.token, d.token);
       localStorage.setItem(LS.user, d.username);
-      return pullProgress();
+      return pullProgress(true);
     })
     .then(function () {
+      startPolling();
       toast('登录成功');
       go('/home');
     })
@@ -809,31 +811,92 @@ function pushProgress() {
 
 var lastPullAt = 0;
 
+/** 把云端数据合并进本地（答对优先） */
+function mergeRemote(p) {
+  if (!p) return false;
+  var changed = false;
+  if (p.progress) {
+    Object.keys(p.progress).forEach(function (k) {
+      var remote = p.progress[k];
+      var local = S.progress[k];
+      if (remote === true || local === undefined) {
+        if (S.progress[k] !== remote) changed = true;
+        S.progress[k] = remote;
+      }
+    });
+  }
+  if (Array.isArray(p.wrongs)) {
+    var have = {};
+    S.wrongs.forEach(function (w) { have[w.id] = 1; });
+    p.wrongs.forEach(function (w) {
+      if (!have[w.id]) { S.wrongs.push(w); changed = true; }
+    });
+  }
+  if (changed) {
+    store(LS.progress, S.progress);
+    store(LS.wrongs, S.wrongs);
+  }
+  return changed;
+}
+
 function pullProgress(force) {
-  if (!S.token) return Promise.resolve();
+  if (!S.token) return Promise.resolve(false);
   var now = Date.now();
-  if (!force && now - lastPullAt < 30000) return Promise.resolve();
+  if (!force && now - lastPullAt < 30000) return Promise.resolve(false);
   lastPullAt = now;
   return api('/progress')
     .then(function (d) {
-      var p = (d && d.data) || {};
-      if (p.progress) {
-        Object.keys(p.progress).forEach(function (k) {
-          var remote = p.progress[k];
-          var local = S.progress[k];
-          // 任一端答对就算对；本地没有才用云端的 false
-          if (remote === true || local === undefined) S.progress[k] = remote;
-        });
-      }
-      if (Array.isArray(p.wrongs)) {
-        var have = {};
-        S.wrongs.forEach(function (w) { have[w.id] = 1; });
-        p.wrongs.forEach(function (w) { if (!have[w.id]) S.wrongs.push(w); });
-      }
-      store(LS.progress, S.progress);
-      store(LS.wrongs, S.wrongs);
+      return mergeRemote((d && d.data) || {});
     })
-    .catch(function () {});
+    .catch(function () { return false; });
+}
+
+/* ---------- 长轮询：秒级一致 ---------- */
+var pollCtl = null;
+
+function startPolling() {
+  if (!S.token) return;
+  stopPolling();
+  var ctl = { abort: false, ctrl: (typeof AbortController !== 'undefined') ? new AbortController() : null };
+  pollCtl = ctl;
+  var since = S.lastUpdated || 0;
+
+  function tick() {
+    if (!S.token || ctl.abort) return;
+    if (document.visibilityState !== 'visible') {
+      // 页面不可见时暂停，可见后由 visibilitychange 重启
+      ctl.abort = true;
+      return;
+    }
+    var url = API + '/progress/poll?since=' + encodeURIComponent(since);
+    fetch(url, {
+      headers: { 'Authorization': 'Bearer ' + S.token },
+      signal: ctl.ctrl ? ctl.ctrl.signal : undefined
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (ctl.abort) return;
+        if (d && d.updated) since = d.updated;
+        if (d && d.data) {
+          var changed = mergeRemote(d.data);
+          if (changed && S.route && S.route.name === 'lesson') render();
+        }
+        tick();
+      })
+      .catch(function () {
+        if (ctl.abort) return;
+        setTimeout(tick, 3000);
+      });
+  }
+  tick();
+}
+
+function stopPolling() {
+  if (pollCtl) {
+    pollCtl.abort = true;
+    try { if (pollCtl.ctrl) pollCtl.ctrl.abort(); } catch (e) {}
+    pollCtl = null;
+  }
 }
 
 function restoreAuth() {
@@ -852,7 +915,7 @@ function restoreAuth() {
         .then(function (d) {
           S.user = d.username;
           localStorage.setItem(LS.user, d.username);
-          return pullProgress();
+          return pullProgress(true);
         })
         .catch(function () {
           S.token = ''; S.user = '';
@@ -887,20 +950,13 @@ function render() {
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState === 'visible' && S.token) {
     pullProgress(true).then(function () {
-      // 如果正停在课程页，重绘一次让状态更新
       if (S.route && S.route.name === 'lesson') render();
     });
+    startPolling();
+  } else {
+    stopPolling();
   }
 });
-
-// 每分钟静默拉一次
-setInterval(function () {
-  if (S.token && document.visibilityState === 'visible') {
-    pullProgress(true).then(function () {
-      if (S.route && S.route.name === 'lesson') render();
-    });
-  }
-}, 60000);
 
 $('#back').onclick = function () {
   if (history.length > 1) history.back();
@@ -911,7 +967,10 @@ window.addEventListener('hashchange', render);
 
 loadManifest()
   .then(restoreAuth)
-  .then(render)
+  .then(function () {
+    render();
+    if (S.token) startPolling();
+  })
   .catch(render);
 
 

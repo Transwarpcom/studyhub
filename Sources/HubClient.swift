@@ -311,6 +311,27 @@ final class HubClient {
         return d.data ?? ProgressPayload()
     }
 
+    struct PollResp: Codable {
+        let ok: Bool?
+        let username: String?
+        let updated: Double?
+        let data: ProgressPayload?
+    }
+
+    /// 长轮询：服务端最多挂 25 秒，有变化立刻返回
+    func pollProgress(since: Double) async throws -> (updated: Double, payload: ProgressPayload?) {
+        guard let u = URL(string: baseURL + "/progress/poll?since=\(since)") else { throw HubError.badURL }
+        var req = URLRequest(url: u)
+        req.timeoutInterval = 40
+        req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
+        let (data, resp) = try await PinnedSession.shared.session.data(for: req)
+        if let h = resp as? HTTPURLResponse, h.statusCode != 200 {
+            throw HubError.http(h.statusCode, String(data: Data(data.prefix(200)), encoding: .utf8) ?? "")
+        }
+        let d = try JSONDecoder().decode(PollResp.self, from: data)
+        return (d.updated ?? since, d.data)
+    }
+
     func pushProgress(_ p: ProgressPayload) async throws {
         var body: [String: Any] = [:]
         if let x = p.progress { body["progress"] = x }

@@ -272,6 +272,30 @@ class Handler(BaseHTTPRequestHandler):
             data = read_json(progress_file(user), {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
             return self.send_body(200, {"ok": True, "username": user, "data": data})
 
+        # 长轮询：等到进度有变化或超时才返回，配合客户端循环实现秒级一致
+        if path == "/progress/poll":
+            user = self.current_user()
+            if not user:
+                return self.send_body(401, {"ok": False, "error": "unauthorized"})
+            try:
+                since = float((qs.get("since") or ["0"])[0])
+            except Exception:
+                since = 0.0
+            deadline = time.time() + 25.0
+            fp = progress_file(user)
+            while True:
+                data = read_json(fp, {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
+                if float(data.get("updated") or 0) > since:
+                    return self.send_body(200, {"ok": True, "username": user,
+                                                "updated": data.get("updated") or 0,
+                                                "data": data})
+                if time.time() >= deadline:
+                    # 超时返回空（客户端收到后立刻再发一轮）
+                    return self.send_body(200, {"ok": True, "username": user,
+                                                "updated": data.get("updated") or 0,
+                                                "data": None})
+                time.sleep(0.25)
+
         # 网页版（静态 SPA）
         if path == "/web" or path.startswith("/web/"):
             rel = path[5:].lstrip("/") or "index.html"
@@ -436,7 +460,7 @@ class Handler(BaseHTTPRequestHandler):
                 # stats：覆盖
                 if isinstance(payload.get("stats"), dict):
                     cur["stats"] = payload["stats"]
-                cur["updated"] = int(time.time())
+                cur["updated"] = time.time()
                 write_json(fp, cur)
             return self.send_body(200, {"ok": True, "count": len(cur.get("wrongs", []))})
 

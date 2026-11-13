@@ -561,6 +561,7 @@ final class Store: ObservableObject {
             if let u = await c.me() {
                 username = u
                 loggedIn = true
+                startPolling()
             } else {
                 // token 失效
                 c.userToken = ""
@@ -581,7 +582,8 @@ final class Store: ObservableObject {
             let u = try await HubClient.shared.login(username: name, password: password)
             username = u
             loggedIn = true
-            await syncDown()
+            await syncDown(force: true)
+            startPolling()
             return true
         } catch {
             authError = error.localizedDescription
@@ -604,6 +606,7 @@ final class Store: ObservableObject {
     }
 
     func doLogout() async {
+        stopPolling()
         await HubClient.shared.logout()
         loggedIn = false
         username = ""
@@ -634,6 +637,7 @@ final class Store: ObservableObject {
     }
 
     private var lastPullAt: Date = .distantPast
+    private var lastUpdated: Double = 0
 
     /// 云端 → 本地（登录后、回到前台、定时器都会调）
     func syncDown(force: Bool = false) async {
@@ -685,6 +689,67 @@ final class Store: ObservableObject {
         }
         pendingSync = work
         DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: work)
+    }
+
+
+    // MARK: - 长轮询（秒级一致）
+
+    private var pollTask: Task<Void, Never>?
+
+    /// 启动轮询循环：服务端挂 25 秒，有变化立即回；断线 3 秒后重连
+    func startPolling() {
+        guard loggedIn else { return }
+        stopPolling()
+        pollTask = Task { [weak self] in
+            guard let self else { return }
+            var since = self.lastUpdated
+            while !Task.isCancelled {
+                guard self.loggedIn else { break }
+                do {
+                    let (updated, payload) = try await HubClient.shared.pollProgress(since: since)
+                    if updated > since { since = updated; self.lastUpdated = updated }
+                    if let p = payload {
+                        _ = self.applyRemote(p)
+                    }
+                } catch {
+                    // 网络错误：退避 3 秒
+                    try? await Task.sleep(nanoseconds: 3_000_000_000)
+                }
+            }
+        }
+    }
+
+    func stopPolling() {
+        pollTask?.cancel()
+        pollTask = nil
+    }
+
+    /// 合并云端数据，返回是否有变化
+    @discardableResult
+    func applyRemote(_ p: HubClient.ProgressPayload) -> Bool {
+        var changed = false
+        if let rp = p.progress {
+            for (k, v) in rp {
+                let local = progress[k]
+                if v == true || local == nil {
+                    if progress[k] != v { changed = true }
+                    progress[k] = v
+                }
+            }
+        }
+        if let rw = p.wrongs {
+            let have = Set(wrongs.map { $0.id })
+            let add = rw.filter { !have.contains($0.id) }
+            if !add.isEmpty {
+                wrongs.append(contentsOf: add)
+                changed = true
+            }
+        }
+        if changed {
+            saveProgress()
+            saveWrongs()
+        }
+        return changed
     }
 
 }
