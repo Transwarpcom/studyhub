@@ -1157,3 +1157,7 @@ textarea.input { height: auto; min-height: 80px; padding: 10px 12px; line-height
 @media (max-width: 1399px) {
   .lesson-nav.in-topbar { display: none; }
 }
+
+/* 重做按钮：单列，靠右，低调 */
+.qactions .btn + .btn { margin-left: 0; }
+.qcard > .qactions:last-child { justify-content: flex-end; }

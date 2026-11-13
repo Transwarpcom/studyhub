@@ -7,14 +7,14 @@
 var API = location.origin;
 var K = {
   token: 'sh.token', user: 'sh.user',
-  progress: 'sh.progress', wrongs: 'sh.wrongs',
+  progress: 'sh.progress', wrongs: 'sh.wrongs', answers: 'sh.answers',
   manifest: 'sh.manifest', lesson: 'sh.lesson.', openGroups: 'sh.openGroups'
 };
 
 var S = {
   token: '', user: '', registerOpen: false,
   manifest: null, lessons: {},
-  progress: {}, wrongs: {},
+  progress: {}, wrongs: {}, answers: {},
   openGroups: {},
   route: { name: 'home', id: '' },
   pushTimer: null, pollCtl: null, lastUpdated: 0, lastPullAt: 0
@@ -734,6 +734,9 @@ function qcard(lid, card, qNo, total) {
   var head = el('<div class="qhead">' +
     '<span class="qnum">' + qNo + '</span>' +
     '<span class="qtype">' + (TYPE_NAME[card.type] || '题目') + '</span>' +
+    (st !== undefined
+      ? '<span class="pill ' + (st ? 'ok' : 'bad') + '">' + (st ? '✓ 答对' : '✕ 答错') + '</span>'
+      : '') +
   '</div>');
   c.appendChild(head);
 
@@ -799,6 +802,8 @@ function renderChoice(area, exp, head, lid, card, c, settled, multi) {
           if (correct.indexOf(x.dataset.i) >= 0) x.classList.add('ok');
           else if (x.dataset.i === String(i)) x.classList.add('bad');
         });
+        S.answers[keyOf(lid, card)] = [String(i)];
+        save(K.answers, S.answers);
         settle(exp, head, lid, card, c, ok);
         return;
       }
@@ -810,11 +815,20 @@ function renderChoice(area, exp, head, lid, card, c, settled, multi) {
 
     if (settled) {
       b.disabled = true;
+      var savedPick = S.answers[keyOf(lid, card)] || [];
       if (correct.indexOf(String(i)) >= 0) b.classList.add('ok');
+      else if (savedPick.indexOf(String(i)) >= 0) b.classList.add('bad');
     }
     box.appendChild(b);
   });
   area.appendChild(box);
+
+  if (multi && settled) {
+    var mp = S.answers[keyOf(lid, card)] || [];
+    $$('.opt', box).forEach(function (x) {
+      if (mp.indexOf(x.dataset.i) >= 0 && !x.classList.contains('ok')) x.classList.add('bad');
+    });
+  }
 
   if (multi && !settled) {
     var act = el('<div class="qactions"><button class="btn sm" type="button">提交答案</button></div>');
@@ -826,13 +840,24 @@ function renderChoice(area, exp, head, lid, card, c, settled, multi) {
         if (correct.indexOf(x.dataset.i) >= 0) x.classList.add('ok');
         else if (picked[x.dataset.i]) x.classList.add('bad');
       });
+      S.answers[keyOf(lid, card)] = Object.keys(picked);
+      save(K.answers, S.answers);
       $('button', act).disabled = true;
       settle(exp, head, lid, card, c, got === want);
     };
     area.appendChild(act);
   }
 
-  if (settled) showExp(exp, card);
+  if (settled) {
+    showExp(exp, card);
+    area.appendChild(redoBtn(lid, card, exp, function () {
+      $$('.opt', box).forEach(function (x) {
+        x.disabled = false;
+        x.classList.remove('ok', 'bad', 'sel');
+      });
+      exp.hidden = true;
+    }));
+  }
 }
 
 /** 归一化答案：去空格、转小写、全角括号转半角 */
@@ -903,6 +928,8 @@ function renderBlankAns(area, exp, head, lid, card, c, settled) {
     });
     act.dataset.done = '1';
     $('button', act).disabled = true;
+    S.answers[keyOf(lid, card)] = inputs.map(function (inp) { return inp.value; });
+    save(K.answers, S.answers);
     settle(exp, head, lid, card, c, allOk);
   }
 
@@ -912,12 +939,56 @@ function renderBlankAns(area, exp, head, lid, card, c, settled) {
   });
 
   if (settled) {
-    inputs.forEach(function (inp) { inp.disabled = true; });
+    // 恢复上次填的答案
+    var saved = S.answers[keyOf(lid, card)] || [];
+    inputs.forEach(function (inp, i) {
+      if (saved[i] != null) inp.value = saved[i];
+      inp.disabled = true;
+      var got = normAns(inp.value);
+      var acc = blankAccepts(card, i).map(normAns).filter(function (x) { return x; });
+      if (got) inp.classList.add(acc.indexOf(got) >= 0 ? 'ok' : 'bad');
+    });
     $('button', act).disabled = true;
     act.dataset.done = '1';
   }
   area.appendChild(act);
-  if (settled) showExp(exp, card);
+
+  if (settled) {
+    showExp(exp, card);
+    area.appendChild(redoBtn(lid, card, exp, function () {
+      inputs.forEach(function (inp) {
+        inp.disabled = false;
+        inp.value = '';
+        inp.classList.remove('ok', 'bad');
+      });
+      $('button', act).disabled = false;
+      act.dataset.done = '';
+      exp.hidden = true;
+    }));
+  }
+}
+
+function keyOf(lid, card) { return lid + '|' + card.id; }
+
+/** 「重做本题」按钮：清掉记录，重新开放作答 */
+function redoBtn(lid, card, exp, reset) {
+  var b = el('<div class="qactions"><button class="btn ghost sm" type="button">重做本题</button></div>');
+  $('button', b).onclick = function () {
+    var k = keyOf(lid, card);
+    delete S.progress[k];
+    delete S.wrongs[k];
+    delete S.answers[k];
+    save(K.progress, S.progress);
+    save(K.wrongs, S.wrongs);
+    save(K.answers, S.answers);
+    if (S.token) queuePush();
+    var head = document.querySelector('[data-card="' + card.id + '"] .qhead');
+    if (head) { var p = head.querySelector('.pill'); if (p) p.remove(); }
+    reset();
+    updateQuizHead(lid);
+    renderTree();
+  };
+  return b;
 }
 
 function renderTextAns(area, exp, head, lid, card, c, settled) {
@@ -937,17 +1008,31 @@ function renderTextAns(area, exp, head, lid, card, c, settled) {
   $$('[data-ok]', act).forEach(function (b) {
     b.onclick = function () {
       $$('[data-ok]', act).forEach(function (x) { x.hidden = true; });
+      S.answers[keyOf(lid, card)] = [ta.value];
+      save(K.answers, S.answers);
       settle(exp, head, lid, card, c, b.dataset.ok === '1');
     };
   });
 
   if (settled) {
     ta.disabled = true;
-    $$('button', act).forEach(function (b) { b.disabled = true; b.hidden = true; });
+    $$('button', act).forEach(function (b) { b.disabled = true; });
+    $('[data-act="show"]', act).hidden = true;
+    var savedText = S.answers[keyOf(lid, card)];
+    if (savedText && savedText[0]) ta.value = savedText[0];
   }
   area.appendChild(ta);
   area.appendChild(act);
-  if (settled) showExp(exp, card);
+
+  if (settled) {
+    showExp(exp, card);
+    area.appendChild(redoBtn(lid, card, exp, function () {
+      ta.disabled = false;
+      $('[data-act="show"]', act).hidden = false;
+      $$('[data-ok]', act).forEach(function (b) { b.hidden = true; b.disabled = false; });
+      exp.hidden = true;
+    }));
+  }
 }
 
 function showExp(exp, card) {
@@ -1368,6 +1453,7 @@ function restoreAuth() {
   S.user = localStorage.getItem(K.user) || '';
   S.progress = load(K.progress, {});
   S.wrongs = load(K.wrongs, {});
+  S.answers = load(K.answers, {});
   S.openGroups = load(K.openGroups, {});
 
   // 兼容旧版数组格式的错题
