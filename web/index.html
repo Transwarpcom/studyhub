@@ -3,31 +3,93 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0d1117" media="(prefers-color-scheme:dark)">
-<meta name="theme-color" content="#f5f6fa" media="(prefers-color-scheme:light)">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#0b0d11" media="(prefers-color-scheme:dark)">
+<meta name="description" content="学习台 · 高数 A1 与大学英语的课程与题库">
 <title>学习台</title>
 <link rel="stylesheet" href="/web/katex/katex.min.css">
 <link rel="stylesheet" href="/web/app.css">
 </head>
 <body>
 
-<header class="hd">
-  <button class="back" id="back" hidden aria-label="返回">‹</button>
-  <h1 id="title">学习台</h1>
-  <button id="authBtn">登录</button>
-</header>
+<div class="app">
 
-<main class="wrap" id="app"></main>
+  <!-- ========== 顶栏 ========== -->
+  <header class="topbar">
+    <button class="icon-btn" id="menuBtn" aria-label="打开目录">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
 
-<nav class="tab" id="tab">
-  <a href="#/home" data-tab="home">今日</a>
-  <a href="#/lib"  data-tab="lib">课程</a>
-  <a href="#/wrong" data-tab="wrong">错题本</a>
-  <a href="#/me"   data-tab="me">我的</a>
+    <a class="brand" href="#/home">
+      <span class="mark">学</span>
+      <span class="txt">学习台</span>
+    </a>
+
+    <nav class="crumbs" id="crumbs" aria-label="位置"></nav>
+
+    <div class="topbar-actions">
+      <button class="btn ghost sm" id="authBtn">登录</button>
+    </div>
+  </header>
+
+  <!-- ========== 侧栏 ========== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-search">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/>
+        </svg>
+        <input id="search" type="search" placeholder="搜索章节" autocomplete="off" spellcheck="false">
+        <kbd>/</kbd>
+      </div>
+    </div>
+    <div class="sb-scroll" id="tree"></div>
+    <div class="sb-foot" id="sbFoot"></div>
+  </aside>
+
+  <!-- ========== 主区 ========== -->
+  <main class="main">
+    <div class="readbar"><i id="readProgress"></i></div>
+    <div class="reading" id="view"></div>
+  </main>
+
+</div>
+
+<!-- 移动端抽屉遮罩 -->
+<div class="scrim" id="scrim"></div>
+
+<!-- 移动端底栏 -->
+<nav class="tabbar" id="tabbar">
+  <a href="#/home" data-tab="home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/>
+    </svg>
+    <span>今日</span>
+  </a>
+  <a href="#/lib" data-tab="lib">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H19v18H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 3v18"/>
+    </svg>
+    <span>课程</span>
+  </a>
+  <a href="#/wrong" data-tab="wrong">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3 2 20h20z"/><path d="M12 9v5"/><path d="M12 17h.01"/>
+    </svg>
+    <span>错题</span>
+  </a>
+  <a href="#/me" data-tab="me">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/>
+    </svg>
+    <span>我的</span>
+  </a>
 </nav>
 
-<div class="toast" id="toast"></div>
-<div class="sheet" id="sheet"><div id="sheetBody"></div></div>
+<div class="toast" id="toast"><span class="ti"></span><span class="tm"></span></div>
 
 <script src="/web/vendor/marked.min.js"></script>
 <script src="/web/katex/katex.min.js"></script>
