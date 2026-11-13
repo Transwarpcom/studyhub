@@ -1081,3 +1081,20 @@ textarea.input { height: auto; min-height: 80px; padding: 10px 12px; line-height
 
 /* 多选框：保留字母标签，选中改填色 */
 .reading.split .opt .key { font-size: 11px; }
+
+/* ---------- 填空题 ---------- */
+.blank-list { display: flex; flex-direction: column; gap: var(--s2); }
+.blank-row {
+  display: flex; align-items: center; gap: var(--s3);
+}
+.blank-tag {
+  flex: 0 0 auto; min-width: 46px;
+  font-size: 11.5px; color: var(--text-3);
+  white-space: nowrap;
+}
+.blank-correct {
+  flex: 0 0 auto;
+  font-size: 12px; color: var(--ok);
+  white-space: nowrap;
+}
+.blank-input { flex: 1; min-width: 0; }

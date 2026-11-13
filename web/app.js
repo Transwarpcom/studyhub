@@ -816,28 +816,87 @@ function renderChoice(area, exp, head, lid, card, c, settled, multi) {
   if (settled) showExp(exp, card);
 }
 
+/** 归一化答案：去空格、转小写、全角括号转半角 */
+function normAns(v) {
+  return String(v == null ? '' : v)
+    .trim()
+    .replace(/\s+/g, '')
+    .replace(/[（）]/g, function (ch) { return ch === '（' ? '(' : ')'; })
+    .replace(/[，]/g, ',')
+    .toLowerCase();
+}
+
+/** 取某道填空的所有可接受答案：优先 blanks[i]，其次 answer */
+function blankAccepts(card, i) {
+  var bl = card.blanks;
+  if (Array.isArray(bl) && Array.isArray(bl[i])) {
+    return bl[i].map(String);
+  }
+  // 兼容：answer 是数组
+  if (card.answer != null) {
+    var a = card.answer;
+    if (Array.isArray(a)) {
+      // answer: ["a","b"] 两空 或 answer: [0] 索引式 → 作单空多答案
+      return a.map(String);
+    }
+    return [String(a)];
+  }
+  return [];
+}
+
 function renderBlankAns(area, exp, head, lid, card, c, settled) {
-  var inp = el('<input class="blank-input" type="text" placeholder="输入答案" autocomplete="off" autocapitalize="off" spellcheck="false">');
+  var nBlank = 1;
+  if (Array.isArray(card.blanks) && card.blanks.length) nBlank = card.blanks.length;
+
+  var inputs = [];
+  var wrap = el('<div class="blank-list"></div>');
+
+  for (var i = 0; i < nBlank; i++) {
+    var row = el('<div class="blank-row"></div>');
+    var tag = el('<span class="blank-tag">' + (nBlank > 1 ? '第 ' + (i + 1) + ' 空' : '答案') + '</span>');
+    var inp = el('<input class="blank-input" type="text" placeholder="输入答案" ' +
+      'autocomplete="off" autocapitalize="off" spellcheck="false" data-i="' + i + '">');
+    row.appendChild(tag);
+    row.appendChild(inp);
+    wrap.appendChild(row);
+    inputs.push(inp);
+  }
+  area.appendChild(wrap);
+
   var act = el('<div class="qactions"><button class="btn sm" type="button">提交</button>' +
     '<span class="hint"><kbd>Enter</kbd></span></div>');
 
   function judge() {
-    if (inp.disabled) return;
-    var got = inp.value.trim();
-    var want = String(Array.isArray(card.answer) ? card.answer[0] : (card.answer || '')).trim();
-    var ok = got.length > 0 && (got === want ||
-      got.replace(/\s+/g, '').toLowerCase() === want.replace(/\s+/g, '').toLowerCase());
-    inp.disabled = true;
-    inp.classList.add(ok ? 'ok' : 'bad');
+    if (act.dataset.done === '1') return;
+    var allOk = true;
+    inputs.forEach(function (inp, i) {
+      var got = normAns(inp.value);
+      var accepts = blankAccepts(card, i).map(normAns).filter(function (x) { return x; });
+      var ok = got.length > 0 && accepts.indexOf(got) >= 0;
+      if (!ok) allOk = false;
+      inp.disabled = true;
+      inp.classList.add(ok ? 'ok' : 'bad');
+      if (!ok && accepts.length) {
+        // 错了就提示正确答案
+        var tip = el('<span class="blank-correct">正确：' + esc(blankAccepts(card, i)[0]) + '</span>');
+        inp.parentNode.appendChild(tip);
+      }
+    });
+    act.dataset.done = '1';
     $('button', act).disabled = true;
-    settle(exp, head, lid, card, c, ok);
+    settle(exp, head, lid, card, c, allOk);
   }
 
   $('button', act).onclick = judge;
-  inp.onkeydown = function (e) { if (e.key === 'Enter') judge(); };
+  inputs.forEach(function (inp) {
+    inp.onkeydown = function (e) { if (e.key === 'Enter') judge(); };
+  });
 
-  if (settled) { inp.disabled = true; $('button', act).disabled = true; }
-  area.appendChild(inp);
+  if (settled) {
+    inputs.forEach(function (inp) { inp.disabled = true; });
+    $('button', act).disabled = true;
+    act.dataset.done = '1';
+  }
   area.appendChild(act);
   if (settled) showExp(exp, card);
 }
