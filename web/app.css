@@ -1016,85 +1016,144 @@ textarea.input { height: auto; min-height: 80px; padding: 10px 12px; line-height
 
 /* ============================================================
    宽屏三栏：目录 | 讲义 | 题目
+   做法：整个 app 固定高度，讲义列和题目列各自滚动
    ============================================================ */
 @media (min-width: 1400px) {
 
+  /* 页面不再整体滚动，改为列内滚动 */
+  html, body { height: 100%; overflow: hidden; }
+
+  .app {
+    height: 100vh;
+    grid-template-rows: var(--header-h) minmax(0, 1fr);
+  }
+
+  .sidebar {
+    position: static;
+    height: auto;
+    min-height: 0;
+  }
+  .sb-scroll { min-height: 0; }
+
+  .main {
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .reading.split {
     max-width: none;
+    height: 100%;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(380px, 27vw, 452px);
+    grid-template-columns: minmax(0, 1fr) clamp(380px, 27vw, 460px);
     column-gap: 40px;
-    row-gap: 0;
-    align-items: start;
-    padding: var(--s6) var(--s7) var(--s9);
+    padding: 0;
   }
 
-  .reading.split .page-head,
-  .reading.split .lesson-nav {
-    grid-column: 1 / -1;
-  }
-
-  .reading.split .col-lecture {
-    min-width: 0;
-    max-width: 780px;
-    justify-self: end;
-    width: 100%;
-  }
-
-  /* 题目列：吸顶独立滚动 */
+  /* 两列都自己滚 */
+  .reading.split .col-lecture,
   .reading.split .col-quiz {
-    border-left: 1px solid var(--line-soft);
-    padding-left: 28px;
-    position: sticky;
-    top: calc(var(--header-h) + 20px);
-    max-height: calc(100vh - var(--header-h) - 40px);
+    min-width: 0;
+    min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 2px 6px 16px 2px;
-    margin-top: 4px;
     scrollbar-gutter: stable;
   }
 
+  .reading.split .col-lecture {
+    padding: 0 var(--s7) var(--s8);
+  }
+  .reading.split .col-lecture > * {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .reading.split .col-quiz {
+    border-left: 1px solid var(--line-soft);
+    padding: 0 var(--s6) var(--s8) 28px;
+  }
+
+  /* 题目栏标题吸顶 */
   .reading.split .col-quiz .section-title {
-    margin-top: 0;
     position: sticky;
     top: 0;
+    z-index: 3;
+    margin: 0 0 var(--s4);
+    padding: var(--s4) 0 var(--s3);
     background: var(--bg);
-    padding-bottom: var(--s3);
-    z-index: 2;
+    border-bottom: 1px solid var(--line-soft);
   }
 
-  /* 题目列里的卡片更紧凑 */
-  .reading.split .qcard {
-    padding: var(--s4);
-    margin-bottom: var(--s3);
+  /* 讲义栏标题吸顶 */
+  .reading.split .col-lecture .page-head {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    margin: 0 0 var(--s5);
+    padding: var(--s5) 0 var(--s3);
+    background: var(--bg);
+    border-bottom: 1px solid var(--line-soft);
   }
+
+  /* 上一节/下一节放在讲义栏末尾，不再跨列 */
+  .reading.split .lesson-nav {
+    margin: var(--s8) 0 0;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .reading.split .qcard { padding: var(--s4); margin-bottom: var(--s3); }
   .reading.split .qbody { font-size: 15px; }
-  .reading.split .opt { padding: 10px 12px; font-size: 14.5px; }
 
-  /* 讲义列不再需要和题目分块的间距 */
-  .reading.split .col-lecture .prose:last-child { margin-bottom: 0; }
+  /* 顶栏在网格里 */
+  .topbar { position: static; }
+  .readbar { display: none; }
 }
 
-/* 三栏下讲义里的 h2 首块不要顶太大 */
+/* 三栏下讲义首块不留白 */
 .reading.split .col-lecture > .prose:first-child > :first-child { margin-top: 0; }
 
-/* 多选框：保留字母标签，选中改填色 */
-.reading.split .opt .key { font-size: 11px; }
+/* 中等宽度（1000-1400）仍是单列，但保留顶栏吸顶 */
+@media (min-width: 901px) and (max-width: 1399px) {
+  .reading { max-width: 820px; }
+  .reading.wide { max-width: 1080px; }
+}
 
-/* ---------- 填空题 ---------- */
-.blank-list { display: flex; flex-direction: column; gap: var(--s2); }
-.blank-row {
-  display: flex; align-items: center; gap: var(--s3);
+/* ---------- 顶栏里的上一节/下一节 ---------- */
+.lesson-nav.in-topbar {
+  display: flex; align-items: center; gap: 4px;
+  margin: 0; padding: 0; border: 0;
+  grid-template-columns: none;
 }
-.blank-tag {
-  flex: 0 0 auto; min-width: 46px;
-  font-size: 11.5px; color: var(--text-3);
-  white-space: nowrap;
+.lesson-nav.in-topbar .nav-card {
+  flex-direction: row; align-items: center; gap: 6px;
+  padding: 6px 11px; height: 32px;
+  border-radius: var(--r-md);
+  background: transparent; border: 1px solid transparent;
+  font-size: 13px;
 }
-.blank-correct {
-  flex: 0 0 auto;
-  font-size: 12px; color: var(--ok);
-  white-space: nowrap;
+.lesson-nav.in-topbar .nav-card:hover {
+  background: var(--surface-2); border-color: var(--line);
+  box-shadow: none;
 }
-.blank-input { flex: 1; min-width: 0; }
+.lesson-nav.in-topbar .nav-card.next { text-align: left; }
+.lesson-nav.in-topbar .nav-dir { font-size: 11.5px; color: var(--text-3); }
+.lesson-nav.in-topbar .nav-title {
+  font-size: 13px; max-width: 160px; color: var(--text-2);
+}
+.lesson-nav.in-topbar .nav-card:hover .nav-title { color: var(--text); }
+
+/* 题目栏标题下加安全间距，避免第一张卡被遮 */
+.reading.split .col-quiz .section-title { margin-bottom: var(--s3); }
+.reading.split .col-quiz .quiz > .qcard:first-child { margin-top: 2px; }
+
+/* 滚动条稍明显 */
+.reading.split .col-quiz::-webkit-scrollbar,
+.reading.split .col-lecture::-webkit-scrollbar { width: 12px; }
+.reading.split .col-quiz::-webkit-scrollbar-thumb,
+.reading.split .col-lecture::-webkit-scrollbar-thumb {
+  border-width: 4px;
+}
+
+@media (max-width: 1399px) {
+  .lesson-nav.in-topbar { display: none; }
+}

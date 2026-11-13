@@ -624,9 +624,13 @@ function renderLesson(v, lid, l, node) {
   var split = wide && quiz.length > 0;
   v.classList.toggle('split', split);
 
+  // 页头：三栏时移进讲义列，单栏时留在顶层
+  var head = v.querySelector('.page-head');
+
   var colLecture, colQuiz;
   if (split) {
     colLecture = el('<div class="col col-lecture"></div>');
+    if (head) colLecture.appendChild(head);
     v.appendChild(colLecture);
 
     colQuiz = el('<div class="col col-quiz"></div>');
@@ -676,7 +680,22 @@ function renderLesson(v, lid, l, node) {
 
   updatePct(lid, v);
   observeProgress();
-  v.appendChild(lessonNav(lid));
+
+  if (split) {
+    // 三栏：导航放顶栏，始终可见
+    var nav = lessonNav(lid);
+    nav.classList.add('in-topbar');
+    var actions = document.querySelector('.topbar-actions');
+    if (actions) {
+      var old = document.querySelector('.topbar .lesson-nav');
+      if (old) old.remove();
+      actions.insertBefore(nav, actions.firstChild);
+    }
+  } else {
+    var old2 = document.querySelector('.topbar .lesson-nav');
+    if (old2) old2.remove();
+    (colLecture || v).appendChild(lessonNav(lid));
+  }
 }
 
 /** 上一节 / 下一节 */
@@ -1301,6 +1320,9 @@ function render() {
   }
 
   v.classList.toggle('wide', r.name === 'home' || r.name === 'lib' || r.name === 'wrong');
+  // 清掉上一节留下的顶栏导航
+  var staleNav = document.querySelector('.topbar .lesson-nav');
+  if (staleNav) staleNav.remove();
 
   switch (r.name) {
     case 'home':   viewHome(v); break;
