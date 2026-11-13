@@ -1316,6 +1316,31 @@ function render() {
   window.scrollTo(0, 0);
 }
 
+
+/* ============================================================
+   一次性数据清理：填空题旧版判分 bug 留下的错误记录
+   旧版只读 card.answer，而填空题答案在 card.blanks 里，
+   导致 29 道填空题全部被判错。这里把它们的本地记录清掉。
+   ============================================================ */
+var BLANK_KEYS = ["english/listening/02|q3", "english/vocab/01|q3", "math/1-10|q2", "math/1-1|q3", "math/1-2|q2", "math/1-3|q3", "math/1-4|q2", "math/1-5|q1", "math/1-6|q2", "math/1-7|q2", "math/1-9|q1", "math/2-1|q2", "math/2-2|q1", "math/2-3|q1", "math/2-4|q2", "math/2-5|q1", "math/3-1|q2", "math/3-2|q1", "math/3-3|q1", "math/3-4|q1", "math/3-5|q2", "math/3-6|q2", "math/3-7|q1", "math/4-1|q1", "math/4-2|aq1", "math/4-2|bq3", "math/4-3|q1", "math/4-5|q1", "math/5-1|q3"];
+
+function cleanupBlankBug() {
+  var flag = 'sh.cleanup.blank.v1';
+  if (localStorage.getItem(flag)) return 0;
+  var n = 0;
+  BLANK_KEYS.forEach(function (k) {
+    if (S.progress[k] === false) { delete S.progress[k]; n++; }
+    if (S.wrongs[k]) { delete S.wrongs[k]; n++; }
+  });
+  if (n) {
+    save(K.progress, S.progress);
+    save(K.wrongs, S.wrongs);
+    console.log('[cleanup] 清除填空题误判记录 ' + n + ' 条');
+  }
+  localStorage.setItem(flag, '1');
+  return n;
+}
+
 function restoreAuth() {
   S.token = localStorage.getItem(K.token) || '';
   S.user = localStorage.getItem(K.user) || '';
@@ -1330,6 +1355,8 @@ function restoreAuth() {
     S.wrongs = m;
     save(K.wrongs, S.wrongs);
   }
+
+  cleanupBlankBug();
 
   return fetch(API + '/auth/config')
     .then(function (r) { return r.json(); })
