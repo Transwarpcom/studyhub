@@ -633,15 +633,24 @@ final class Store: ObservableObject {
         }
     }
 
-    /// 云端 → 本地（登录后自动跑一次）
-    func syncDown() async {
+    private var lastPullAt: Date = .distantPast
+
+    /// 云端 → 本地（登录后、回到前台、定时器都会调）
+    func syncDown(force: Bool = false) async {
         guard loggedIn else { return }
+        // 30 秒内不重复拉，避免频繁请求
+        if !force, Date().timeIntervalSince(lastPullAt) < 30 { return }
+        lastPullAt = Date()
         syncing = true; syncMsg = "拉取进度…"
         defer { syncing = false }
         do {
             let remote = try await HubClient.shared.pullProgress()
             if let rp = remote.progress, !rp.isEmpty {
-                for (k, v) in rp { progress[k] = v }
+                for (k, v) in rp {
+                    let local = progress[k]
+                    // 任一端答对就算对；本地没有才采信云端的 false
+                    if v == true || local == nil { progress[k] = v }
+                }
                 saveProgress()
             }
             if let rn = remote.notes, !rn.isEmpty {

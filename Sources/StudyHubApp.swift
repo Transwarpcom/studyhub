@@ -14,6 +14,7 @@ struct StudyHubApp: App {
 
 struct RootView: View {
     @EnvironmentObject var store: Store
+    @Environment(\.scenePhase) private var scenePhase
     @State private var tab = 0
 
     var body: some View {
@@ -36,6 +37,11 @@ struct RootView: View {
             StoreLocator.shared.store = store
             await store.bootstrap()
             await store.refreshAuthState()
+        }
+        .onChange(of: scenePhase) { phase in
+            // 回到前台：自动拉一次云端进度（别的设备可能改过）
+            guard phase == .active, store.loggedIn else { return }
+            Task { await store.syncDown() }
         }
     }
 }

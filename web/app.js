@@ -807,13 +807,23 @@ function pushProgress() {
   });
 }
 
-function pullProgress() {
+var lastPullAt = 0;
+
+function pullProgress(force) {
   if (!S.token) return Promise.resolve();
+  var now = Date.now();
+  if (!force && now - lastPullAt < 30000) return Promise.resolve();
+  lastPullAt = now;
   return api('/progress')
     .then(function (d) {
       var p = (d && d.data) || {};
       if (p.progress) {
-        Object.keys(p.progress).forEach(function (k) { S.progress[k] = p.progress[k]; });
+        Object.keys(p.progress).forEach(function (k) {
+          var remote = p.progress[k];
+          var local = S.progress[k];
+          // 任一端答对就算对；本地没有才用云端的 false
+          if (remote === true || local === undefined) S.progress[k] = remote;
+        });
       }
       if (Array.isArray(p.wrongs)) {
         var have = {};
@@ -871,6 +881,26 @@ function render() {
   }
   window.scrollTo(0, 0);
 }
+
+// ---------- 自动同步 ----------
+// 页面重新可见时拉一次（别的设备刚改过）
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState === 'visible' && S.token) {
+    pullProgress(true).then(function () {
+      // 如果正停在课程页，重绘一次让状态更新
+      if (S.route && S.route.name === 'lesson') render();
+    });
+  }
+});
+
+// 每分钟静默拉一次
+setInterval(function () {
+  if (S.token && document.visibilityState === 'visible') {
+    pullProgress(true).then(function () {
+      if (S.route && S.route.name === 'lesson') render();
+    });
+  }
+}, 60000);
 
 $('#back').onclick = function () {
   if (history.length > 1) history.back();
