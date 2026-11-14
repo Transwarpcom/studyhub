@@ -46,7 +46,7 @@
       "id": "q3",
       "type": "text",
       "question": "用微分近似计算 $\\sqrt{1.02}$（取 $x_0=1$）。",
-      "explain": "**第一步：设函数**\n\n$$f(x)=\\sqrt x,\\qquad f'(x)=\\frac{1}{2\\sqrt x}$$\n\n**第二步：取点**\n\n$x_0=1$，$\\Delta x=0.02$。\n\n$$f(1)=1,\\qquad f'(1)=\\frac12$$\n\n**第三步：用 $\\Delta y\\approx dy$**\n\n$$f(1.02)\\approx f(1)+f'(1)\\Delta x=1+\\frac12\\times0.02=1.01$$\n\n**真实值**：$\\sqrt{1.02}\\approx1.009950$，误差约 $5\\times10^{-5}$，精度够用。\n\n**通用公式**：\n\n$$f(x_0+\\Delta x)\\approx f(x_0)+f'(x_0)\\Delta x$$\n\n这就是**一次近似**（线性化），也是泰勒公式取一阶的结果。",
+      "explain": "**第一步：设函数**\n\n$$f(x)=\\sqrt x,\\qquad f'(x)=\\frac{1}{2\\sqrt x}$$\n\n**第二步：取点**\n\n$x_0=1$，$\\Delta x=0.02$。\n\n$$f(1)=1,\\qquad f'(1)=\\frac12$$\n\n**第三步：用 $\\Delta y\\approx dy$**\n\n$$f(1.02)\\approx f(1)+f'(1)\\Delta x=1+\\frac12\\times0.02=1.01$$\n\n**真实值**：$\\sqrt{1.02}\\approx1.009950$，误差约 $5\\times10^{-5}$，精度够用。\n\n**通用公式**：\n\n$$f(x_0+\\Delta x)\\approx f(x_0)+f'(x_0)\\Delta x$$\n\n这就是**一次近似**（线性化）：用切线代替曲线，在 $x_0$ 附近误差是 $\\Delta x$ 的二阶小量。",
       "tags": [
         "近似计算"
       ]

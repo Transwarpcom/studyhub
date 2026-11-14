@@ -13,7 +13,7 @@
       "id": "q1",
       "type": "blank",
       "question": "$\\lim\\limits_{x\\to0}\\dfrac{e^x-1-x}{x^2}=$ {{1}}",
-      "explain": "$\\frac00$ 型，用两次洛必达：\n\n$$\\lim\\frac{e^x-1}{2x}\\quad(\\text{还是}\\tfrac00)=\\lim\\frac{e^x}{2}=\\frac12$$\n\n**也可以用泰勒**：$e^x=1+x+\\frac{x^2}{2}+o(x^2)$，分子 $=\\frac{x^2}{2}+o(x^2)$，除以 $x^2$ 得 $\\frac12$。\n\n泰勒通常比连用两次洛必达快。",
+      "explain": "$\\frac00$ 型，用两次洛必达：\n\n第一次求导：\n\n$$\\lim_{x\\to0}\\frac{e^x-1-x}{x^2}\\quad\\xrightarrow{\\text{洛必达}}\\quad\\lim_{x\\to0}\\frac{e^x-1}{2x}$$\n\n还是 $\\frac00$ 型，再求一次：\n\n$$\\lim_{x\\to0}\\frac{e^x}{2}=\\frac{1}{2}$$\n\n**验证一遍条件**：两次求导后分子 $e^x\\to1$、分母 $2$，分母不为零，可以用。\n\n**易错点**：不要只求一次导就代入。第一次求完 $\\dfrac{e^x-1}{2x}$ 在 $x=0$ 处仍是 $\\frac00$，必须再求一次。\n\n**换个数验证**：$\\lim\\limits_{x\\to0}\\dfrac{e^x-1-x-\\frac{x^2}{2}}{x^3}=\\dfrac16$，同一套路求三次。",
       "blanks": [
         [
           "1/2",
@@ -47,7 +47,7 @@
       "id": "q3",
       "type": "text",
       "question": "求 $$\\lim\\limits_{x\\to0}\\left(\\dfrac{\\sin x}{x}\\right)^{\\frac{1}{x^2}}$$。",
-      "explain": "这是 $1^\\infty$ 型。取对数：\n\n$$L=\\lim_{x\\to0}\\frac{1}{x^2}\\ln\\frac{\\sin x}{x}$$\n\n先算 $\\ln\\frac{\\sin x}{x}$ 的展开。由 $\\sin x=x-\\frac{x^3}{6}+o(x^3)$：\n\n$$\\frac{\\sin x}{x}=1-\\frac{x^2}{6}+o(x^2)$$\n\n$$\\ln\\left(1-\\frac{x^2}{6}+o(x^2)\\right)=-\\frac{x^2}{6}+o(x^2)$$\n\n所以\n\n$$L=\\lim_{x\\to0}\\frac{-\\frac{x^2}{6}}{x^2}=-\\frac16$$\n\n原式 $=e^{-1/6}$。\n\n**要点**：$1^\\infty$ 型先取对数，再用等价无穷小 $\\ln(1+u)\\sim u$，比洛必达快得多。",
+      "explain": "这是 $1^\\infty$ 型。标准做法是**取对数转成 $\\frac00$**，再用洛必达。\n\n设 $L$ 为所求，则\n\n$$\\ln L=\\lim_{x\\to0}\\frac{1}{x^2}\\ln\\frac{\\sin x}{x}=\\lim_{x\\to0}\\frac{\\ln\\sin x-\\ln x}{x^2}$$\n\n这是 $\\frac00$ 型（分子 $\\ln1-\\ln1=0$，分母 $0$），求导：\n\n$$\\lim_{x\\to0}\\frac{\\dfrac{\\cos x}{\\sin x}-\\dfrac{1}{x}}{2x}=\\lim_{x\\to0}\\frac{\\dfrac{x\\cos x-\\sin x}{x\\sin x}}{2x}=\\lim_{x\\to0}\\frac{x\\cos x-\\sin x}{2x^2\\sin x}$$\n\n分母用 $\\sin x\\sim x$ 换成 $2x^3$（等价无穷小只在乘除中替换，这里是整体分母，合法）：\n\n$$\\lim_{x\\to0}\\frac{x\\cos x-\\sin x}{2x^3}$$\n\n仍是 $\\frac00$ 型，对分子再求导：\n\n$$\\frac{d}{dx}(x\\cos x-\\sin x)=\\cos x-x\\sin x-\\cos x=-x\\sin x$$\n\n于是\n\n$$\\lim_{x\\to0}\\frac{-x\\sin x}{6x^2}=\\lim_{x\\to0}\\frac{-\\sin x}{6x}=-\\frac{1}{6}$$\n\n所以 $\\ln L=-\\dfrac16$，即\n\n$$L=e^{-1/6}$$\n\n**关键点**：\n\n- $1^\\infty$ 型**必须**先取对数，不能直接对幂求导\n- 中间每一步都要确认是不是 $\\frac00$ 或 $\\frac\\infty\\infty$，不是就不能硬用洛必达\n- $\\sin x\\sim x$ 这类等价替换只能用在**乘除因式**上，加减里不能随便换\n\n**另一种写法**（先化简再用洛必达，少求一次导）：分子分母同除 $\\sin x$，把 $\\dfrac{x\\cos x-\\sin x}{2x^2\\sin x}$ 写成 $\\dfrac{\\frac{x}{\\sin x}\\cos x-1}{2x^2}$，再用 $\\dfrac{x}{\\sin x}\\to1$，化简为 $\\dfrac{\\cos x-1}{2x^2}=-\\dfrac14\\cdot\\dfrac{1-\\cos x}{x^2/2}\\cdot\\dfrac12$，同样得 $-\\dfrac16$。",
       "tags": [
         "1^∞",
         "综合"
