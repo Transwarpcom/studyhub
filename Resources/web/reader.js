@@ -261,6 +261,32 @@
   }
 
   // ---------- 卡片构建 ----------
+  /** 卡片顶部的「第 N 题 · 题型」 */
+  function kickerText(card) {
+    var label = typeLabel(card.type);
+    var no = card.__qno;
+    if (!no) return label;
+    return '第 ' + no + ' 题' + (label ? ' · ' + label : '');
+  }
+
+  /** 重做本题：清掉记录，重新开放作答 */
+  function redoBar(card, reset) {
+    var bar = document.createElement('div');
+    bar.className = 'btn-row redo-row';
+    var b = document.createElement('button');
+    b.className = 'btn ghost small';
+    b.textContent = '重做本题';
+    b.addEventListener('click', function () {
+      delete S.answered[card.id];
+      post({ type: 'answer', cardId: card.id, correct: null, preview: '' });
+      reset();
+      bar.style.display = 'none';
+      updateProgress();
+    });
+    bar.appendChild(b);
+    return bar;
+  }
+
   function typeLabel(t) {
     return { choice: '单选题', multi: '多选题', judge: '判断题', blank: '填空题', text: '解答题', lecture: '讲解' }[t] || '';
   }
@@ -298,7 +324,7 @@
     el.className = 'card';
     el.dataset.cardId = card.id;
 
-    var h = '<div class="kicker">' + typeLabel(card.type) + '</div>';
+    var h = '<div class="kicker">' + kickerText(card) + '</div>';
     h += '<div class="md q">' + mdToHtml(card.question || '') + '</div>';
     if (card.svg) h += '<div class="figure">' + card.svg + '</div>';
     h += optionsHtml(card, multi);
@@ -333,7 +359,20 @@
 
     // 恢复已答状态
     var prev = S.answered[card.id];
-    if (prev) restoreChoice(el, card, prev);
+    if (prev) {
+      restoreChoice(el, card, prev);
+      el.appendChild(redoBar(card, function () {
+        picked = [];
+        el.dataset.locked = '0';
+        opts.forEach(function (b) { b.classList.remove('sel', 'right', 'wrong'); });
+        submit.disabled = true;
+        submit.style.display = '';
+        el.querySelector('.verdict').textContent = '';
+        el.querySelector('.verdict').className = 'verdict';
+        var ex = el.querySelector('.explain');
+        if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
+      }));
+    }
 
     return el;
   }
@@ -382,7 +421,7 @@
       return '<input class="blank-input" data-blank="' + (parseInt(idx, 10) - 1) + '" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">';
     });
 
-    var h = '<div class="kicker">' + typeLabel(card.type) + '</div>';
+    var h = '<div class="kicker">' + kickerText(card) + '</div>';
     h += '<div class="md q">' + q + '</div>';
     if (card.svg) h += '<div class="figure">' + card.svg + '</div>';
     h += '<div class="btn-row"><button class="btn submit">提交答案</button></div>';
@@ -421,6 +460,18 @@
       });
       el.querySelector('.submit').style.display = 'none';
       showResult(el, card, prev.correct, prev);
+      el.appendChild(redoBar(card, function () {
+        el.querySelectorAll('.blank-input').forEach(function (inp) {
+          inp.value = '';
+          inp.readOnly = false;
+          inp.classList.remove('right', 'wrong');
+        });
+        el.querySelector('.submit').style.display = '';
+        el.querySelector('.verdict').textContent = '';
+        el.querySelector('.verdict').className = 'verdict';
+        var ex = el.querySelector('.explain');
+        if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
+      }));
     }
 
     return el;
@@ -431,24 +482,60 @@
     el.className = 'card';
     el.dataset.cardId = card.id;
 
-    var h = '<div class="kicker">' + typeLabel(card.type) + '</div>';
+    var h = '<div class="kicker">' + kickerText(card) + '</div>';
     h += '<div class="md q">' + mdToHtml(card.question || '') + '</div>';
     if (card.svg) h += '<div class="figure">' + card.svg + '</div>';
-    h += '<textarea class="ans" placeholder="写你的思路或答案（不判分，写完全对答案）"></textarea>';
-    h += '<div class="btn-row"><button class="btn submit">对答案</button></div>';
+    h += '<textarea class="ans" placeholder="写你的思路（可选），写完对答案自评"></textarea>';
+    h += '<div class="btn-row"><button class="btn submit">看解析</button></div>';
+    h += '<div class="btn-row self-row" style="display:none">' +
+         '<button class="btn small" data-ok="1">会了</button>' +
+         '<button class="btn ghost small" data-ok="0">还不会</button></div>';
     h += '<div class="explain" style="display:none"></div>';
     el.innerHTML = h;
 
-    el.querySelector('.submit').addEventListener('click', function () {
-      el.querySelector('.submit').style.display = 'none';
-      el.querySelector('textarea').readOnly = true;
+    var ta = el.querySelector('textarea');
+    var showBtn = el.querySelector('.submit');
+    var selfRow = el.querySelector('.self-row');
+
+    showBtn.addEventListener('click', function () {
+      showBtn.style.display = 'none';
+      ta.readOnly = true;
       var box = el.querySelector('.explain');
       box.style.display = 'block';
       box.innerHTML = '<div class="tag">参考解答</div><div class="md">' + mdToHtml(card.explain || '（暂无解析）') + '</div>';
       renderMath(box);
-      record(card.id, true, { picked: [] }, previewOf(card));
-      updateProgress();
+      selfRow.style.display = 'flex';
     });
+
+    selfRow.querySelectorAll('[data-ok]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        selfRow.style.display = 'none';
+        var ok = b.dataset.ok === '1';
+        record(card.id, ok, { picked: [ta.value] }, previewOf(card));
+        updateProgress();
+      });
+    });
+
+    // 恢复已答状态
+    var prev = S.answered[card.id];
+    if (prev) {
+      ta.value = (prev.picked || [])[0] || '';
+      ta.readOnly = true;
+      showBtn.style.display = 'none';
+      selfRow.style.display = 'none';
+      var box = el.querySelector('.explain');
+      box.style.display = 'block';
+      box.innerHTML = '<div class="tag">参考解答</div><div class="md">' + mdToHtml(card.explain || '（暂无解析）') + '</div>';
+      renderMath(box);
+      el.appendChild(redoBar(card, function () {
+        ta.value = '';
+        ta.readOnly = false;
+        showBtn.style.display = '';
+        selfRow.style.display = 'none';
+        var ex = el.querySelector('.explain');
+        if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
+      }));
+    }
 
     return el;
   }
@@ -544,7 +631,10 @@
     var stage = document.getElementById('stage');
     stage.innerHTML = '';
 
+    var qNo = 0;
     (payload.cards || []).forEach(function (card) {
+      var isQ = card.type !== 'lecture';
+      if (isQ) { qNo++; card.__qno = qNo; }
       var el;
       switch (card.type) {
         case 'lecture': el = buildLecture(card); break;
@@ -555,6 +645,7 @@
         case 'text': el = buildText(card); break;
         default: el = buildLecture(card); break;
       }
+      if (isQ) el.dataset.qno = String(qNo);
       stage.appendChild(el);
     });
 
