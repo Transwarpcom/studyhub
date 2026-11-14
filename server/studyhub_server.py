@@ -50,6 +50,7 @@ IPA_DIR = os.environ.get("IPA_DIR", os.path.join(DATA_DIR, "ipa"))
 WEB_DIR = os.environ.get("WEB_DIR", "/opt/studyhub/web")
 TLS_CERT = os.environ.get("TLS_CERT", "")
 TLS_KEY = os.environ.get("TLS_KEY", "")
+BUNDLE_DIR = os.environ.get("BUNDLE_DIR", "/opt/studyhub/appbundle")
 LOCK = threading.Lock()
 
 # 长轮询等待者：username -> set(Event)。push 时直接唤醒，避免轮询文件。
@@ -325,6 +326,59 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, {"ok": True, "username": user,
                                         "updated": data.get("updated") or 0,
                                         "data": data if changed else None})
+
+        # App 内嵌资源热更新
+        if path == "/appbundle/manifest.json":
+            root = BUNDLE_DIR
+            if not os.path.isdir(root):
+                return self.send_body(404, {"ok": False, "error": "bundle missing"})
+            files = []
+            h = hashlib.sha256()
+            for dirpath, dirnames, filenames in os.walk(root):
+                dirnames.sort()
+                for fn in sorted(filenames):
+                    full = os.path.join(dirpath, fn)
+                    rel = os.path.relpath(full, root).replace(os.sep, "/")
+                    try:
+                        with open(full, "rb") as f:
+                            data = f.read()
+                    except Exception:
+                        continue
+                    files.append({"path": rel,
+                                  "sha256": hashlib.sha256(data).hexdigest(),
+                                  "size": len(data)})
+                    h.update(rel.encode("utf-8"))
+                    h.update(hashlib.sha256(data).digest())
+            if not files:
+                return self.send_body(404, {"ok": False, "error": "bundle empty"})
+            return self.send_body(200, {"ok": True, "version": h.hexdigest()[:16],
+                                        "count": len(files), "files": files})
+
+        if path.startswith("/appbundle/"):
+            rel = path[len("/appbundle/"):]
+            if ".." in rel or rel.startswith("/"):
+                return self.send_body(400, {"ok": False, "error": "bad path"})
+            fp = os.path.join(BUNDLE_DIR, rel)
+            if not os.path.isfile(fp):
+                return self.send_body(404, {"ok": False, "error": "not found", "path": rel})
+            with open(fp, "rb") as f:
+                data = f.read()
+            low = fp.lower()
+            if low.endswith(".html"):
+                ctype = "text/html; charset=utf-8"
+            elif low.endswith(".js"):
+                ctype = "application/javascript; charset=utf-8"
+            elif low.endswith(".css"):
+                ctype = "text/css; charset=utf-8"
+            elif low.endswith(".woff2"):
+                ctype = "font/woff2"
+            elif low.endswith(".woff"):
+                ctype = "font/woff"
+            elif low.endswith(".ttf"):
+                ctype = "font/ttf"
+            else:
+                ctype = "application/octet-stream"
+            return self.send_body(200, data, ctype)
 
         # 网页版静态资源：不带 /web 前缀也认（浏览器会把相对路径解析到根）
         if path in ("/app.css", "/app.js") or path.startswith("/vendor/") or path.startswith("/katex/"):

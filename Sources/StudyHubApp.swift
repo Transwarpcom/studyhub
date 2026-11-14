@@ -37,6 +37,9 @@ struct RootView: View {
             StoreLocator.shared.store = store
             await store.bootstrap()
             await store.refreshAuthState()
+            // 后台检查 App 内嵌资源有没有新版（不阻塞界面）
+            WebBundleUpdater.shared.checkAndUpdate(baseURL: HubClient.shared.baseURL,
+                                                   token: HubClient.shared.userToken) { _ in }
         }
         .onChange(of: scenePhase) { phase in
             // 回到前台：自动拉一次云端进度（别的设备可能改过）

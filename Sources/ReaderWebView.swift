@@ -37,7 +37,9 @@ struct ReaderWebView: UIViewRepresentable {
         wv.allowsBackForwardNavigationGestures = false
         context.coordinator.webView = wv
 
-        if let url = Bundle.main.url(forResource: "reader", withExtension: "html", subdirectory: "web") {
+        // 优先用热更新后的资源，没有就用包内的
+        if let url = WebBundleUpdater.shared.activeReaderURL() {
+            // 允许访问整个目录（reader.html 会引用同目录的 reader.js 和 katex/）
             wv.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
         } else {
             wv.loadHTMLString("<meta name='viewport' content='width=device-width'><h3 style='font-family:-apple-system;padding:24px'>reader.html 没有打进包里</h3>", baseURL: nil)

@@ -5,6 +5,7 @@ struct SettingsView: View {
 
     @State private var base = HubClient.shared.baseURL
     @State private var hint: String?
+    @State private var webMsg: String?
 
     var body: some View {
         NavigationStack {
@@ -48,6 +49,27 @@ struct SettingsView: View {
                     .foregroundColor(.orange)
                     if let hint {
                         Text(hint).font(.caption).foregroundColor(.secondary)
+                    }
+                }
+
+                Section("网页资源") {
+                    LabeledContent("当前版本", value: WebBundleUpdater.shared.currentVersionInfo())
+                    Button("检查更新") {
+                        webMsg = "检查中…"
+                        WebBundleUpdater.shared.checkAndUpdate(baseURL: HubClient.shared.baseURL,
+                                                               token: HubClient.shared.userToken) { updated in
+                            DispatchQueue.main.async {
+                                webMsg = updated ? "已更新，重开课程页生效" : "已是最新"
+                            }
+                        }
+                    }
+                    Button("恢复内置版本") {
+                        WebBundleUpdater.shared.reset()
+                        webMsg = "已恢复内置资源"
+                    }
+                    .foregroundColor(.orange)
+                    if let webMsg {
+                        Text(webMsg).font(.caption).foregroundColor(.secondary)
                     }
                 }
 
