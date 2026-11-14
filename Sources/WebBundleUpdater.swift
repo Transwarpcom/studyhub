@@ -110,8 +110,9 @@ final class WebBundleUpdater {
                 req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
             }
 
-            PinnedSession.shared.session.downloadTask(with: req) { tmp, resp, err in
+            PinnedSession.shared.session.downloadTask(with: req) { [weak self] tmp, resp, err in
                 defer { group.leave() }
+                guard let self else { return }
 
                 guard err == nil,
                       let tmp,
@@ -141,7 +142,7 @@ final class WebBundleUpdater {
 
                 let dest = staging.appendingPathComponent(entry.path)
                 do {
-                    try fm.createDirectory(at: dest.deletingLastPathComponent(),
+                    try self.fm.createDirectory(at: dest.deletingLastPathComponent(),
                                            withIntermediateDirectories: true)
                     try data.write(to: dest)
                     lock.lock(); verified[entry.path] = digest; lock.unlock()
