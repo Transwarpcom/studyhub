@@ -199,7 +199,9 @@ def parse_multipart(body, content_type):
 
 class Handler(BaseHTTPRequestHandler):
     server_version = "StudyHub/2.0"
+    timeout = 45  # 单连接最长 45 秒，超时自动断开
     protocol_version = "HTTP/1.1"
+    # 每条响应都带 Connection: close，规避 keep-alive 线程堆积
 
     def log_message(self, format, *args):
         print("[%s] %s" % (time.strftime("%H:%M:%S"), format % args), flush=True)
@@ -217,8 +219,14 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Headers", "Authorization, Content-Type")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Connection", "close")
         self.end_headers()
-        self.wfile.write(body)
+        try:
+            self.wfile.write(body)
+        except (BrokenPipeError, ConnectionResetError, OSError):
+            # 客户端已断开（长轮询超时后常见），静默退出
+            pass
+        self.close_connection = True
 
     def token(self):
         h = self.headers.get("Authorization", "")
@@ -318,7 +326,8 @@ class Handler(BaseHTTPRequestHandler):
             # 没有变化就挂起，等 push 唤醒（最多 25 秒）
             ev = register_waiter(user)
             try:
-                ev.wait(timeout=25.0)
+                # 12 秒一档，客户端收到空响应后立刻重连，避免超长占用
+                ev.wait(timeout=12.0)
             finally:
                 drop_waiter(user, ev)
             data = read_json(fp, {"progress": {}, "wrongs": [], "notes": {}, "stats": {}})
@@ -631,8 +640,18 @@ class Handler(BaseHTTPRequestHandler):
 
 def main():
     ensure_dirs()
+    ThreadingHTTPServer.request_queue_size = 64
     srv = ThreadingHTTPServer(("0.0.0.0", PORT), Handler)
     srv.daemon_threads = True
+
+    # 线程数监控：超过上限时打印告警（不阻塞服务）
+    _orig_process = srv.process_request
+    def _guarded_process(request, client_address):
+        n = threading.active_count()
+        if n > 300:
+            print("[warn] 活跃线程 %d，可能连接堆积" % n, flush=True)
+        return _orig_process(request, client_address)
+    srv.process_request = _guarded_process
     scheme = "http"
     if TLS_CERT and TLS_KEY and os.path.isfile(TLS_CERT) and os.path.isfile(TLS_KEY):
         import ssl
