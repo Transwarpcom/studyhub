@@ -1,0 +1,37 @@
+{
+ "id": "math/5-4",
+ "title": "5.4 反常积分",
+ "subtitle": "无穷限 · 无界函数 · p 积分判别法",
+ "cards": [
+  {
+   "id": "c1",
+   "type": "lecture",
+   "title": "无穷限的反常积分",
+   "md": "## 定义\n\n**（1）无穷上限**\n\n$$\\int_a^{+\\infty}f(x)\\,dx=\\lim_{t\\to+\\infty}\\int_a^t f(x)\\,dx$$\n\n**（2）无穷下限**\n\n$$\\int_{-\\infty}^{b}f(x)\\,dx=\\lim_{t\\to-\\infty}\\int_t^b f(x)\\,dx$$\n\n**（3）双侧无穷**\n\n$$\\int_{-\\infty}^{+\\infty}f(x)\\,dx=\\int_{-\\infty}^{c}f\\,dx+\\int_c^{+\\infty}f\\,dx$$\n\n（$c$ 任意，**要求两个都收敛**，否则整个发散）\n\n## 收敛与发散\n\n- 极限**存在且有限** → 积分**收敛**\n- 极限不存在或为无穷 → 积分**发散**\n\n## 记法\n\n先算有限区间上的定积分，再取极限。**不能直接把 $+\\infty$ 塞进去当上限。**\n\n## 一个重要提醒：偶函数在双侧无穷\n\n$$\\int_{-\\infty}^{+\\infty}f(x)dx\\ne\\lim_{t\\to+\\infty}\\int_{-t}^{t}f(x)dx$$\n\n右边的极限叫**柯西主值**，即使主值存在，积分也可能发散。例如 $f(x)=x$，主值 $=0$，但 $\\int_{-\\infty}^{+\\infty}x\\,dx$ 发散。"
+  },
+  {
+   "id": "c2",
+   "type": "lecture",
+   "title": "无界函数的反常积分（瑕积分）",
+   "md": "## 瑕点\n\n若 $f$ 在 $a$ 的任一邻域内无界，称 $a$ 是**瑕点**（奇点）。\n\n## 定义\n\n**（1）瑕点在 $a$**（下限）\n\n$$\\int_a^b f(x)dx=\\lim_{\\varepsilon\\to0^+}\\int_{a+\\varepsilon}^{b}f(x)\\,dx$$\n\n**（2）瑕点在 $b$**（上限）\n\n$$\\int_a^b f(x)dx=\\lim_{\\varepsilon\\to0^+}\\int_a^{b-\\varepsilon}f(x)\\,dx$$\n\n**（3）瑕点在 $c\\in(a,b)$**（内部）\n\n$$\\int_a^b f\\,dx=\\int_a^c f\\,dx+\\int_c^b f\\,dx$$\n\n**要求两个都收敛。**\n\n## 重要：这是\"第二类\" p 积分，方向和第一类相反\n\n$$\\int_0^{1}\\frac{dx}{x^p}$$\n\n瑕点在 $x=0$。\n\n| $p$ | 判定 |\n|---|---|\n| $p<1$ | **收敛** |\n| $p\\ge1$ | **发散** |\n\n**和 $\\int_a^{+\\infty}\\frac{dx}{x^p}$（$p>1$ 收敛）方向正好相反，别记混。**\n\n## 判断瑕点\n\n分母为零的点、$\\ln x$ 在 $x\\to0^+$、$\\tan x$ 在 $\\frac\\pi2$，都要先找出来再算。"
+  },
+  {
+   "id": "c3",
+   "type": "lecture",
+   "title": "敛散性判别法",
+   "md": "## 比较判别法（无穷限）\n\n设 $f,g$ 在 $[a,+\\infty)$ 上非负连续，且 $f(x)\\le g(x)$。\n\n**（1）** 若 $\\int_a^{+\\infty}g\\,dx$ 收敛，则 $\\int_a^{+\\infty}f\\,dx$ 收敛（**大收小必收**）\n\n**（2）** 若 $\\int_a^{+\\infty}f\\,dx$ 发散，则 $\\int_a^{+\\infty}g\\,dx$ 发散（**小散大必散**）\n\n## 极限形式（更常用）\n\n若 $\\displaystyle\\lim_{x\\to+\\infty}\\frac{f(x)}{g(x)}=\\lambda$（$0<\\lambda<+\\infty$），则两者**同敛散**。\n\n## p 积分（比较的基准）\n\n$$\\int_a^{+\\infty}\\frac{dx}{x^p}\\ \\begin{cases}\\text{收敛}, & p>1\\\\ \\text{发散}, & p\\le1\\end{cases}$$\n\n$$\\int_0^{b}\\frac{dx}{x^p}\\ \\begin{cases}\\text{收敛}, & p<1\\\\ \\text{发散}, & p\\ge1\\end{cases}$$\n\n## 实用技巧：抓最高阶\n\n$x\\to+\\infty$ 时，看分母的最高次幂。例如\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^2+x+1}\\sim\\int_1^{+\\infty}\\frac{dx}{x^2}$$\n\n$p=2>1$，**收敛**。\n\n## 绝对收敛\n\n若 $\\int|f|dx$ 收敛，则称 $\\int f\\,dx$ **绝对收敛**，此时 $\\int f\\,dx$ 必收敛。\n\n反之不成立：$\\int_1^{+\\infty}\\frac{\\sin x}{x}dx$ 条件收敛（自身收敛，绝对值发散）。"
+  },
+  {
+   "id": "c4",
+   "type": "example",
+   "title": "典型例题",
+   "md": "## 例1：直接计算\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^2}=\\lim_{t\\to+\\infty}\\left[-\\frac1x\\right]_1^t=\\lim_{t\\to+\\infty}\\left(1-\\frac1t\\right)=1$$\n\n## 例2：发散\n\n$$\\int_1^{+\\infty}\\frac{dx}{x}=\\lim_{t\\to+\\infty}\\Big[\\ln x\\Big]_1^t=+\\infty \\quad\\text{发散}$$\n\n## 例3：瑕积分\n\n$$\\int_0^1\\frac{dx}{\\sqrt{x}}=\\lim_{\\varepsilon\\to0^+}\\Big[2\\sqrt x\\Big]_\\varepsilon^1=2-0=2 \\quad\\text{收敛}$$\n\n（这里 $p=\\frac12<1$ ✓）\n\n## 例4：内部瑕点，要拆\n\n$$\\int_{-1}^{1}\\frac{dx}{x^2}$$\n\n瑕点 $x=0$ 在内部，拆成两段：\n\n$$\\int_{-1}^0+\\int_0^1$$\n\n每段：$\\displaystyle\\lim_{\\varepsilon\\to0^+}\\left[-\\frac1x\\right]_{-1}^{-\\varepsilon}=+\\infty$ → **发散**\n\n## 例5：判断敛散\n\n$$\\int_1^{+\\infty}\\frac{dx}{\\sqrt{x^3+1}}$$\n\n$x\\to+\\infty$ 时 $\\frac{1}{\\sqrt{x^3+1}}\\sim\\frac{1}{x^{3/2}}$，$p=\\frac32>1$ → **收敛**。\n\n## 例6：判断敛散（对数型）\n\n$$\\int_2^{+\\infty}\\frac{dx}{x\\ln x}$$\n\n令 $u=\\ln x$，$du=\\frac{dx}{x}$：\n\n$$\\int_{\\ln2}^{+\\infty}\\frac{du}{u}=+\\infty \\quad\\text{发散}$$\n\n（这就是 $\\int\\frac{du}{u^1}$，$p=1$ → 发散 ✓）\n\n## 例7：$\\Gamma$ 函数入门\n\n$$\\int_0^{+\\infty}e^{-x}dx=\\lim_{t\\to+\\infty}\\Big[-e^{-x}\\Big]_0^t=1 \\quad\\text{收敛}$$\n\n---\n\n## 考试常见陷阱\n\n**① 双层反常**：$\\int_0^{+\\infty}\\frac{dx}{x(x+1)}$ 上下都有问题吗？$x=0$ 是瑕点，$+\\infty$ 是无穷限。**两个都要单独判**，拆成 $\\int_0^1+\\int_1^{+\\infty}$。\n\n**② 不定积分算完不取极限**：$\\int\\frac{dx}{x^2}=-\\frac1x$，但 $x\\to+\\infty$ 时是 0，$x\\to0^+$ 时是 $-\\infty$。**同一个原函数，两头极限完全不同。**"
+  },
+  {
+   "id": "c5",
+   "type": "quiz",
+   "title": "自测",
+   "md": "## 题1\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^{3/2}}=?$$\n\n**答案：2**。$p=\\frac32>1$ 收敛。\n\n$$\\left[\\frac{x^{-1/2}}{-1/2}\\right]_1^{+\\infty}=\\Big[-2x^{-1/2}\\Big]_1^{+\\infty}=0-(-2)=2$$\n\n## 题2\n\n$$\\int_0^1\\frac{dx}{x^{1/2}}$$ 收敛还是发散？\n\n**答案：收敛**，值 $=2$。$p=\\frac12<1$（瑕积分方向）。\n\n## 题3\n\n$$\\int_0^1\\frac{dx}{x^2}$$ 收敛还是发散？\n\n**答案：发散**。$p=2\\ge1$（瑕积分方向）。\n\n## 题4\n\n判断 $\\displaystyle\\int_1^{+\\infty}\\frac{x}{x^3+1}dx$ 的敛散性。\n\n**答案：收敛**。$x\\to+\\infty$ 时 $\\sim\\frac{1}{x^2}$，$p=2>1$。\n\n## 题5\n\n$$\\int_0^{+\\infty}e^{-2x}dx=?$$\n\n**答案：$\\dfrac12$**。\n\n$$\\lim_{t\\to+\\infty}\\left[-\\frac12e^{-2x}\\right]_0^t=0-\\left(-\\frac12\\right)=\\frac12$$\n\n## 题6（易错）\n\n$f(x)=x$ 在 $(-\\infty,+\\infty)$ 上的积分收敛吗？\n\n**答案：发散**。虽然 $\\lim_{t\\to+\\infty}\\int_{-t}^{t}x\\,dx=0$（柯西主值），但\n\n$$\\int_0^{+\\infty}x\\,dx=+\\infty,\\qquad \\int_{-\\infty}^0x\\,dx=-\\infty$$\n\n**两个都发散 → 整体发散。**"
+  }
+ ]
+}

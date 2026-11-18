@@ -1,0 +1,31 @@
+{
+ "id": "math/5-2",
+ "title": "5.2 微积分基本公式",
+ "subtitle": "变上限积分 · 牛顿-莱布尼茨公式",
+ "cards": [
+  {
+   "id": "c1",
+   "type": "lecture",
+   "title": "变上限积分及其导数",
+   "md": "## 变上限积分函数\n\n设 $f$ 在 $[a,b]$ 上连续，对任意 $x\\in[a,b]$，定义\n\n$$\\Phi(x)=\\int_a^x f(t)\\,dt$$\n\n这是一个**关于 $x$ 的函数**（积分结果随上限变化），叫变上限积分。\n\n> 注意：这里的 $t$ 只是哑变量，$x$ 才是自变量。\n\n## 定理：变上限积分可导\n\n若 $f$ 在 $[a,b]$ 上连续，则 $\\Phi(x)=\\int_a^x f(t)dt$ 在 $[a,b]$ 上可导，且\n\n$$\\boxed{\\Phi'(x)=\\frac{d}{dx}\\int_a^x f(t)\\,dt=f(x)}$$\n\n**证明思路**：用导数定义 + 积分中值定理\n\n$$\\frac{\\Phi(x+\\Delta x)-\\Phi(x)}{\\Delta x}=\\frac{1}{\\Delta x}\\int_x^{x+\\Delta x}f(t)dt=f(\\xi)$$\n\n其中 $\\xi$ 在 $x$ 与 $x+\\Delta x$ 之间。令 $\\Delta x\\to0$，由 $f$ 连续得 $f(\\xi)\\to f(x)$。\n\n**这意味着：连续函数的变上限积分是它的一个原函数。**\n\n$$F(x)=\\int_a^x f(t)dt \\quad\\Longrightarrow\\quad F'(x)=f(x)$$\n\n## 复合情形（链式法则）\n\n上限是 $g(x)$ 时：\n\n$$\\frac{d}{dx}\\int_a^{g(x)}f(t)\\,dt=f\\big(g(x)\\big)\\,g'(x)$$\n\n上下限都是函数时：\n\n$$\\frac{d}{dx}\\int_{\\varphi(x)}^{\\psi(x)}f(t)\\,dt=f\\big(\\psi(x)\\big)\\psi'(x)-f\\big(\\varphi(x)\\big)\\varphi'(x)$$\n\n**记法**：上限代入乘上限导数 − 下限代入乘下限导数。"
+  },
+  {
+   "id": "c2",
+   "type": "lecture",
+   "title": "牛顿-莱布尼茨公式",
+   "md": "## 定理（微积分基本定理）\n\n若 $F(x)$ 是连续函数 $f(x)$ 在 $[a,b]$ 上的一个原函数，则\n\n$$\\boxed{\\int_a^b f(x)\\,dx=F(b)-F(a)}$$\n\n记作 $\\Big[F(x)\\Big]_a^b$ 或 $F(x)\\Big|_a^b$。\n\n## 为什么成立\n\n已知 $\\Phi(x)=\\int_a^x f(t)dt$ 是 $f$ 的一个原函数，而 $F(x)$ 也是原函数，\n\n$$\\Phi(x)=F(x)+C$$\n\n代入 $x=a$：$\\Phi(a)=\\int_a^a f\\,dt=0=F(a)+C$，故 $C=-F(a)$。\n\n再代入 $x=b$：\n\n$$\\int_a^b f(x)dx=\\Phi(b)=F(b)-F(a)$$\n\n## 意义\n\n这个公式把**定积分**（复杂的极限）和**原函数**（求导的逆运算）联系起来：\n\n$$\\underbrace{\\int_a^b f(x)dx}_{\\text{求和取极限}}=\\underbrace{F(b)-F(a)}_{\\text{原函数在两端点之差}}$$\n\n**它是整个定积分计算的核心工具。**\n\n## 计算步骤\n\n1. 求出 $f$ 的一个原函数 $F$（用不定积分的方法）\n2. 代入上下限：$F(b)-F(a)$\n3. 小心符号和绝对值\n\n**注意**：$F$ 必须是 $f$ 在 $[a,b]$ 上的原函数，不能跨过 $f$ 的间断点。"
+  },
+  {
+   "id": "c3",
+   "type": "example",
+   "title": "典型例题",
+   "md": "## 例1：直接代入\n\n$$\\int_0^1 x^2\\,dx=\\left[\\frac{x^3}{3}\\right]_0^1=\\frac13-0=\\frac13$$\n\n## 例2：变上限求导\n\n求 $\\dfrac{d}{dx}\\displaystyle\\int_0^{x^2}\\sin t\\,dt$。\n\n上限是 $x^2$，用链式法则：\n\n$$\\frac{d}{dx}\\int_0^{x^2}\\sin t\\,dt=\\sin(x^2)\\cdot 2x=2x\\sin x^2$$\n\n## 例3：上下限都是函数\n\n求 $\\dfrac{d}{dx}\\displaystyle\\int_x^{x^2}\\frac{dt}{1+t^2}$。\n\n$$\\frac{d}{dx}=\\frac{1}{1+(x^2)^2}\\cdot 2x-\\frac{1}{1+x^2}\\cdot 1=\\frac{2x}{1+x^4}-\\frac{1}{1+x^2}$$\n\n## 例4：先拆分再求导\n\n求 $\\dfrac{d}{dx}\\displaystyle\\int_0^x (x-t)f(t)\\,dt$，其中 $f$ 连续。\n\n**关键：$x$ 在被积函数里，不能直接求导，先把 $x$ 提出来。**\n\n$$\\int_0^x (x-t)f(t)dt=x\\int_0^x f(t)dt-\\int_0^x tf(t)dt$$\n\n再求导（第一项用乘积法则）：\n\n$$\\frac{d}{dx}=1\\cdot\\int_0^x f(t)dt+x f(x)-x f(x)=\\int_0^x f(t)dt$$\n\n## 例5：求极限型\n\n$$\\lim_{x\\to0}\\frac{\\int_0^x \\sin t\\,dt}{x^2}$$\n\n$\\frac00$ 型，用洛必达：\n\n$$\\lim_{x\\to0}\\frac{\\sin x}{2x}=\\frac12$$\n\n## 例6：由变上限积分定义的函数求极值\n\n设 $f(x)=\\displaystyle\\int_0^x (t-1)e^{-t}\\,dt$，求极值点。\n\n$f'(x)=(x-1)e^{-x}=0\\Rightarrow x=1$。\n\n$x<1$ 时 $f'<0$，$x>1$ 时 $f'>0$，故 $x=1$ 是极小值点。"
+  },
+  {
+   "id": "c4",
+   "type": "quiz",
+   "title": "自测",
+   "md": "## 题1\n\n$\\dfrac{d}{dx}\\displaystyle\\int_0^{x^3}\\cos t\\,dt=?$\n\n- A. $\\cos x^3$\n- B. $3x^2\\cos x^3$\n- C. $3x^2\\cos x$\n- D. $-\\sin x^3$\n\n**答案：B**。上限 $x^3$ 求导得 $3x^2$，代入被积函数得 $\\cos(x^3)$。\n\n## 题2\n\n$\\displaystyle\\int_1^e \\frac{dx}{x}=?$\n\n**答案：1**。原函数 $\\ln x$，$\\ln e-\\ln 1=1-0=1$。\n\n## 题3\n\n若 $\\displaystyle\\int_0^x f(t)dt=x^2\\sin x$，求 $f(x)$。\n\n**答案**：两边求导\n\n$$f(x)=\\frac{d}{dx}(x^2\\sin x)=2x\\sin x+x^2\\cos x$$\n\n## 题4\n\n$\\displaystyle\\int_0^{\\pi/2}\\cos x\\,dx=?$\n\n**答案：1**。$[\\sin x]_0^{\\pi/2}=\\sin\\frac\\pi2-\\sin0=1$。\n\n## 题5\n\n设 $F(x)=\\displaystyle\\int_x^{2x}e^{-t^2}dt$，求 $F'(x)$。\n\n**答案**：\n\n$$F'(x)=e^{-(2x)^2}\\cdot 2-e^{-x^2}\\cdot 1=2e^{-4x^2}-e^{-x^2}$$"
+  }
+ ]
+}

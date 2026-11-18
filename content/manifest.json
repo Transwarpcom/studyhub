@@ -1,6 +1,6 @@
 {
-  "version": 8,
-  "updated": "2026-11-11",
+  "version": 9,
+  "updated": "2026-11-18",
   "title": "学习台",
   "tree": [
     {
@@ -272,10 +272,10 @@
         },
         {
           "id": "math/5",
-          "title": "第五章 定积分（5.1 起）",
+          "title": "第五章 定积分",
           "icon": "folder.fill",
           "kind": "folder",
-          "summary": "5.1",
+          "summary": "5.1 · 5.2 · 5.3 · 5.4",
           "children": [
             {
               "id": "math/5-1",
@@ -284,6 +284,30 @@
               "bundle": "math/5-1",
               "summary": "分割求和取极限 · 几何意义 · 七条性质",
               "badge": "6 卡"
+            },
+            {
+              "id": "math/5-2",
+              "title": "5.2 微积分基本公式",
+              "kind": "lesson",
+              "bundle": "math/5-2",
+              "summary": "变上限积分求导 · 牛顿-莱布尼茨公式",
+              "badge": "4 卡"
+            },
+            {
+              "id": "math/5-3",
+              "title": "5.3 定积分的换元法和分部积分法",
+              "kind": "lesson",
+              "bundle": "math/5-3",
+              "summary": "换元必换限 · 奇偶性对称 · 分部积分",
+              "badge": "5 卡"
+            },
+            {
+              "id": "math/5-4",
+              "title": "5.4 反常积分",
+              "kind": "lesson",
+              "bundle": "math/5-4",
+              "summary": "无穷限 · 瑕积分 · p 积分判别法",
+              "badge": "5 卡"
             }
           ]
         },
