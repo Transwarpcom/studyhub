@@ -1,6 +1,6 @@
 {
-  "version": 9,
-  "updated": "2026-11-18",
+  "version": 11,
+  "updated": "2026-11-19",
   "title": "学习台",
   "tree": [
     {
@@ -432,6 +432,14 @@
               "badge": "9 题"
             },
             {
+              "id": "math/hwb-1-9",
+              "title": "作业册 · 1.9 连续函数的运算与初等函数的连续性",
+              "kind": "lesson",
+              "bundle": "math/hwb-1-9",
+              "summary": "四则封闭 · 复合 · 初等函数连续 · 7 题",
+              "badge": "7 题"
+            },
+            {
               "id": "math/hwb-1-10",
               "title": "作业册 · 1.10 闭区间上连续函数的性质",
               "kind": "lesson",
@@ -512,12 +520,36 @@
               "badge": "9 题"
             },
             {
+              "id": "math/hwb-3-5",
+              "title": "作业册 · 3.5 函数的极值与最大值最小值",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-5",
+              "summary": "必要条件 · 三判别法 · 应用题 · 9 题",
+              "badge": "9 题"
+            },
+            {
               "id": "math/hwb-3-6",
               "title": "作业册 · 3.6 图形描绘与曲率",
               "kind": "lesson",
               "bundle": "math/hwb-3-6",
               "summary": "10 题 · 含完整过程",
               "badge": "10 题"
+            },
+            {
+              "id": "math/hwb-3-7",
+              "title": "作业册 · 3.7 曲率",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-7",
+              "summary": "弧微分 · 曲率公式 · 曲率圆 · 8 题",
+              "badge": "8 题"
+            },
+            {
+              "id": "math/hwb-3-8",
+              "title": "作业册 · 3.8 方程的近似解",
+              "kind": "lesson",
+              "bundle": "math/hwb-3-8",
+              "summary": "二分法 · 切线法（牛顿法） · 6 题",
+              "badge": "6 题"
             },
             {
               "id": "math/hwb-4-1",
@@ -552,12 +584,44 @@
               "badge": "10 题"
             },
             {
+              "id": "math/hwb-4-5",
+              "title": "作业册 · 4.5 积分表的使用",
+              "kind": "lesson",
+              "bundle": "math/hwb-4-5",
+              "summary": "查表 · 变形 · 递推 · 6 题",
+              "badge": "6 题"
+            },
+            {
               "id": "math/hwb-5-1",
               "title": "作业册 · 5.1 定积分的概念与性质",
               "kind": "lesson",
               "bundle": "math/hwb-5-1",
               "summary": "7 题 · 全册逐题覆盖",
               "badge": "7 题"
+            },
+            {
+              "id": "math/hwb-5-2",
+              "title": "作业册 · 5.2 微积分基本公式",
+              "kind": "lesson",
+              "bundle": "math/hwb-5-2",
+              "summary": "变上限积分求导 · 牛顿-莱布尼茨公式 · 8 题",
+              "badge": "8 题"
+            },
+            {
+              "id": "math/hwb-5-3",
+              "title": "作业册 · 5.3 定积分的换元法和分部积分法",
+              "kind": "lesson",
+              "bundle": "math/hwb-5-3",
+              "summary": "换元换限 · 奇偶性 · 分部积分 · 9 题",
+              "badge": "9 题"
+            },
+            {
+              "id": "math/hwb-5-4",
+              "title": "作业册 · 5.4 反常积分",
+              "kind": "lesson",
+              "bundle": "math/hwb-5-4",
+              "summary": "无穷限 · 瑕积分 · p 积分判别 · 8 题",
+              "badge": "8 题"
             }
           ]
         }

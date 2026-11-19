@@ -1,0 +1,69 @@
+{
+  "id": "math/hwb-5-4",
+  "title": "作业册 · 5.4 反常积分",
+  "subtitle": "无穷限 · 瑕积分 · p 积分判别 · 8 题",
+  "cards": [
+    {
+      "id": "intro",
+      "type": "lecture",
+      "title": "本节考点",
+      "md": "## 5.4 反常积分\n\n两类反常积分：\n\n1. **无穷限**：上限或下限是 $\\infty$，用**极限**定义 $\\int_a^{\\infty}f=\\lim_{b\\to\\infty}\\int_a^bf$\n2. **瑕积分**：被积函数在某点趋于无穷（瑕点），用**极限**逼近瑕点\n\n判别法则的核心是 **p 积分**：\n\n- $\\int_1^{\\infty}\\frac{dx}{x^p}$：$p>1$ 收敛，$p\\le1$ 发散\n- $\\int_0^1\\frac{dx}{x^p}$：$p<1$ 收敛，$p\\ge1$ 发散\n\n**注意两个方向相反**，这是最容易记混的地方。"
+    },
+    {
+      "id": "q1",
+      "type": "text",
+      "question": "**一、计算题 第 1 题**\n\n计算 $\\displaystyle\\int_1^{+\\infty}\\frac{1}{x^2}\\,dx$.",
+      "explain": "**答案**：$1$\n\n**理由**\n\n按定义，先算**有限上限**再取极限：\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^2}=\\lim_{b\\to+\\infty}\\int_1^b x^{-2}dx=\\lim_{b\\to+\\infty}\\left[-\\frac{1}{x}\\right]_1^b$$\n\n$$=\\lim_{b\\to+\\infty}\\left(-\\frac1b+1\\right)=0+1=1$$\n\n**收敛**，值是 $1$。\n\n**为什么收敛**：$p=2>1$，属于 $p$ 积分收敛的情形。\n\n**几何**：曲线 $y=1/x^2$ 在 $[1,\\infty)$ 下的面积是**有限的**，虽然向右无限延伸。这是反常积分最反直觉的地方。"
+    },
+    {
+      "id": "q2",
+      "type": "text",
+      "question": "**一、计算题 第 2 题**\n\n计算 $\\displaystyle\\int_1^{+\\infty}\\frac{1}{x}\\,dx$.",
+      "explain": "**答案**：发散\n\n**理由**\n\n$$\\int_1^{+\\infty}\\frac{dx}{x}=\\lim_{b\\to\\infty}\\big[\\ln x\\big]_1^b=\\lim_{b\\to\\infty}\\ln b=+\\infty$$\n\n**发散**。\n\n**对比上一题**：$\\int_1^\\infty\\frac{dx}{x^2}=1$ 收敛，$\\int_1^\\infty\\frac{dx}{x}$ 发散。差之毫厘，结论天壤之别——**$p=1$ 是分界点**。\n\n**$p$ 积分判别（无穷限）**：\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^p}\\begin{cases}\\text{收敛},&p>1\\\\\\text{发散},&p\\le1\\end{cases}$$\n\n**记忆**：$1/x^2$ 的面积有限（收敛），$1/x$ 的面积无限（发散）。$p$ 越大收敛越快。"
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "**一、计算题 第 3 题**\n\n计算 $\\displaystyle\\int_0^1\\frac{1}{\\sqrt{x}}\\,dx$.",
+      "explain": "**答案**：$2$\n\n**理由**\n\n$x=0$ 是**瑕点**（$\\frac{1}{\\sqrt x}\\to\\infty$），但积分区间有限，这是**瑕积分**。\n\n按定义，从右侧逼近瑕点：\n\n$$\\int_0^1\\frac{dx}{\\sqrt x}=\\lim_{\\varepsilon\\to0^+}\\int_{\\varepsilon}^1x^{-1/2}dx=\\lim_{\\varepsilon\\to0^+}\\big[2\\sqrt x\\big]_{\\varepsilon}^1$$\n\n$$=\\lim_{\\varepsilon\\to0^+}\\left(2-2\\sqrt\\varepsilon\\right)=2-0=2$$\n\n**收敛**，值是 $2$。\n\n**对比注意**：这里 $p=\\frac12<1$，收敛。但 $\\int_0^1\\frac{dx}{x}$（$p=1$）发散。\n\n**瑕积分的 $p$ 判别**：\n\n$$\\int_0^1\\frac{dx}{x^p}\\begin{cases}\\text{收敛},&p<1\\\\\\text{发散},&p\\ge1\\end{cases}$$\n\n**和无穷限的方向相反**！无穷限是 $p>1$ 收敛，瑕积分是 $p<1$ 收敛。"
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "**一、计算题 第 4 题**\n\n计算 $\\displaystyle\\int_0^1\\frac{1}{x}\\,dx$.",
+      "explain": "**答案**：发散\n\n**理由**\n\n$$\\int_0^1\\frac{dx}{x}=\\lim_{\\varepsilon\\to0^+}\\big[\\ln x\\big]_{\\varepsilon}^1=\\lim_{\\varepsilon\\to0^+}(0-\\ln\\varepsilon)$$\n\n当 $\\varepsilon\\to0^+$ 时 $\\ln\\varepsilon\\to-\\infty$，所以 $0-\\ln\\varepsilon\\to+\\infty$。\n\n**发散**。\n\n**这题和 q3 配对**：$\\sqrt x$ 在分母收敛（$p=\\frac12$），$x$ 在分母发散（$p=1$）。**临界点还是 $p=1$**。\n\n**两条口诀一起记**：\n\n| 类型 | 收敛条件 |\n|---|---|\n| $\\int_1^\\infty\\frac{dx}{x^p}$ | $p>1$ |\n| $\\int_0^1\\frac{dx}{x^p}$ | $p<1$ |\n\n「**无穷远要 $p$ 大，靠近零要 $p$ 小**」。"
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "**二、判别题 第 1 题**\n\n判别 $\\displaystyle\\int_1^{+\\infty}\\frac{1}{x\\sqrt{1+x}}\\,dx$ 的敛散性.",
+      "explain": "**答案**：收敛\n\n**理由**\n\n用**比较判别法的极限形式**。\n\n当 $x\\to+\\infty$ 时，$\\sqrt{1+x}\\sim\\sqrt{x}$，所以\n\n$$\\frac{1}{x\\sqrt{1+x}}\\sim\\frac{1}{x\\cdot x^{1/2}}=\\frac{1}{x^{3/2}}$$\n\n即被积函数与 $\\frac{1}{x^{3/2}}$ 同阶。\n\n**严格写一下**：\n\n$$\\lim_{x\\to+\\infty}\\frac{\\frac{1}{x\\sqrt{1+x}}}{\\frac{1}{x^{3/2}}}=\\lim_{x\\to+\\infty}\\frac{x^{3/2}}{x\\sqrt{1+x}}=\\lim_{x\\to+\\infty}\\frac{\\sqrt x}{\\sqrt{1+x}}=1$$\n\n极限是非零常数，所以两者**同时收敛或同时发散**。\n\n而 $\\int_1^\\infty\\frac{dx}{x^{3/2}}$ 是 $p=\\frac32>1$ 的 $p$ 积分，**收敛**。\n\n所以原积分**收敛**。\n\n**技巧**：抓最高阶。分母 $x\\sqrt{1+x}$ 在无穷远处的主导项是 $x^{3/2}$。"
+    },
+    {
+      "id": "q6",
+      "type": "text",
+      "question": "**二、判别题 第 2 题**\n\n判别 $\\displaystyle\\int_1^{+\\infty}\\frac{\\ln x}{x}\\,dx$ 的敛散性.",
+      "explain": "**答案**：发散\n\n**理由**\n\n这个**不能直接用 $p$ 判别**，因为分子有 $\\ln x$。\n\n**直接算**（凑微分）：\n\n$$\\int\\frac{\\ln x}{x}dx=\\int\\ln x\\,d(\\ln x)=\\frac{(\\ln x)^2}{2}+C$$\n\n所以\n\n$$\\int_1^{+\\infty}\\frac{\\ln x}{x}dx=\\lim_{b\\to\\infty}\\left[\\frac{(\\ln x)^2}{2}\\right]_1^b=\\lim_{b\\to\\infty}\\frac{(\\ln b)^2}{2}=+\\infty$$\n\n**发散**。\n\n**如果硬要用比较法**：$\\ln x$ 在 $x>e$ 时大于 $1$，所以\n\n$$\\frac{\\ln x}{x}>\\frac{1}{x}\\quad(x>e)$$\n\n而 $\\int_e^\\infty\\frac{dx}{x}$ 发散，由比较判别法，原积分**发散**。\n\n**两种方法都指向发散**。比较法更简洁，直接算更稳妥（还能顺便得原函数）。\n\n**注意**：$\\ln x$ 增长虽慢，但乘上 $\\frac1x$ 后仍然「不够快」，跟不上 $\\frac{1}{x^{1+\\varepsilon}}$ 的收敛速度。"
+    },
+    {
+      "id": "q7",
+      "type": "text",
+      "question": "**二、判别题 第 3 题**\n\n判别 $\\displaystyle\\int_0^{1}\\frac{1}{\\sqrt{x(1-x)}}\\,dx$ 的敛散性.",
+      "explain": "**答案**：收敛，值为 $\\pi$\n\n**理由**\n\n**两个瑕点**：$x=0$ 和 $x=1$ 都让分母趋于 $0$。要把区间从中间拆开：\n\n$$\\int_0^{1}=\\int_0^{1/2}+\\int_{1/2}^{1}$$\n\n**左边** $\\int_0^{1/2}$：在 $x\\to0^+$ 时，$\\frac{1}{\\sqrt{x(1-x)}}\\sim\\frac{1}{\\sqrt{x}}$（因为 $\\sqrt{1-x}\\to1$）。\n\n$\\int_0^{1/2}\\frac{dx}{\\sqrt x}$ 是 $p=\\frac12<1$ 的瑕积分，**收敛**。\n\n**右边** $\\int_{1/2}^1$：令 $t=1-x$，转化为同样的形式，也**收敛**。\n\n两段都收敛，所以原积分**收敛**。\n\n**顺便算出来**：\n\n$$\\int_0^1\\frac{dx}{\\sqrt{x(1-x)}}$$\n\n配方：$x(1-x)=\\frac14-(x-\\frac12)^2$。令 $u=2x-1$，则 $x=\\frac{1+u}{2}$、$dx=\\frac{du}{2}$、$\\sqrt{x(1-x)}=\\frac{\\sqrt{1-u^2}}{2}$：\n\n$$=\\int_{-1}^{1}\\frac{du/2}{\\sqrt{1-u^2}/2}=\\int_{-1}^1\\frac{du}{\\sqrt{1-u^2}}=\\big[\\arcsin u\\big]_{-1}^1=\\frac{\\pi}{2}-\\left(-\\frac{\\pi}{2}\\right)=\\pi$$\n\n**这个积分的意义**：它是**贝塔函数**的特例，也是**概率论**里反正弦分布的归一化常数。"
+    },
+    {
+      "id": "q8",
+      "type": "blank",
+      "question": "**三、填空题 第 1 题**\n\n$\\displaystyle\\int_1^{+\\infty}\\frac{dx}{x^p}$ 当 $p$ ____ 时收敛。",
+      "explain": "**答案**：$>1$\n\n**理由**\n\n直接算：\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^p}=\\lim_{b\\to\\infty}\\left[\\frac{x^{1-p}}{1-p}\\right]_1^b=\\lim_{b\\to\\infty}\\frac{b^{1-p}-1}{1-p}$$\n\n**分情况**：\n\n- $p>1$：$1-p<0$，$b^{1-p}=\\frac{1}{b^{p-1}}\\to0$，极限 $=\\frac{0-1}{1-p}=\\frac{1}{p-1}$，**收敛**\n- $p=1$：退化成 $\\ln x$，**发散**\n- $p<1$：$1-p>0$，$b^{1-p}\\to+\\infty$，**发散**\n\n所以收敛条件是 $p>1$。\n\n**配套的瑕积分结论**（$\\int_0^1\\frac{dx}{x^p}$）是 $p<1$ 收敛，**方向相反**。\n\n**为什么相反**：无穷远处 $x$ 大，$p$ 越大分母越大、衰减越快，所以容易收敛；靠近零时 $x$ 小，$p$ 越小分母越小、反而不爆炸，所以容易收敛。",
+      "blanks": [
+        [
+          ">1",
+          "大于1",
+          "p>1",
+          "> 1"
+        ]
+      ]
+    }
+  ]
+}
