@@ -1,5 +1,5 @@
 {
-  "version": 14,
+  "version": 15,
   "updated": "2026-11-19",
   "title": "学习台",
   "tree": [
@@ -282,8 +282,8 @@
               "title": "5.1 定积分的概念与性质",
               "kind": "lesson",
               "bundle": "math/5-1",
-              "summary": "分割求和取极限 · 几何意义 · 七条性质",
-              "badge": "6 卡"
+              "summary": "分割求和取极限 · 几何意义 · 八大性质 · 7 题",
+              "badge": "7 题"
             },
             {
               "id": "math/5-2",
