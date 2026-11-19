@@ -93,6 +93,24 @@ final class HubClient {
         try? data.write(to: cacheURL(name), options: .atomic)
     }
 
+    // MARK: 缓存版本（决定离线缓存是否过期）
+
+    /// 全局 manifest 版本：只要服务端 version 变了，所有节的缓存都视为过期
+    var cachedVersion: Int {
+        get { defaults.integer(forKey: "hub.manifestVersion") }
+        set { defaults.set(newValue, forKey: "hub.manifestVersion") }
+    }
+
+    /// 某一节缓存时对应的 manifest 版本
+    func versionFor(_ key: String) -> Int {
+        defaults.integer(forKey: "hub.lessonVer." + key)
+    }
+
+    func setCachedVersion(_ key: String, _ version: Int) {
+        defaults.set(version, forKey: "hub.lessonVer." + key)
+    }
+
+
     func loadCache(name: String) -> Data? {
         try? Data(contentsOf: cacheURL(name))
     }
@@ -206,6 +224,7 @@ final class HubClient {
         let ok: Bool?
         let username: String?
         let registerOpen: Bool?
+        let role: String?
         let error: String?
     }
 
@@ -265,16 +284,42 @@ final class HubClient {
         return d.registerOpen ?? false
     }
 
-    /// 校验 token 是否还有效
-    func me() async -> String? {
-        guard !userToken.isEmpty, let u = URL(string: baseURL + "/auth/me") else { return nil }
+    /// 校验 token 是否还有效。
+    /// 只有服务端明确返回 401 才算失效；网络抖动、超时、TLS 失败一律视为
+    /// 「暂时无法确认」，返回 .unknown，调用方不得据此清除登录态。
+    enum MeStatus {
+        case valid(String, String?)   // 用户名, role
+        case invalid                  // 服务端明确 401
+        case unknown                  // 网络/解析问题，登录态保持不动
+    }
+
+    func meStatus() async -> MeStatus {
+        guard !userToken.isEmpty, let u = URL(string: baseURL + "/auth/me") else {
+            return .invalid
+        }
         var req = URLRequest(url: u)
         req.timeoutInterval = 12
         req.setValue("Bearer \(userToken)", forHTTPHeaderField: "Authorization")
-        guard let (data, resp) = try? await PinnedSession.shared.session.data(for: req),
-              (resp as? HTTPURLResponse)?.statusCode == 200,
-              let d = try? JSONDecoder().decode(MeResp.self, from: data) else { return nil }
-        return d.username
+        do {
+            let (data, resp) = try await PinnedSession.shared.session.data(for: req)
+            guard let h = resp as? HTTPURLResponse else { return .unknown }
+            if h.statusCode == 401 || h.statusCode == 403 { return .invalid }
+            if h.statusCode != 200 { return .unknown }
+            guard let d = try? JSONDecoder().decode(MeResp.self, from: data),
+                  let name = d.username else { return .unknown }
+            return .valid(name, d.role)
+        } catch {
+            // 超时 / 断网 / 证书校验失败 —— 都不能当成 token 失效
+            return .unknown
+        }
+    }
+
+    /// 兼容旧调用：只在明确有效时返回用户名
+    func me() async -> String? {
+        switch await meStatus() {
+        case .valid(let name, _): return name
+        default: return nil
+        }
     }
 
     func logout() async {

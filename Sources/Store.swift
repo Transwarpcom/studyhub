@@ -279,8 +279,9 @@ final class Store: ObservableObject {
         dlDone = 0
         dlFailed = 0
         for n in list {
-            if cachedLesson(node: n) != nil { dlDone += 1; continue }
-            do { _ = try await loadLesson(node: n) } catch { dlFailed += 1 }
+            // 缓存必须校验 manifest 版本：版本变了就当没缓存，重新拉
+            if !needsRefresh(n), cachedLesson(node: n) != nil { dlDone += 1; continue }
+            do { _ = try await loadLesson(node: n, force: true) } catch { dlFailed += 1 }
             dlDone += 1
         }
         downloading = false
@@ -296,8 +297,9 @@ final class Store: ObservableObject {
         dlDone = 0
         dlFailed = 0
         for n in list {
-            if cachedLesson(node: n) != nil { dlDone += 1; continue }
-            do { _ = try await loadLesson(node: n) } catch { dlFailed += 1 }
+            // 缓存必须校验 manifest 版本：版本变了就当没缓存，重新拉
+            if !needsRefresh(n), cachedLesson(node: n) != nil { dlDone += 1; continue }
+            do { _ = try await loadLesson(node: n, force: true) } catch { dlFailed += 1 }
             dlDone += 1
         }
         downloading = false
@@ -378,7 +380,8 @@ final class Store: ObservableObject {
     // MARK: 同步
 
     func bootstrap() async {
-        if manifest == nil && !loading {
+        // 冷启动也要刷新：缓存可能落后于服务端（旧逻辑只在 manifest 为空时才拉新）
+        if !loading {
             await refresh()
         }
     }
@@ -399,6 +402,8 @@ final class Store: ObservableObject {
                 let m = try JSONDecoder().decode(Manifest.self, from: data)
                 manifest = m
                 client.saveCache(data, name: "manifest")
+                // 记下版本：离线缓存靠它判断是否过期
+                manifestVersion = m.version
                 let now = Date()
                 lastSync = now
                 UserDefaults.standard.set(now, forKey: "hub.lastSync")
@@ -433,24 +438,40 @@ final class Store: ObservableObject {
 
     // MARK: 章节
 
-    func loadLesson(node: Node) async throws -> Lesson {
+    func loadLesson(node: Node, force: Bool = false) async throws -> Lesson {
         let key = node.bundle ?? node.id
-        if let cached = lessons[key] { return cached }
+        if !force && !needsRefresh(node), let cached = lessons[key] { return cached }
 
         let path = client.lessonPath(key)
         if let data = try? await client.getRaw(path) {
             let lesson = try JSONDecoder().decode(Lesson.self, from: data)
             lessons[key] = lesson
             client.saveCache(data, name: "lesson_" + key)
+            // 记下这一节是按哪个 manifest 版本存的
+            client.setCachedVersion(key, manifestVersion)
             return lesson
         }
-        // 离线兜底
-        if let d = client.loadCache(name: "lesson_" + key),
+        // 离线兜底：只有在不需要刷新时才用旧缓存
+        if !needsRefresh(node),
+           let d = client.loadCache(name: "lesson_" + key),
            let lesson = try? JSONDecoder().decode(Lesson.self, from: d) {
             lessons[key] = lesson
             return lesson
         }
         throw HubError.decode("这一节还没有同步过，连上网络再试")
+    }
+
+    /// 当前 manifest 版本（落盘，跨启动有效）
+    var manifestVersion: Int {
+        get { client.cachedVersion }
+        set { client.cachedVersion = newValue }
+    }
+
+    /// 这一节的本地缓存是否落后于 manifest
+    func needsRefresh(_ node: Node) -> Bool {
+        let key = node.bundle ?? node.id
+        let had = client.versionFor(key)
+        return had != manifestVersion
     }
 
     private func queryFor(_ key: String) -> String {
@@ -557,17 +578,22 @@ final class Store: ObservableObject {
     /// 启动时恢复登录态并校验 token
     func refreshAuthState() async {
         let c = HubClient.shared
+        username = c.username
         if c.isLoggedIn {
-            if let u = await c.me() {
+            switch await c.meStatus() {
+            case .valid(let u, _):
                 username = u
                 loggedIn = true
                 startPolling()
-            } else {
-                // token 失效
+            case .invalid:
+                // 服务端明确说 token 无效，才清掉
                 c.userToken = ""
                 c.username = ""
                 loggedIn = false
                 username = ""
+            case .unknown:
+                // 网络抖动/超时/证书问题：保持登录态，界面照旧，等下次再校验
+                loggedIn = true
             }
         } else {
             loggedIn = false
