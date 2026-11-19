@@ -1,37 +1,81 @@
 {
- "id": "math/5-3",
- "title": "5.3 定积分的换元法和分部积分法",
- "subtitle": "换元要换限 · 奇偶性简化 · 分部积分",
- "cards": [
-  {
-   "id": "c1",
-   "type": "lecture",
-   "title": "定积分的换元法",
-   "md": "## 定理\n\n设 $f(x)$ 在 $[a,b]$ 上连续，函数 $x=\\varphi(t)$ 满足：\n\n1. $\\varphi(t)$ 在 $[\\alpha,\\beta]$ 上单调、有连续导数\n2. $\\varphi(\\alpha)=a$，$\\varphi(\\beta)=b$\n3. 当 $t\\in[\\alpha,\\beta]$ 时，$\\varphi(t)\\in[a,b]$\n\n则\n\n$$\\boxed{\\int_a^b f(x)\\,dx=\\int_\\alpha^\\beta f\\big(\\varphi(t)\\big)\\varphi'(t)\\,dt}$$\n\n## 与不定积分换元的关键区别\n\n| | 不定积分 | 定积分 |\n|---|---|---|\n| 换元后 | **必须换回** $x$ | **不用换回**，直接算出数值 |\n| 上下限 | 不用管 | **必须换成 $t$ 的上下限** |\n\n**口诀：换元必换限，不换限就错。**\n\n## 常见的换元\n\n**根式**：$\\sqrt{a^2-x^2}$ 令 $x=a\\sin t$；$\\sqrt{a^2+x^2}$ 令 $x=a\\tan t$；$\\sqrt{x^2-a^2}$ 令 $x=a\\sec t$。\n\n**倒数**：$\\displaystyle\\int\\frac{dx}{1+\\sqrt{x}}$ 令 $t=\\sqrt{x}$，则 $x=t^2$，$dx=2t\\,dt$。"
-  },
-  {
-   "id": "c2",
-   "type": "lecture",
-   "title": "奇偶性简化（考试高频）",
-   "md": "## 对称区间上的性质\n\n设 $f$ 在 $[-a,a]$ 上连续（$a>0$）。\n\n**（1）若 $f$ 是偶函数**（$f(-x)=f(x)$）：\n\n$$\\int_{-a}^{a}f(x)\\,dx=2\\int_0^a f(x)\\,dx$$\n\n**（2）若 $f$ 是奇函数**（$f(-x)=-f(x)$）：\n\n$$\\int_{-a}^{a}f(x)\\,dx=0$$\n\n**这是最快的化简手段**，看到对称区间先判奇偶。\n\n## 一个重要的推论\n\n$$\\int_{-a}^{a}f(x)\\,dx=\\int_0^a\\big[f(x)+f(-x)\\big]dx$$\n\n**用途**：即使 $f$ 不是奇偶函数，也能把区间折半。\n\n## 例：三角函数的常用结论\n\n$$\\int_0^{\\pi}x f(\\sin x)\\,dx=\\frac{\\pi}{2}\\int_0^{\\pi}f(\\sin x)\\,dx$$\n\n**证明**：令 $x=\\pi-t$，则 $dx=-dt$，\n\n$$\\int_0^{\\pi}xf(\\sin x)dx=\\int_{\\pi}^{0}(\\pi-t)f(\\sin t)(-dt)=\\int_0^{\\pi}(\\pi-t)f(\\sin t)dt$$\n\n$$=\\pi\\int_0^{\\pi}f(\\sin t)dt-\\int_0^{\\pi}tf(\\sin t)dt$$\n\n移项即得。"
-  },
-  {
-   "id": "c3",
-   "type": "lecture",
-   "title": "定积分的分部积分法",
-   "md": "## 公式\n\n$$\\boxed{\\int_a^b u\\,dv=\\Big[uv\\Big]_a^b-\\int_a^b v\\,du}$$\n\n即\n\n$$\\int_a^b u(x)v'(x)\\,dx=\\Big[u(x)v(x)\\Big]_a^b-\\int_a^b u'(x)v(x)\\,dx$$\n\n## 选题顺序（和不定积分一样）\n\n**\"反对幂指三\"**：反三角 → 对数 → 幂函数 → 指数 → 三角\n\n**排在前面的取作 $u$**（求导会变简单），后面的取作 $dv$。\n\n## 常见题型\n\n**（1）$\\int x^n e^x dx$、$\\int x^n\\sin x\\,dx$**：$u=x^n$\n\n**（2）$\\int x^n\\ln x\\,dx$、$\\int x^n\\arctan x\\,dx$**：$u=\\ln x$ 或 $\\arctan x$\n\n**（3）$\\int e^x\\sin x\\,dx$**：两次分部积分后移项解出（\"循环型\"）\n\n## 例\n\n$$\\int_0^1 xe^x\\,dx=\\Big[xe^x\\Big]_0^1-\\int_0^1 e^x dx=e-\\Big[e^x\\Big]_0^1=e-(e-1)=1$$\n\n## 点火公式（华里士公式）\n\n$$\\int_0^{\\pi/2}\\sin^n x\\,dx=\\int_0^{\\pi/2}\\cos^n x\\,dx$$\n\n- $n$ 为偶数：$\\dfrac{(n-1)!!}{n!!}\\cdot\\dfrac\\pi2$\n- $n$ 为奇数：$\\dfrac{(n-1)!!}{n!!}$\n\n例如 $\\displaystyle\\int_0^{\\pi/2}\\sin^4x\\,dx=\\frac{3\\cdot1}{4\\cdot2}\\cdot\\frac\\pi2=\\frac{3\\pi}{16}$。"
-  },
-  {
-   "id": "c4",
-   "type": "example",
-   "title": "典型例题",
-   "md": "## 例1：换元\n\n$$\\int_0^4\\frac{dx}{1+\\sqrt{x}}$$\n\n令 $t=\\sqrt x$，$x=t^2$，$dx=2t\\,dt$。$x=0\\to t=0$，$x=4\\to t=2$。\n\n$$\\int_0^2\\frac{2t}{1+t}dt=2\\int_0^2\\left(1-\\frac{1}{1+t}\\right)dt=2\\Big[t-\\ln(1+t)\\Big]_0^2=2(2-\\ln3)=4-2\\ln3$$\n\n## 例2：奇偶性\n\n$$\\int_{-1}^{1}\\frac{x^3\\cos x}{1+x^2}dx$$\n\n被积函数 $f(-x)=\\dfrac{-x^3\\cos x}{1+x^2}=-f(x)$，**奇函数，对称区间 → 结果 0**。\n\n## 例3：奇偶拆分\n\n$$\\int_{-2}^{2}(x^5+x^2)\\,dx$$\n\n$x^5$ 奇 → 0；$x^2$ 偶 → $2\\displaystyle\\int_0^2x^2dx=2\\cdot\\frac83=\\frac{16}{3}$。\n\n## 例4：三角换元\n\n$$\\int_0^1\\sqrt{1-x^2}\\,dx$$\n\n令 $x=\\sin t$，$dx=\\cos t\\,dt$，$x=0\\to0$，$x=1\\to\\frac\\pi2$。\n\n$$\\int_0^{\\pi/2}\\cos^2t\\,dt=\\frac{\\pi}{4}$$\n\n（几何意义：单位圆四分之一面积，$\\frac\\pi4$ ✓）\n\n## 例5：分部积分\n\n$$\\int_0^1 x\\arctan x\\,dx$$\n\n$u=\\arctan x$，$dv=x\\,dx$，$v=\\frac{x^2}{2}$：\n\n$$=\\left[\\frac{x^2}{2}\\arctan x\\right]_0^1-\\int_0^1\\frac{x^2}{2}\\cdot\\frac{1}{1+x^2}dx$$\n\n$$=\\frac\\pi8-\\frac12\\int_0^1\\left(1-\\frac{1}{1+x^2}\\right)dx=\\frac\\pi8-\\frac12+\\frac\\pi8=\\frac\\pi4-\\frac12$$"
-  },
-  {
-   "id": "c5",
-   "type": "quiz",
-   "title": "自测",
-   "md": "## 题1\n\n$$\\int_{-3}^{3}x^4\\sin x\\,dx=?$$\n\n**答案：0**。$x^4\\sin x$ 是奇函数，对称区间。\n\n## 题2\n\n$$\\int_0^{\\pi/2}\\sin^3x\\,dx=?$$\n\n**答案：$\\dfrac23$**。点火公式，$n=3$ 奇数：$\\dfrac{2!!}{3!!}=\\dfrac{2}{3}$。\n\n## 题3\n\n$$\\int_0^1 xe^{-x}dx=?$$\n\n**答案**：分部积分，$u=x$，$dv=e^{-x}dx$\n\n$$=\\Big[-xe^{-x}\\Big]_0^1+\\int_0^1e^{-x}dx=-e^{-1}+\\Big[-e^{-x}\\Big]_0^1=-e^{-1}-e^{-1}+1=1-\\frac2e$$\n\n## 题4\n\n$$\\int_{-1}^{1}(x^3+x^2+x)\\,dx=?$$\n\n**答案：$\\dfrac23$**。奇函数 $x^3+x$ 部分归零，只剩 $\\int_{-1}^1x^2dx=\\frac23$。\n\n## 题5\n\n计算 $\\displaystyle\\int_0^2\\frac{x}{\\sqrt{1+x^2}}dx$。\n\n**答案**：凑微分，$\\frac12\\int_0^2\\frac{d(1+x^2)}{\\sqrt{1+x^2}}=\\Big[\\sqrt{1+x^2}\\Big]_0^2=\\sqrt5-1$。"
-  }
- ]
+  "id": "math/5-3",
+  "title": "5.3 定积分的换元法和分部积分法",
+  "subtitle": "换元要换限 · 奇偶性简化 · 分部积分",
+  "cards": [
+    {
+      "id": "c1",
+      "type": "lecture",
+      "title": "定积分的换元法",
+      "md": "## 定理\n\n设 $f(x)$ 在 $[a,b]$ 上连续，函数 $x=\\varphi(t)$ 满足：\n\n1. $\\varphi(t)$ 在 $[\\alpha,\\beta]$ 上单调、有连续导数\n2. $\\varphi(\\alpha)=a$，$\\varphi(\\beta)=b$\n3. 当 $t\\in[\\alpha,\\beta]$ 时，$\\varphi(t)\\in[a,b]$\n\n则\n\n$$\\boxed{\\int_a^b f(x)\\,dx=\\int_\\alpha^\\beta f\\big(\\varphi(t)\\big)\\varphi'(t)\\,dt}$$\n\n## 与不定积分换元的关键区别\n\n| | 不定积分 | 定积分 |\n|---|---|---|\n| 换元后 | **必须换回** $x$ | **不用换回**，直接算出数值 |\n| 上下限 | 不用管 | **必须换成 $t$ 的上下限** |\n\n**口诀：换元必换限，不换限就错。**\n\n## 常见的换元\n\n**根式**：$\\sqrt{a^2-x^2}$ 令 $x=a\\sin t$；$\\sqrt{a^2+x^2}$ 令 $x=a\\tan t$；$\\sqrt{x^2-a^2}$ 令 $x=a\\sec t$。\n\n**倒数**：$\\displaystyle\\int\\frac{dx}{1+\\sqrt{x}}$ 令 $t=\\sqrt{x}$，则 $x=t^2$，$dx=2t\\,dt$。"
+    },
+    {
+      "id": "c2",
+      "type": "lecture",
+      "title": "奇偶性简化（考试高频）",
+      "md": "## 对称区间上的性质\n\n设 $f$ 在 $[-a,a]$ 上连续（$a>0$）。\n\n**（1）若 $f$ 是偶函数**（$f(-x)=f(x)$）：\n\n$$\\int_{-a}^{a}f(x)\\,dx=2\\int_0^a f(x)\\,dx$$\n\n**（2）若 $f$ 是奇函数**（$f(-x)=-f(x)$）：\n\n$$\\int_{-a}^{a}f(x)\\,dx=0$$\n\n**这是最快的化简手段**，看到对称区间先判奇偶。\n\n## 一个重要的推论\n\n$$\\int_{-a}^{a}f(x)\\,dx=\\int_0^a\\big[f(x)+f(-x)\\big]dx$$\n\n**用途**：即使 $f$ 不是奇偶函数，也能把区间折半。\n\n## 例：三角函数的常用结论\n\n$$\\int_0^{\\pi}x f(\\sin x)\\,dx=\\frac{\\pi}{2}\\int_0^{\\pi}f(\\sin x)\\,dx$$\n\n**证明**：令 $x=\\pi-t$，则 $dx=-dt$，\n\n$$\\int_0^{\\pi}xf(\\sin x)dx=\\int_{\\pi}^{0}(\\pi-t)f(\\sin t)(-dt)=\\int_0^{\\pi}(\\pi-t)f(\\sin t)dt$$\n\n$$=\\pi\\int_0^{\\pi}f(\\sin t)dt-\\int_0^{\\pi}tf(\\sin t)dt$$\n\n移项即得。"
+    },
+    {
+      "id": "c3",
+      "type": "lecture",
+      "title": "定积分的分部积分法",
+      "md": "## 公式\n\n$$\\boxed{\\int_a^b u\\,dv=\\Big[uv\\Big]_a^b-\\int_a^b v\\,du}$$\n\n即\n\n$$\\int_a^b u(x)v'(x)\\,dx=\\Big[u(x)v(x)\\Big]_a^b-\\int_a^b u'(x)v(x)\\,dx$$\n\n## 选题顺序（和不定积分一样）\n\n**\"反对幂指三\"**：反三角 → 对数 → 幂函数 → 指数 → 三角\n\n**排在前面的取作 $u$**（求导会变简单），后面的取作 $dv$。\n\n## 常见题型\n\n**（1）$\\int x^n e^x dx$、$\\int x^n\\sin x\\,dx$**：$u=x^n$\n\n**（2）$\\int x^n\\ln x\\,dx$、$\\int x^n\\arctan x\\,dx$**：$u=\\ln x$ 或 $\\arctan x$\n\n**（3）$\\int e^x\\sin x\\,dx$**：两次分部积分后移项解出（\"循环型\"）\n\n## 例\n\n$$\\int_0^1 xe^x\\,dx=\\Big[xe^x\\Big]_0^1-\\int_0^1 e^x dx=e-\\Big[e^x\\Big]_0^1=e-(e-1)=1$$\n\n## 点火公式（华里士公式）\n\n$$\\int_0^{\\pi/2}\\sin^n x\\,dx=\\int_0^{\\pi/2}\\cos^n x\\,dx$$\n\n- $n$ 为偶数：$\\dfrac{(n-1)!!}{n!!}\\cdot\\dfrac\\pi2$\n- $n$ 为奇数：$\\dfrac{(n-1)!!}{n!!}$\n\n例如 $\\displaystyle\\int_0^{\\pi/2}\\sin^4x\\,dx=\\frac{3\\cdot1}{4\\cdot2}\\cdot\\frac\\pi2=\\frac{3\\pi}{16}$。"
+    },
+    {
+      "id": "c4",
+      "type": "lecture",
+      "title": "典型例题",
+      "md": "## 例1：换元\n\n$$\\int_0^4\\frac{dx}{1+\\sqrt{x}}$$\n\n令 $t=\\sqrt x$，$x=t^2$，$dx=2t\\,dt$。$x=0\\to t=0$，$x=4\\to t=2$。\n\n$$\\int_0^2\\frac{2t}{1+t}dt=2\\int_0^2\\left(1-\\frac{1}{1+t}\\right)dt=2\\Big[t-\\ln(1+t)\\Big]_0^2=2(2-\\ln3)=4-2\\ln3$$\n\n## 例2：奇偶性\n\n$$\\int_{-1}^{1}\\frac{x^3\\cos x}{1+x^2}dx$$\n\n被积函数 $f(-x)=\\dfrac{-x^3\\cos x}{1+x^2}=-f(x)$，**奇函数，对称区间 → 结果 0**。\n\n## 例3：奇偶拆分\n\n$$\\int_{-2}^{2}(x^5+x^2)\\,dx$$\n\n$x^5$ 奇 → 0；$x^2$ 偶 → $2\\displaystyle\\int_0^2x^2dx=2\\cdot\\frac83=\\frac{16}{3}$。\n\n## 例4：三角换元\n\n$$\\int_0^1\\sqrt{1-x^2}\\,dx$$\n\n令 $x=\\sin t$，$dx=\\cos t\\,dt$，$x=0\\to0$，$x=1\\to\\frac\\pi2$。\n\n$$\\int_0^{\\pi/2}\\cos^2t\\,dt=\\frac{\\pi}{4}$$\n\n（几何意义：单位圆四分之一面积，$\\frac\\pi4$ ✓）\n\n## 例5：分部积分\n\n$$\\int_0^1 x\\arctan x\\,dx$$\n\n$u=\\arctan x$，$dv=x\\,dx$，$v=\\frac{x^2}{2}$：\n\n$$=\\left[\\frac{x^2}{2}\\arctan x\\right]_0^1-\\int_0^1\\frac{x^2}{2}\\cdot\\frac{1}{1+x^2}dx$$\n\n$$=\\frac\\pi8-\\frac12\\int_0^1\\left(1-\\frac{1}{1+x^2}\\right)dx=\\frac\\pi8-\\frac12+\\frac\\pi8=\\frac\\pi4-\\frac12$$"
+    },
+    {
+      "id": "c5",
+      "type": "lecture",
+      "title": "自测",
+      "md": "## 题1\n\n$$\\int_{-3}^{3}x^4\\sin x\\,dx=?$$\n\n**答案：0**。$x^4\\sin x$ 是奇函数，对称区间。\n\n## 题2\n\n$$\\int_0^{\\pi/2}\\sin^3x\\,dx=?$$\n\n**答案：$\\dfrac23$**。点火公式，$n=3$ 奇数：$\\dfrac{2!!}{3!!}=\\dfrac{2}{3}$。\n\n## 题3\n\n$$\\int_0^1 xe^{-x}dx=?$$\n\n**答案**：分部积分，$u=x$，$dv=e^{-x}dx$\n\n$$=\\Big[-xe^{-x}\\Big]_0^1+\\int_0^1e^{-x}dx=-e^{-1}+\\Big[-e^{-x}\\Big]_0^1=-e^{-1}-e^{-1}+1=1-\\frac2e$$\n\n## 题4\n\n$$\\int_{-1}^{1}(x^3+x^2+x)\\,dx=?$$\n\n**答案：$\\dfrac23$**。奇函数 $x^3+x$ 部分归零，只剩 $\\int_{-1}^1x^2dx=\\frac23$。\n\n## 题5\n\n计算 $\\displaystyle\\int_0^2\\frac{x}{\\sqrt{1+x^2}}dx$。\n\n**答案**：凑微分，$\\frac12\\int_0^2\\frac{d(1+x^2)}{\\sqrt{1+x^2}}=\\Big[\\sqrt{1+x^2}\\Big]_0^2=\\sqrt5-1$。"
+    },
+    {
+      "id": "q1",
+      "type": "choice",
+      "question": "$\\displaystyle\\int_{-1}^{1}\\frac{x^3\\cos x}{1+x^2}\\,dx$ 等于？",
+      "options": [
+        "$2$",
+        "$0$",
+        "$\\pi$",
+        "$1$"
+      ],
+      "answer": 1,
+      "explain": "**答案：B（0）。**\n\n**先看奇偶性**。记 $f(x)=\\dfrac{x^3\\cos x}{1+x^2}$，则\n\n$$f(-x)=\\frac{(-x)^3\\cos(-x)}{1+(-x)^2}=\\frac{-x^3\\cos x}{1+x^2}=-f(x)$$\n\n所以 $f$ 是**奇函数**。\n\n**对称区间上奇函数的积分为零**：\n\n$$\\int_{-a}^{a}(\\text{奇函数})dx=0$$\n\n因为左右两块面积一正一负、大小相等，正好抵消。\n\n---\n\n**这个\"先看奇偶性\"的技巧能省掉大段计算**。如果硬算，要分部积分两次，很麻烦；看奇偶性只要两行。\n\n**判断奇偶性只需两个条件**：\n\n- 被积函数里的 $x$ 的幂次全为奇 → 奇函数\n- 全为偶 → 偶函数\n- 混杂 → 既非奇也非偶，不能直接用\n\n本题分子 $x^3\\cos x$：$x^3$ 奇、$\\cos x$ 偶，奇乘偶 = **奇**。分母 $1+x^2$ 是偶函数。奇 ÷ 偶 = **奇** ✓\n\n---\n\n**配套结论**：\n\n$$\\int_{-a}^{a}(\\text{偶函数})dx=2\\int_0^a(\\text{偶})dx$$\n\n**奇函数为零、偶函数折半**，这两条要背下来。",
+      "tags": [
+        "奇偶性",
+        "定积分换元"
+      ]
+    },
+    {
+      "id": "q2",
+      "type": "choice",
+      "question": "$\\displaystyle\\int_0^{\\pi/2}\\sin^3x\\,dx$ 等于？",
+      "options": [
+        "$\\dfrac{2}{3}$",
+        "$\\dfrac{1}{2}$",
+        "$\\dfrac{\\pi}{4}$",
+        "$1$"
+      ],
+      "answer": 0,
+      "explain": "**答案：A（$\\frac{2}{3}$）。**\n\n这是**华里士公式**（点火公式）的直接应用：\n\n$$\\int_0^{\\pi/2}\\sin^n x\\,dx=\\int_0^{\\pi/2}\\cos^n x\\,dx=\\begin{cases}\\dfrac{(n-1)!!}{n!!}\\cdot\\dfrac{\\pi}{2},&n\\text{ 为偶数}\\\\[8pt]\\dfrac{(n-1)!!}{n!!},&n\\text{ 为奇数}\\end{cases}$$\n\n**本题 $n=3$（奇数）**：\n\n$$\\frac{(3-1)!!}{3!!}=\\frac{2!!}{3!!}=\\frac{2}{3\\cdot1}=\\frac23$$\n\n---\n\n**$!!$ 是双阶乘**，指「同奇偶的连乘」：\n\n- $3!!=3\\times1=3$\n- $4!!=4\\times2=8$\n- $5!!=5\\times3\\times1=15$\n\n**注意不要和阶乘混淆**：$3!=6$，$3!!=3$。\n\n---\n\n**不用公式硬算也可以**（凑微分）：\n\n$$\\int_0^{\\pi/2}\\sin^3x\\,dx=\\int_0^{\\pi/2}\\sin^2x\\cdot\\sin x\\,dx=\\int_0^{\\pi/2}(1-\\cos^2x)d(-\\cos x)$$\n\n令 $u=\\cos x$，$x=0\\to u=1$，$x=\\frac\\pi2\\to u=0$：\n\n$$=\\int_1^0(1-u^2)(-du)=\\int_0^1(1-u^2)du=\\left[u-\\frac{u^3}{3}\\right]_0^1=1-\\frac13=\\frac23$$\n\n✓ 与公式一致。\n\n---\n\n**换成偶数试试**：$n=4$，$\\dfrac{3!!}{4!!}\\cdot\\dfrac\\pi2=\\dfrac{3}{8}\\cdot\\dfrac\\pi2=\\dfrac{3\\pi}{16}$。奇数不带 $\\pi$，偶数带 $\\pi$——这是最容易记混的地方。",
+      "tags": [
+        "华里士公式",
+        "换元"
+      ]
+    },
+    {
+      "id": "q3",
+      "type": "text",
+      "question": "用换元法计算 $\\displaystyle\\int_0^4\\frac{dx}{1+\\sqrt{x}}$。",
+      "explain": "**答案：$4-2\\ln3$**\n\n**第一步：换元。**\n\n令 $t=\\sqrt x$，则 $x=t^2$，$dx=2t\\,dt$。\n\n**第二步：换限（关键！）。**\n\n- $x=0\\to t=0$\n- $x=4\\to t=2$\n\n**第三步：代入。**\n\n$$\\int_0^4\\frac{dx}{1+\\sqrt x}=\\int_0^2\\frac{2t\\,dt}{1+t}$$\n\n**第四步：拆项化简。**\n\n$$\\frac{2t}{1+t}=2\\cdot\\frac{t+1-1}{1+t}=2\\left(1-\\frac{1}{1+t}\\right)$$\n\n积分：\n\n$$=2\\int_0^2\\left(1-\\frac{1}{1+t}\\right)dt=2\\Big[t-\\ln(1+t)\\Big]_0^2$$\n\n$$=2\\Big[(2-\\ln3)-(0-\\ln1)\\Big]=2(2-\\ln3)=4-2\\ln3$$\n\n---\n\n**数值**：$4-2\\ln3=4-2.197=1.803$\n\n**验算**（数值积分）：$\\int_0^4\\frac{dx}{1+\\sqrt x}$，取 $n=200000$ 梯形法，结果 $1.80278$ ✓\n\n---\n\n**本题的核心考点：换元必换限**\n\n如果忘了换限，直接写 $\\int_0^4\\frac{2t}{1+t}dt$，就会算成\n\n$$2\\Big[t-\\ln(1+t)\\Big]_0^4=2(4-\\ln5)\\approx4.8$$\n\n**错了 2.7**。\n\n**检查换限对不对的土办法**：新上下限代回原变量，应该回到原来的上下限。$t=2\\Rightarrow x=4$ ✓、$t=0\\Rightarrow x=0$ ✓\n\n---\n\n**为什么不能直接分部积分**：$1+\\sqrt x$ 在分子还是分母？是分母，且带根号，没有简单的原函数，必须换元。",
+      "tags": [
+        "换元法",
+        "换限"
+      ]
+    }
+  ]
 }
