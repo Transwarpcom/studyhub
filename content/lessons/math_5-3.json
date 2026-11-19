@@ -80,6 +80,35 @@
         "换元法",
         "换限"
       ]
+    },
+    {
+      "id": "q4",
+      "type": "choice",
+      "question": "$\\displaystyle\\int_0^{\\pi}\\sin^2x\\,dx$ 等于？",
+      "options": [
+        "$\\dfrac{\\pi}{2}$",
+        "$\\pi$",
+        "$2$",
+        "$1$"
+      ],
+      "answer": [
+        0
+      ],
+      "explain": "**答案：A（$\\frac\\pi2$）。**\n\n**方法一：华里士公式**\n\n$n=2$（偶数）：\n\n$$\\int_0^{\\pi/2}\\sin^2x\\,dx=\\frac{(2-1)!!}{2!!}\\cdot\\frac\\pi2=\\frac{1}{2}\\cdot\\frac\\pi2=\\frac\\pi4$$\n\n**注意华里士只对 $[0,\\frac\\pi2]$ 成立**。本题是 $[0,\\pi]$，用对称性折半：\n\n$$\\int_0^\\pi\\sin^2x\\,dx=2\\int_0^{\\pi/2}\\sin^2x\\,dx=2\\cdot\\frac\\pi4=\\frac\\pi2$$\n\n**为什么可以折半**：$\\sin^2x$ 关于 $x=\\frac\\pi2$ 对称（$\\sin^2(\\pi-x)=\\sin^2x$），两块相等。\n\n---\n\n**方法二：倍角公式（更通用）**\n\n$$\\sin^2x=\\frac{1-\\cos2x}{2}$$\n\n$$\\int_0^\\pi\\sin^2x\\,dx=\\frac12\\int_0^\\pi(1-\\cos2x)dx=\\frac12\\left[x-\\frac{\\sin2x}{2}\\right]_0^\\pi$$\n\n$$=\\frac12\\left[(\\pi-0)-(0-0)\\right]=\\frac\\pi2$$\n\n✓ 一致。\n\n---\n\n**这两个方法的分工**：\n\n| 区间 | 推荐 |\n|---|---|\n| $[0,\\frac\\pi2]$ | 华里士公式，秒出 |\n| $[0,\\pi]$ 或其他 | 倍角公式降次，或先折半 |\n\n**本题若区间是 $[0,2\\pi]$**：$\\sin^2x$ 周期为 $\\pi$，所以\n\n$$\\int_0^{2\\pi}\\sin^2x\\,dx=2\\int_0^\\pi=\\pi$$\n\n---\n\n**直觉检验**：$\\sin^2x$ 在 $[0,\\pi]$ 上的平均值是 $\\frac12$（因为 $\\sin^2+\\cos^2=1$，平均各占一半），区间长 $\\pi$，所以积分 $=\\frac12\\times\\pi=\\frac\\pi2$ ✓",
+      "tags": [
+        "华里士公式",
+        "倍角降次"
+      ]
+    },
+    {
+      "id": "q5",
+      "type": "text",
+      "question": "计算 $\\displaystyle\\int_0^1 x\\,e^{-x}\\,dx$。",
+      "explain": "**答案：$1-\\dfrac{2}{e}\\approx0.264241$**\n\n**用分部积分**：$\\int u\\,dv=uv-\\int v\\,du$。\n\n取 $u=x$、$dv=e^{-x}dx$，则 $du=dx$、$v=-e^{-x}$：\n\n$$\\int_0^1 xe^{-x}dx=\\Big[-xe^{-x}\\Big]_0^1-\\int_0^1(-e^{-x})dx$$\n\n$$=\\Big[-xe^{-x}\\Big]_0^1+\\int_0^1e^{-x}dx$$\n\n**第一项**（代上下限）：\n\n$$\\Big[-xe^{-x}\\Big]_0^1=\\left(-1\\cdot e^{-1}\\right)-\\left(-0\\cdot e^0\\right)=-\\frac1e$$\n\n**第二项**：\n\n$$\\int_0^1e^{-x}dx=\\Big[-e^{-x}\\Big]_0^1=-e^{-1}+1=1-\\frac1e$$\n\n**相加**：\n\n$$-\\frac1e+1-\\frac1e=1-\\frac2e$$\n\n---\n\n**数值**：$1-\\frac{2}{2.71828}=1-0.73576=0.26424$\n\n**验算**（数值积分）实测 $0.264241$ ✓\n\n---\n\n**分部积分选 $u$ 的原则（LIATE）**：\n\n$$\\text{L对数}>\\text{I反三角}>\\text{A代数}>\\text{T三角}>\\text{E指数}$$\n\n排在**前面**的取作 $u$（求导会变简单），后面的归入 $dv$。\n\n**本题**：代数 $x$ 在指数 $e^{-x}$ 之前，所以 $u=x$、$dv=e^{-x}dx$ ✓\n\n**如果选反了**（$u=e^{-x}$、$dv=x\\,dx$）会怎样：\n\n$$\\int xe^{-x}dx=\\frac{x^2}{2}e^{-x}+\\int\\frac{x^2}{2}e^{-x}dx$$\n\n幂次变**更高**了，越积越复杂。**这就是 LIATE 的价值。**\n\n---\n\n**常见错误**：\n\n- 代下限时 $-0\\cdot e^0=0$ 忘写，直接漏掉（本题恰好是 0，不影响结果）\n- 第二项符号搞错：$\\int(-e^{-x})dx$ 前面那个负号容易丢\n\n**检验正负**：$xe^{-x}\\ge0$ 在 $[0,1]$ 上，积分必须 $>0$。$1-\\frac2e=0.264>0$ ✓",
+      "tags": [
+        "分部积分",
+        "LIATE"
+      ]
     }
   ]
 }

@@ -33,6 +33,35 @@
       "tags": [
         "递推"
       ]
+    },
+    {
+      "id": "q3",
+      "type": "choice",
+      "question": "$\\displaystyle\\int\\frac{dx}{\\sqrt{x^2+a^2}}$ 在积分表里对应的结果是？",
+      "options": [
+        "$\\ln\\left|x+\\sqrt{x^2+a^2}\\right|+C$",
+        "$\\arcsin\\dfrac xa+C$",
+        "$\\dfrac1a\\arctan\\dfrac xa+C$",
+        "$\\sqrt{x^2+a^2}+C$"
+      ],
+      "answer": [
+        0
+      ],
+      "explain": "**答案：A（$\\ln\\left|x+\\sqrt{x^2+a^2}\\right|+C$）。**\n\n这是积分表里**最常考的一条**。\n\n**验算**（对答案求导应该回到被积函数）：\n\n$$\\frac{d}{dx}\\ln\\left|x+\\sqrt{x^2+a^2}\\right|=\\frac{1}{x+\\sqrt{x^2+a^2}}\\cdot\\left(1+\\frac{x}{\\sqrt{x^2+a^2}}\\right)$$\n\n括号内通分：\n\n$$1+\\frac{x}{\\sqrt{x^2+a^2}}=\\frac{\\sqrt{x^2+a^2}+x}{\\sqrt{x^2+a^2}}$$\n\n相乘后分子分母的 $(x+\\sqrt{x^2+a^2})$ **约掉**：\n\n$$=\\frac{1}{\\sqrt{x^2+a^2}}$$ ✓\n\n---\n\n**四个根式积分的完整对照表（必背）**：\n\n| 积分 | 结果 |\n|---|---|\n| $\\int\\frac{dx}{\\sqrt{a^2-x^2}}$ | $\\arcsin\\frac xa+C$ |\n| $\\int\\frac{dx}{\\sqrt{x^2\\pm a^2}}$ | $\\ln\\left|x+\\sqrt{x^2\\pm a^2}\\right|+C$ |\n| $\\int\\frac{dx}{a^2+x^2}$ | $\\frac1a\\arctan\\frac xa+C$ |\n| $\\int\\frac{dx}{x^2-a^2}$ | $\\frac{1}{2a}\\ln\\left|\\frac{x-a}{x+a}\\right|+C$ |\n\n**选哪个看分母**：\n\n- 分母被开方、里面有 $-x^2$ → **arcsin**\n- 分母被开方、里面有 $+x^2$ → **ln**（本题）\n- 分母不开方、判别式 $<0$ → **arctan**\n- 分母不开方、判别式 $>0$ → **ln 分式**\n\n---\n\n**为什么会有 ln**：令 $x=a\\tan t$，$dx=a\\sec^2t\\,dt$，$\\sqrt{x^2+a^2}=a\\sec t$：\n\n$$\\int\\frac{a\\sec^2t}{a\\sec t}dt=\\int\\sec t\\,dt=\\ln|\\sec t+\\tan t|+C$$\n\n代回 $\\tan t=\\frac xa$、$\\sec t=\\frac{\\sqrt{x^2+a^2}}{a}$，即得。\n\n**$\\int\\sec t\\,dt=\\ln|\\sec t+\\tan t|$ 本身也是表里的一条**。",
+      "tags": [
+        "积分表",
+        "根式积分"
+      ]
+    },
+    {
+      "id": "q4",
+      "type": "text",
+      "question": "用积分表求 $\\displaystyle\\int\\frac{dx}{x^2-4x+3}$。",
+      "explain": "**答案：$\\dfrac12\\ln\\left|\\dfrac{x-3}{x-1}\\right|+C$**\n\n**第一步：分母因式分解。**\n\n$$x^2-4x+3=(x-1)(x-3)$$\n\n分母是二次式且**判别式 $16-12=4>0$**，有两个实根 $1$ 和 $3$，所以用**分式 ln 公式**。\n\n**第二步：部分分式分解。**\n\n$$\\frac{1}{(x-1)(x-3)}=\\frac{A}{x-1}+\\frac{B}{x-3}$$\n\n通分比较：\n\n$$1=A(x-3)+B(x-1)$$\n\n- 令 $x=1$：$1=A(-2)$ → $A=-\\frac12$\n- 令 $x=3$：$1=B(2)$ → $B=\\frac12$\n\n所以\n\n$$\\frac{1}{x^2-4x+3}=\\frac12\\left(\\frac{1}{x-3}-\\frac{1}{x-1}\\right)$$\n\n**第三步：积分。**\n\n$$\\int=\\frac12\\left(\\ln|x-3|-\\ln|x-1|\\right)+C=\\frac12\\ln\\left|\\frac{x-3}{x-1}\\right|+C$$\n\n---\n\n**对照积分表公式**：\n\n$$\\int\\frac{dx}{x^2-a^2}=\\frac{1}{2a}\\ln\\left|\\frac{x-a}{x+a}\\right|+C$$\n\n把分母配方成 $(x-2)^2-1$，即 $a=1$、中心 $2$：\n\n$$\\int\\frac{dx}{(x-2)^2-1}=\\frac12\\ln\\left|\\frac{(x-2)-1}{(x-2)+1}\\right|+C=\\frac12\\ln\\left|\\frac{x-3}{x-1}\\right|+C$$\n\n✓ **两条路结果完全一致**。\n\n---\n\n**验算**（求导）：\n\n$$\\frac{d}{dx}\\left[\\frac12\\ln\\left|\\frac{x-3}{x-1}\\right|\\right]=\\frac12\\cdot\\frac{1}{\\frac{x-3}{x-1}}\\cdot\\frac{(x-1)-(x-3)}{(x-1)^2}$$\n\n$$=\\frac12\\cdot\\frac{x-1}{x-3}\\cdot\\frac{2}{(x-1)^2}=\\frac{1}{(x-3)(x-1)}$$ ✓\n\n---\n\n**什么时候不能直接用表**：分母有重根（如 $x^2-2x+1=(x-1)^2$）时，上面的公式不能用，要改用 $\\int\\frac{dx}{(x-a)^2}=-\\frac{1}{x-a}+C$。\n\n**判据**：先算判别式 $\\Delta=b^2-4ac$。$\\Delta>0$ 用本题的分式 ln；$\\Delta=0$ 用幂函数；$\\Delta<0$ 用 arctan。",
+      "tags": [
+        "积分表",
+        "部分分式"
+      ]
     }
   ]
 }

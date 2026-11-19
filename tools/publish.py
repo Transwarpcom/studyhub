@@ -56,6 +56,50 @@ def check_latex(text):
     return bad
 
 
+def expected_badge(lid, n_cards, n_quiz):
+    """badge 口径：作业册（math/hwb-*）记题数，其余记卡片数。"""
+    return f"{n_quiz} 题" if lid.startswith("math/hwb-") else f"{n_cards} 卡"
+
+
+def sync_badges(man, data, verbose=True):
+    """把 manifest 里每个 lesson 的 badge 校准成 expected_badge。返回改动列表。"""
+    changed = []
+
+    def walk(nodes):
+        for n in nodes:
+            lid = n.get("bundle") or n.get("id")
+            if n.get("kind") == "lesson" and lid in data:
+                nc, nq = data[lid]
+                want = expected_badge(lid, nc, nq)
+                if n.get("badge") != want:
+                    changed.append((lid, n.get("title"), n.get("badge"), want))
+                    n["badge"] = want
+            if n.get("children"):
+                walk(n["children"])
+
+    walk(man.get("tree") or [])
+    if verbose:
+        for lid, t, old, new in changed:
+            print(f"  badge {str(t)[:34]:36s} {old} → {new}")
+    return changed
+
+
+def load_all_lessons():
+    """读磁盘所有 lesson，返回 {id: (卡片数, 题数)}"""
+    out = {}
+    for f in glob.glob(os.path.join(LESSONS, "*.json")):
+        try:
+            d = load(f)
+            lid = d.get("id")
+            if not lid:
+                continue
+            cards = d.get("cards") or []
+            out[lid] = (len(cards), len([c for c in cards if c.get("type") != "lecture"]))
+        except Exception:
+            continue
+    return out
+
+
 def cmd_check(strict=False):
     errors = []
     warnings = []
@@ -67,6 +111,16 @@ def cmd_check(strict=False):
     man = load(MANIFEST)
     ver = man.get("version")
     print(f"manifest version = {ver}   updated = {man.get('updated')}")
+
+    # badge 是否与实际卡数/题数一致（自动校准，写回文件）
+    data = load_all_lessons()
+    changed = sync_badges(man, data, verbose=False)
+    if changed:
+        print(f"badge 不一致 {len(changed)} 处，已自动写入 manifest：")
+        for lid, t, old, new in changed:
+            print(f"  {str(t)[:34]:36s} {old} → {new}")
+        with open(MANIFEST, "w", encoding="utf-8") as f:
+            json.dump(man, f, ensure_ascii=False, indent=2)
 
     ids = all_lesson_ids(man.get("tree") or [])
     print(f"manifest 课程节点 = {len(ids)}")

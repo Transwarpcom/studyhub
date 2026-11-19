@@ -59,6 +59,35 @@
       "tags": [
         "上下限都是函数"
       ]
+    },
+    {
+      "id": "q9",
+      "type": "choice",
+      "question": "设 $F(x)=\\displaystyle\\int_0^x e^{-t^2}dt$，则 $F'(0)=$ ？",
+      "options": [
+        "$1$",
+        "$0$",
+        "$e^{-1}$",
+        "$-1$"
+      ],
+      "answer": [
+        0
+      ],
+      "explain": "**答案：A（1）。**\n\n用变上限求导公式：\n\n$$F'(x)=e^{-x^2}$$\n\n（上限 $x$ 代入被积函数，还要乘 $x'=1$，故直接得 $e^{-x^2}$）\n\n代入 $x=0$：\n\n$$F'(0)=e^{-0}=e^0=1$$\n\n---\n\n**这题特别容易错的地方**：看到 $e^{-t^2}$ 没有初等原函数，会以为 $F(x)$ 算不出来。**但本题根本不需要算 $F$**——求导和积分是逆运算，一步就出来。\n\n**注意区分**：\n\n$$F(x)=\\int_0^x e^{-t^2}dt\\quad\\text{没有初等原函数}$$\n\n$$F'(x)=e^{-x^2}\\quad\\text{非常干净}$$\n\n**这是变上限积分最重要的用途**：它把「积不出来」的函数变成了「有明确导函数」的函数。$e^{-x^2}$ 的积分 $\\int e^{-x^2}dx$ 写不出初等表达式，但 $\\Phi(x)=\\int_0^xe^{-t^2}dt$ 是一个完全合法、可导的函数（在概率论里就是正态分布的分布函数核心部分）。\n\n---\n\n**验算**（用定义）：$F(0)=\\int_0^0=0$，$F(h)=\\int_0^h e^{-t^2}dt\\approx h$（被积函数在 $[0,h]$ 上接近 1），所以 $\\frac{F(h)-F(0)}{h}\\approx1$ ✓",
+      "tags": [
+        "变上限求导",
+        "不可积函数"
+      ]
+    },
+    {
+      "id": "q10",
+      "type": "text",
+      "question": "计算 $\\displaystyle\\int_0^{\\pi/2}\\frac{\\sin x}{\\sin x+\\cos x}dx$。",
+      "explain": "**答案：$\\dfrac{\\pi}{4}$**\n\n**关键技巧：令 $x=\\dfrac{\\pi}{2}-t$（换元后与原式相加）。**\n\n设\n$$I=\\int_0^{\\pi/2}\\frac{\\sin x}{\\sin x+\\cos x}dx$$\n\n**第一步**：作换元 $x=\\frac\\pi2-t$，则 $dx=-dt$。$x=0\\to t=\\frac\\pi2$，$x=\\frac\\pi2\\to t=0$。\n\n$$\\sin x=\\sin\\left(\\frac\\pi2-t\\right)=\\cos t,\\qquad\\cos x=\\cos\\left(\\frac\\pi2-t\\right)=\\sin t$$\n\n代入：\n\n$$I=\\int_{\\pi/2}^{0}\\frac{\\cos t}{\\cos t+\\sin t}(-dt)=\\int_0^{\\pi/2}\\frac{\\cos t}{\\sin t+\\cos t}dt$$\n\n**第二步**：$t$ 只是哑变量，改回 $x$：\n\n$$I=\\int_0^{\\pi/2}\\frac{\\cos x}{\\sin x+\\cos x}dx$$\n\n**第三步**：两式相加。注意两式的分母相同：\n\n$$I+I=\\int_0^{\\pi/2}\\frac{\\sin x+\\cos x}{\\sin x+\\cos x}dx=\\int_0^{\\pi/2}1\\,dx=\\frac\\pi2$$\n\n$$2I=\\frac\\pi2\\quad\\Longrightarrow\\quad I=\\frac{\\pi}{4}$$\n\n---\n\n**这个技巧的通式**：对 $\\displaystyle\\int_0^{\\pi/2}f(\\sin x,\\cos x)dx$，若 $f(\\sin x,\\cos x)+f(\\cos x,\\sin x)$ 很简洁，就用 $x\\to\\frac\\pi2-x$ 相加。\n\n**典型伙伴**：\n\n$$\\int_0^{\\pi/2}\\frac{\\cos x}{\\sin x+\\cos x}dx=\\frac\\pi4\\quad(\\text{同样})$$\n\n两道答案完全相同，因为它们的和是 $\\frac\\pi2$。\n\n$$\\int_0^{\\pi/2}\\frac{\\sin x-\\cos x}{\\sin x+\\cos x}dx=0$$\n\n（$x\\to\\frac\\pi2-x$ 后变号，相加得 0）\n\n---\n\n**数值验算**：$\\frac\\pi4=0.785398$。数值积分 $\\int_0^{\\pi/2}\\frac{\\sin x}{\\sin x+\\cos x}dx$ 实测 $0.785398$ ✓\n\n---\n\n**为什么不直接用华里士**：被积函数不是 $\\sin^n$ 或 $\\cos^n$，而是两者的分式，华里士公式不适用。**分母含 $\\sin+\\cos$ 的组合，换元相加是标准套路。**",
+      "tags": [
+        "对称换元",
+        "牛顿-莱布尼茨"
+      ]
     }
   ]
 }

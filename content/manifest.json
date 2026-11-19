@@ -1,5 +1,5 @@
 {
-  "version": 15,
+  "version": 16,
   "updated": "2026-11-19",
   "title": "学习台",
   "tree": [
@@ -128,7 +128,7 @@
               "kind": "lesson",
               "bundle": "math/2-3",
               "summary": "二阶导 · n 阶导公式",
-              "badge": "3 卡"
+              "badge": "5 卡"
             },
             {
               "id": "math/2-4",
@@ -161,7 +161,7 @@
               "kind": "lesson",
               "bundle": "math/3-1",
               "summary": "罗尔 · 拉格朗日 · 柯西",
-              "badge": "6 卡"
+              "badge": "9 卡"
             },
             {
               "id": "math/3-2",
@@ -177,7 +177,7 @@
               "kind": "lesson",
               "bundle": "math/3-3",
               "summary": "展开 · 佩亚诺余项 · 求极限",
-              "badge": "5 卡"
+              "badge": "8 卡"
             },
             {
               "id": "math/3-4",
@@ -217,7 +217,7 @@
               "kind": "lesson",
               "bundle": "math/3-8",
               "summary": "二分法 · 切线法 · 割线法",
-              "badge": "3 卡"
+              "badge": "5 卡"
             }
           ]
         },
@@ -266,7 +266,7 @@
               "kind": "lesson",
               "bundle": "math/4-5",
               "summary": "查表 · 变形 · 递推",
-              "badge": "3 卡"
+              "badge": "5 卡"
             }
           ]
         },
@@ -283,7 +283,7 @@
               "kind": "lesson",
               "bundle": "math/5-1",
               "summary": "分割求和取极限 · 几何意义 · 八大性质 · 7 题",
-              "badge": "7 题"
+              "badge": "9 卡"
             },
             {
               "id": "math/5-2",
@@ -291,7 +291,7 @@
               "kind": "lesson",
               "bundle": "math/5-2",
               "summary": "变上限积分求导 · 牛顿-莱布尼茨公式",
-              "badge": "4 卡"
+              "badge": "9 卡"
             },
             {
               "id": "math/5-3",
@@ -299,7 +299,7 @@
               "kind": "lesson",
               "bundle": "math/5-3",
               "summary": "换元必换限 · 奇偶性对称 · 分部积分",
-              "badge": "5 卡"
+              "badge": "10 卡"
             },
             {
               "id": "math/5-4",
@@ -307,7 +307,7 @@
               "kind": "lesson",
               "bundle": "math/5-4",
               "summary": "无穷限 · 瑕积分 · p 积分判别法",
-              "badge": "5 卡"
+              "badge": "10 卡"
             }
           ]
         },
@@ -425,10 +425,10 @@
             },
             {
               "id": "math/hwb-1-8",
-              "title": "作业册 · 1.8",
+              "title": "作业册 · 1.8 函数的连续性与间断点",
               "kind": "lesson",
               "bundle": "math/hwb-1-8",
-              "summary": "9 题 · 含完整过程",
+              "summary": "连续定义 · 间断点分类 · 9 题",
               "badge": "9 题"
             },
             {
