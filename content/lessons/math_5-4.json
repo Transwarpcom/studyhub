@@ -43,7 +43,9 @@
         "$\\dfrac12$",
         "$0$"
       ],
-      "answer": 0,
+      "answer": [
+        0
+      ],
       "explain": "**答案：A（1）。**\n\n**反常积分的定义**：先算有限区间，再取极限。\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^2}=\\lim_{t\\to+\\infty}\\int_1^{t}\\frac{dx}{x^2}$$\n\n**第一步**：求原函数。$\\int x^{-2}dx=-x^{-1}=-\\dfrac1x$。\n\n**第二步**：代入上下限。\n\n$$\\lim_{t\\to+\\infty}\\left[-\\frac1x\\right]_1^t=\\lim_{t\\to+\\infty}\\left(-\\frac1t-\\left(-\\frac11\\right)\\right)=\\lim_{t\\to+\\infty}\\left(1-\\frac1t\\right)=1$$\n\n---\n\n**数值逼近**：$\\int_1^{10^6}\\frac{dx}{x^2}=1-10^{-6}=0.999999$，确实趋于 1。\n\n---\n\n**对比记忆**：\n\n$$\\int_1^{+\\infty}\\frac{dx}{x^p}\\quad\\begin{cases}p>1&\\text{收敛}\\\\ p\\le1&\\text{发散}\\end{cases}$$\n\n- $p=2>1$ → 收敛于 $1$（本题）\n- $p=1$ → $\\int_1^\\infty\\frac{dx}{x}=\\lim\\ln t=+\\infty$ **发散**\n- $p=\\frac12$ → $\\int_1^\\infty x^{-1/2}dx=\\lim 2\\sqrt t=+\\infty$ **发散**\n\n**结论**：$p$ 必须**严格大于 1** 才收敛。$p=1$ 是分界线，**发散**。\n\n---\n\n**为什么 $p=1$ 这么特殊**：$\\ln x$ 增长极其缓慢，但确实**无界**，所以积分发散。这是最容易被直觉骗过的地方——很多人以为 $1/x$ 趋于 $0$ 够快。",
       "tags": [
         "反常积分",
@@ -60,7 +62,9 @@
         "收敛，值为 $1$",
         "收敛，值为 $\\dfrac12$"
       ],
-      "answer": 0,
+      "answer": [
+        0
+      ],
       "explain": "**答案：A（收敛，值为 2）。**\n\n这是**瑕积分**（被积函数在 $x=0$ 处无界），属于第二类反常积分。\n\n**定义**：\n\n$$\\int_0^1\\frac{dx}{\\sqrt x}=\\lim_{\\varepsilon\\to0^+}\\int_{\\varepsilon}^1 x^{-1/2}dx$$\n\n**第一步**：原函数 $\\int x^{-1/2}dx=2x^{1/2}=2\\sqrt x$。\n\n**第二步**：代上下限。\n\n$$\\lim_{\\varepsilon\\to0^+}\\Big[2\\sqrt x\\Big]_{\\varepsilon}^1=\\lim_{\\varepsilon\\to0^+}\\left(2-2\\sqrt\\varepsilon\\right)=2-0=2$$\n\n---\n\n**关键点**：虽然 $\\dfrac{1}{\\sqrt x}\\to+\\infty$（$x\\to0^+$），但**趋于无穷的速度不够快**，面积还是有限的。\n\n几何上看：曲线在原点附近冲得无限高，但**无限窄**，所以面积收敛。\n\n---\n\n**瑕积分 $p$ 判别法**（与无穷区间相反！）：\n\n$$\\int_0^a\\frac{dx}{x^p}\\quad\\begin{cases}p<1&\\text{收敛}\\\\ p\\ge1&\\text{发散}\\end{cases}$$\n\n**注意方向**：瑕积分要求 $p<1$，无穷积分要求 $p>1$，**正好相反**。\n\n本题 $p=\\frac12<1$ → 收敛 ✓\n\n**对照**：$\\int_0^1\\frac{dx}{x^2}$，$p=2\\ge1$ → **发散**（$\\lim_{\\varepsilon}\\left[-\\frac1x\\right]_\\varepsilon^1=\\lim(\\frac1\\varepsilon-1)=+\\infty$）\n\n---\n\n**记忆方法**：把两个方向画在数轴上，$p=1$ 是「雷区」，两边各自安全：\n\n- **无穷区间**：往大走，$p$ 要大（$p>1$）\n- **瑕点**：往小走，$p$ 要小（$p<1$）",
       "tags": [
         "瑕积分",

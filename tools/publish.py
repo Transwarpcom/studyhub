@@ -142,6 +142,8 @@ def cmd_check(strict=False):
     bad_type = []
     # 5. 选择题答案范围
     bad_answer = []
+    # 6. JSON schema（与 App 的 Codable 对齐：answer 必须 [Int]、blanks 必须 [[String]]）
+    schema_bad = []
     for lid in ids:
         fn = os.path.join(LESSONS, lid.replace("/", "_") + ".json")
         if not os.path.isfile(fn):
@@ -151,20 +153,46 @@ def cmd_check(strict=False):
             t = c.get("type")
             if t and t not in valid_types:
                 bad_type.append((lid, c.get("id"), t))
+            cid = c.get("id")
+            # id / type 必填且为字符串
+            if not isinstance(cid, str) or not cid:
+                schema_bad.append((lid, cid, "id 缺失或非字符串"))
+            if not isinstance(t, str):
+                schema_bad.append((lid, cid, "type 缺失"))
+            # answer 必须是 [Int]?
+            if c.get("answer") is not None:
+                a = c["answer"]
+                if not isinstance(a, list) or not all(isinstance(x, int) for x in a):
+                    schema_bad.append((lid, cid, f"answer 需 [Int]，实为 {a!r}"))
+            # blanks 必须是 [[String]]?
+            if c.get("blanks") is not None:
+                b = c["blanks"]
+                if not isinstance(b, list) or not all(
+                    isinstance(x, list) and all(isinstance(y, str) for y in x) for x in b
+                ):
+                    schema_bad.append((lid, cid, f"blanks 需 [[String]]，实为 {b!r}"))
+            # options / tags 必须是 [String]?
+            for fld in ("options", "tags"):
+                if c.get(fld) is not None:
+                    v = c[fld]
+                    if not isinstance(v, list) or not all(isinstance(x, str) for x in v):
+                        schema_bad.append((lid, cid, f"{fld} 需 [String]，实为 {v!r}"))
             if t in ("choice", "multi", "judge") and isinstance(c.get("options"), list):
                 n = len(c["options"])
                 ans = c.get("answer")
                 if ans is not None:
-                    arr = ans if isinstance(ans, list) else [ans]
-                    for a in arr:
+                    for a in ans:
                         if isinstance(a, int) and not (0 <= a < n):
-                            bad_answer.append((lid, c.get("id"), a, n))
+                            bad_answer.append((lid, cid, a, n))
             if t == "blank" and not c.get("blanks"):
                 bad_answer.append((lid, c.get("id"), "缺 blanks", 0))
     if bad_type:
         errors.append(f"未知题型 {len(bad_type)} 处: {bad_type[:5]}")
+    if schema_bad:
+        errors.append(f"JSON 类型不符 App 解码要求 {len(schema_bad)} 处: {schema_bad[:5]}")
     if bad_answer:
         errors.append(f"答案越界/缺 blanks {len(bad_answer)} 处: {bad_answer[:5]}")
+    # 6b. answer 值是否落在 options 范围内（已在上方 bad_answer 处理）
 
     # 输出
     print()
