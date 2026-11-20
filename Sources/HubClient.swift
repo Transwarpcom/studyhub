@@ -50,8 +50,9 @@ final class HubClient {
 
     // MARK: 内容源（主服务器失效时自动切 GitHub 静态镜像）
 
-    /// GitHub 上的静态镜像（content 目录直接跑 raw）
-    static let mirrorBase = "https://raw.githubusercontent.com/Transwarpcom/studyhub/main/content"
+    /// 已停用：公开仓库的 raw 链接会绕过登录墙，任何人都能直接拉全站内容。
+    /// 保留定义只为兼容旧代码引用，实际不再参与候选源。
+    static let mirrorBase = ""
 
     /// 当前实际使用的源
     var activeBase: String {

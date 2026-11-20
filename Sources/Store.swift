@@ -391,8 +391,8 @@ final class Store: ObservableObject {
         loading = true
         defer { loading = false }
 
-        // 主源失败自动切 GitHub 静态镜像
-        let candidates = [client.baseURL, HubClient.mirrorBase]
+        // 只走主服务器。GitHub 静态镜像是公开仓库，会绕过登录墙，已停用。
+        let candidates = [client.baseURL]
         var succeeded = false
         var lastMsg = ""
         for base in candidates {

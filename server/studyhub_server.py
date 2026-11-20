@@ -39,6 +39,9 @@ DATA_DIR = os.environ.get("DATA_DIR", "/data")
 CONTENT_DIR = os.environ.get("CONTENT_DIR", "/content")
 PORT = int(os.environ.get("PORT", "8099"))
 REGISTER_OPEN = os.environ.get("REGISTER_OPEN", "0") == "1"
+# 登录墙：开启后，课程内容（/manifest /lesson /replies /appbundle）也要求有效 token。
+# 关闭时保持旧行为（内容公开、只有进度私有），方便回退排查。
+AUTH_WALL = os.environ.get("AUTH_WALL", "0") == "1"
 MAX_UPLOAD = 25 * 1024 * 1024
 
 INBOX = os.path.join(DATA_DIR, "inbox")
@@ -243,6 +246,29 @@ class Handler(BaseHTTPRequestHandler):
     def current_user(self):
         return user_from_token(self.token())
 
+    def gate(self):
+        """登录墙。AUTH_WALL 未开启时恒放行。
+        已登录 -> True；未登录 -> 直接回 401 并返回 False。
+        """
+        if not AUTH_WALL:
+            return True
+        if self.current_user():
+            return True
+        self.send_body(401, {"ok": False, "error": "unauthorized",
+                             "hint": "需要登录后才能访问课程内容"})
+        return False
+
+    def who(self):
+        """给 nginx auth_request 用的鉴权端点：200 = 放行，401 = 拦截"""
+        if not AUTH_WALL:
+            self.send_body(200, b"")
+            return
+        if self.current_user():
+            self.send_body(200, b"")
+        else:
+            self.send_body(401, b"")
+
+
     def read_json_body(self):
         n = int(self.headers.get("Content-Length") or 0)
         if n > MAX_UPLOAD:
@@ -266,14 +292,18 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, {"ok": True, "service": "studyhub",
                                         "version": 2, "time": int(time.time())})
 
-        # 课程与题目：公开
+        # 课程与题目：登录墙开启后需要 token
         if path == "/manifest":
+            if not self.gate():
+                return
             m = read_json(os.path.join(CONTENT_DIR, "manifest.json"), None)
             if m is None:
                 return self.send_body(500, {"ok": False, "error": "manifest missing"})
             return self.send_body(200, m)
 
         if path == "/lesson":
+            if not self.gate():
+                return
             lid = (qs.get("id") or [""])[0]
             p = lesson_path(lid)
             if not p:
@@ -281,6 +311,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_body(200, read_json(p, {}))
 
         if path == "/replies":
+            if not self.gate():
+                return
             data = read_json(REPLIES, {"version": 1, "replies": []})
             return self.send_body(200, data)
 
@@ -296,8 +328,15 @@ class Handler(BaseHTTPRequestHandler):
                                         "role": rec.get("role", "user"),
                                         "registerOpen": REGISTER_OPEN})
 
+        # nginx auth_request 用：只回状态码，不带 body
+        if path == "/auth/check":
+            if AUTH_WALL and not self.current_user():
+                return self.send_body(401, b"")
+            return self.send_body(200, b"")
+
         if path == "/auth/config":
-            return self.send_body(200, {"ok": True, "registerOpen": REGISTER_OPEN})
+            return self.send_body(200, {"ok": True, "registerOpen": REGISTER_OPEN,
+                                        "wall": AUTH_WALL})
 
         # 进度
         if path == "/progress":

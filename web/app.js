@@ -12,7 +12,7 @@ var K = {
 };
 
 var S = {
-  token: '', user: '', registerOpen: false,
+  token: '', user: '', registerOpen: false, wall: false,
   manifest: null, lessons: {},
   progress: {}, wrongs: {}, answers: {},
   openGroups: {},
@@ -142,8 +142,8 @@ function api(path, opt) {
 function loadManifest() {
   var c = load(K.manifest, null);
   if (c) S.manifest = c;
-  return fetch(API + '/manifest')
-    .then(function (r) { return r.ok ? r.json() : null; })
+  // 走 api() 才会带 Authorization，登录墙开启后裸 fetch 会 401
+  return api('/manifest')
     .then(function (m) { if (m) { S.manifest = m; save(K.manifest, m); } })
     .catch(function () {});
 }
@@ -1399,6 +1399,12 @@ function render() {
   var r = parseHash();
   S.route = r;
   var v = $('#view');
+
+  // 登录墙：未登录时任何页面都先给登录入口，别让用户看到空壳
+  if (S.wall && !S.token && r.name !== 'me') {
+    r = { name: 'me', id: '' };
+    S.route = r;
+  }
   if (r.name !== 'lesson') {
     if (scrollHandler) window.removeEventListener('scroll', scrollHandler);
     $('#readProgress').style.width = '0';
@@ -1468,7 +1474,7 @@ function restoreAuth() {
 
   return fetch(API + '/auth/config')
     .then(function (r) { return r.json(); })
-    .then(function (d) { S.registerOpen = !!d.registerOpen; })
+    .then(function (d) { S.registerOpen = !!d.registerOpen; S.wall = !!d.wall; })
     .catch(function () {})
     .then(function () {
       if (!S.token) return;
@@ -1478,9 +1484,13 @@ function restoreAuth() {
           localStorage.setItem(K.user, d.username);
           return pullProgress(true);
         })
-        .catch(function () {
-          S.token = ''; S.user = '';
-          localStorage.removeItem(K.token); localStorage.removeItem(K.user);
+        .catch(function (e) {
+          // 只有服务端明确说 token 无效才登出；网络错误/超时保持原状
+          var msg = String((e && e.message) || "");
+          if (/401|unauthorized|登录已失效/i.test(msg)) {
+            S.token = ""; S.user = "";
+            localStorage.removeItem(K.token); localStorage.removeItem(K.user);
+          }
         });
     });
 }
@@ -1533,8 +1543,9 @@ window.addEventListener('resize', function () {
 });
 
 /* ---------- 起 ---------- */
-loadManifest()
-  .then(restoreAuth)
+// 顺序很重要：登录墙开启后 /manifest 需要 token，必须先拿身份再拉内容
+restoreAuth()
+  .then(loadManifest)
   .then(function () {
     render();
     if (S.token) startPolling();

@@ -19,3 +19,7 @@ out/
 out*/
 web/vendor/
 appbundle/
+
+# 课程内容不进公开仓库（登录墙的前提）
+# 服务器从 /opt/studyhub/content 读取，部署走 scp
+content/
