@@ -5,6 +5,7 @@ struct SettingsView: View {
 
     @State private var base = HubClient.shared.baseURL
     @State private var hint: String?
+    @AppStorage("hub.allowPeek") private var allowPeek = true
     @State private var webMsg: String?
 
     var body: some View {
@@ -117,6 +118,15 @@ struct SettingsView: View {
                         Text("深色").tag("dark")
                     }
                     .pickerStyle(.segmented)
+                }
+
+                Section {
+                    Toggle("答题前可以看解析", isOn: $allowPeek)
+                    Text("打开后每题都有「先看解析」按钮。看了解析的题不算答对，直接记入待复习与错题本，正确率不受影响。")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                } header: {
+                    Text("答题")
                 }
 
                 Section("学习统计") {

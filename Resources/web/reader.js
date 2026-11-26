@@ -16,7 +16,8 @@
   var S = {
     payload: null,
     lessonId: null,
-    answered: {},   // cardId -> {correct, picked, inputs}
+    answered: {},   // cardId -> {correct, picked, peeked}
+    allowPeek: true,
     total: 0,
     done: 0
   };
@@ -328,13 +329,16 @@
     h += '<div class="md q">' + mdToHtml(card.question || '') + '</div>';
     if (card.svg) h += '<div class="figure">' + card.svg + '</div>';
     h += optionsHtml(card, multi);
-    h += '<div class="btn-row"><button class="btn submit" disabled>提交答案</button></div>';
+    h += '<div class="btn-row"><button class="btn submit" disabled>提交答案</button>' +
+         (S.allowPeek ? '<button class="btn ghost small peek">先看解析</button>' : '') +
+         '</div>';
     h += '<div class="verdict"></div><div class="explain" style="display:none"></div>';
     el.innerHTML = h;
 
     var picked = [];
     var opts = el.querySelectorAll('.opt');
     var submit = el.querySelector('.submit');
+    var peekBtn = el.querySelector('.peek');
 
     opts.forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -357,21 +361,31 @@
       evaluateChoice(el, card, picked);
     });
 
+    function resetUI() {
+      picked = [];
+      el.dataset.locked = '0';
+      opts.forEach(function (b) { b.classList.remove('sel', 'right', 'wrong', 'locked'); });
+      submit.disabled = true;
+      submit.style.display = '';
+      if (peekBtn) peekBtn.style.display = '';
+      el.querySelector('.verdict').textContent = '';
+      el.querySelector('.verdict').className = 'verdict';
+      var ex = el.querySelector('.explain');
+      if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
+    }
+
+    if (peekBtn) {
+      peekBtn.addEventListener('click', function () {
+        if (el.dataset.locked === '1') return;
+        peekAnswer(el, card, { picked: picked }, resetUI);
+      });
+    }
+
     // 恢复已答状态
     var prev = S.answered[card.id];
     if (prev) {
       restoreChoice(el, card, prev);
-      el.appendChild(redoBar(card, function () {
-        picked = [];
-        el.dataset.locked = '0';
-        opts.forEach(function (b) { b.classList.remove('sel', 'right', 'wrong'); });
-        submit.disabled = true;
-        submit.style.display = '';
-        el.querySelector('.verdict').textContent = '';
-        el.querySelector('.verdict').className = 'verdict';
-        var ex = el.querySelector('.explain');
-        if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
-      }));
+      el.appendChild(redoBar(card, resetUI));
     }
 
     return el;
@@ -399,6 +413,8 @@
   function restoreChoice(el, card, prev) {
     el.dataset.locked = '1';
     el.querySelector('.submit').style.display = 'none';
+    var pk = el.querySelector('.peek');
+    if (pk) pk.style.display = 'none';
     var ans = card.answer || [];
     el.querySelectorAll('.opt').forEach(function (b) {
       var idx = parseInt(b.dataset.idx, 10);
@@ -424,9 +440,38 @@
     var h = '<div class="kicker">' + kickerText(card) + '</div>';
     h += '<div class="md q">' + q + '</div>';
     if (card.svg) h += '<div class="figure">' + card.svg + '</div>';
-    h += '<div class="btn-row"><button class="btn submit">提交答案</button></div>';
+    h += '<div class="btn-row"><button class="btn submit">提交答案</button>' +
+         (S.allowPeek ? '<button class="btn ghost small peek">先看解析</button>' : '') +
+         '</div>';
     h += '<div class="verdict"></div><div class="explain" style="display:none"></div>';
     el.innerHTML = h;
+
+    var peekBtn = el.querySelector('.peek');
+
+    function resetUI() {
+      el.dataset.locked = '0';
+      el.querySelectorAll('.blank-input').forEach(function (inp) {
+        inp.value = '';
+        inp.readOnly = false;
+        inp.classList.remove('right', 'wrong');
+      });
+      var sub = el.querySelector('.submit');
+      if (sub) sub.style.display = '';
+      if (peekBtn) peekBtn.style.display = '';
+      el.querySelector('.verdict').textContent = '';
+      el.querySelector('.verdict').className = 'verdict';
+      var ex = el.querySelector('.explain');
+      if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
+    }
+
+    if (peekBtn) {
+      peekBtn.addEventListener('click', function () {
+        if (el.dataset.locked === '1') return;
+        var picked = [];
+        el.querySelectorAll('.blank-input').forEach(function (inp) { picked.push(inp.value); });
+        peekAnswer(el, card, { picked: picked }, resetUI);
+      });
+    }
 
     el.querySelector('.submit').addEventListener('click', function () {
       var inputs = el.querySelectorAll('.blank-input');
@@ -450,6 +495,7 @@
 
     var prev = S.answered[card.id];
     if (prev) {
+      if (peekBtn) peekBtn.style.display = 'none';
       el.querySelectorAll('.blank-input').forEach(function (inp, idx) {
         inp.value = (prev.picked || [])[idx] || '';
         var blanks = card.blanks || [];
@@ -458,20 +504,10 @@
         inp.classList.add(ok ? 'right' : 'wrong');
         inp.readOnly = true;
       });
-      el.querySelector('.submit').style.display = 'none';
+      var subBtn = el.querySelector('.submit');
+      if (subBtn) subBtn.style.display = 'none';
       showResult(el, card, prev.correct, prev);
-      el.appendChild(redoBar(card, function () {
-        el.querySelectorAll('.blank-input').forEach(function (inp) {
-          inp.value = '';
-          inp.readOnly = false;
-          inp.classList.remove('right', 'wrong');
-        });
-        el.querySelector('.submit').style.display = '';
-        el.querySelector('.verdict').textContent = '';
-        el.querySelector('.verdict').className = 'verdict';
-        var ex = el.querySelector('.explain');
-        if (ex) { ex.style.display = 'none'; ex.innerHTML = ''; }
-      }));
+      el.appendChild(redoBar(card, resetUI));
     }
 
     return el;
@@ -541,10 +577,16 @@
   }
 
   function showResult(el, card, correct, info) {
+    var peeked = !!(info && info.peeked);
     var v = el.querySelector('.verdict');
     if (v) {
-      v.textContent = correct ? '✓ 答对了' : '✗ 再想想';
-      v.className = 'verdict ' + (correct ? 'ok' : 'bad');
+      if (peeked) {
+        v.textContent = '👀 已看解析 · 记入待复习';
+        v.className = 'verdict peek';
+      } else {
+        v.textContent = correct ? '✓ 答对了' : '✗ 再想想';
+        v.className = 'verdict ' + (correct ? 'ok' : 'bad');
+      }
     }
     var box = el.querySelector('.explain');
     if (box && card.explain) {
@@ -566,9 +608,26 @@
   }
 
   function record(cardId, correct, info, preview) {
-    S.answered[cardId] = { correct: correct, picked: info.picked || [] };
-    post({ type: 'answer', cardId: cardId, correct: !!correct, preview: preview || '' });
+    var peeked = !!(info && info.peeked);
+    S.answered[cardId] = { correct: correct, picked: info.picked || [], peeked: peeked };
+    post({ type: 'answer', cardId: cardId, correct: !!correct,
+           peeked: peeked, preview: preview || '' });
     updateProgress();
+  }
+
+  // 提交前看解析：不判对错，只把题标成「已看」，记入待复习
+  function peekAnswer(el, card, info, reset) {
+    el.dataset.locked = '1';
+    var picked = (info && info.picked) || [];
+    var sub = el.querySelector('.submit');
+    if (sub) sub.style.display = 'none';
+    var pk = el.querySelector('.peek');
+    if (pk) pk.style.display = 'none';
+    el.querySelectorAll('.opt').forEach(function (b) { b.classList.add('locked'); });
+    el.querySelectorAll('.blank-input').forEach(function (i) { i.readOnly = true; });
+    showResult(el, card, false, { picked: picked, peeked: true });
+    record(card.id, false, { picked: picked, peeked: true }, previewOf(card));
+    if (reset) el.appendChild(redoBar(card, reset));
   }
 
   // ---------- 进度 ----------
@@ -614,6 +673,7 @@
   function build(payload) {
     S.payload = payload;
     S.lessonId = payload.lessonId;
+    S.allowPeek = payload.allowPeek !== false;
     applyFontSize(payload.fontSize);
     applyTheme(payload.theme);
     S.answered = {};

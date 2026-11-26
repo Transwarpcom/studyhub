@@ -11,6 +11,7 @@ struct RenderPayload: Codable {
     var fontSize: Double
     var scrollY: Double
     var theme: String
+    var allowPeek: Bool?
 }
 
 struct ReaderWebView: UIViewRepresentable {
@@ -101,7 +102,8 @@ struct ReaderWebView: UIViewRepresentable {
                                         progress: progress,
                                         fontSize: fontSize,
                                         scrollY: scrollY,
-                                        theme: theme)
+                                        theme: theme,
+                                        allowPeek: UserDefaults.standard.object(forKey: "hub.allowPeek") as? Bool)
             guard let data = try? JSONEncoder().encode(payload),
                   var json = String(data: data, encoding: .utf8) else { return }
             json = json.replacingOccurrences(of: "\u{2028}", with: "\\u2028")

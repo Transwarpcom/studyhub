@@ -7,10 +7,11 @@ import UIKit
 struct QuizCardView: UIViewRepresentable {
     let item: QuizItem
     let fontSize: Double
-    var onAnswer: (Bool) -> Void
+    var allowPeek: Bool = true
+    var onAnswer: (Bool, Bool) -> Void
 
     func makeCoordinator() -> Coord {
-        Coord(item: item, fontSize: fontSize, onAnswer: onAnswer)
+        Coord(item: item, fontSize: fontSize, allowPeek: allowPeek, onAnswer: onAnswer)
     }
 
     func makeUIView(context: Context) -> WKWebView {
@@ -39,14 +40,17 @@ struct QuizCardView: UIViewRepresentable {
     final class Coord: NSObject, WKScriptMessageHandler, WKNavigationDelegate {
         let item: QuizItem
         let fontSize: Double
-        let onAnswer: (Bool) -> Void
+        let allowPeek: Bool
+        let onAnswer: (Bool, Bool) -> Void
         weak var webView: WKWebView?
         private var ready = false
         private var pushed = false
 
-        init(item: QuizItem, fontSize: Double, onAnswer: @escaping (Bool) -> Void) {
+        init(item: QuizItem, fontSize: Double, allowPeek: Bool,
+             onAnswer: @escaping (Bool, Bool) -> Void) {
             self.item = item
             self.fontSize = fontSize
+            self.allowPeek = allowPeek
             self.onAnswer = onAnswer
         }
 
@@ -64,7 +68,8 @@ struct QuizCardView: UIViewRepresentable {
                                         progress: [:],
                                         fontSize: fontSize,
                                         scrollY: 0,
-                                        theme: UserDefaults.standard.string(forKey: "hub.theme") ?? "auto")
+                                        theme: UserDefaults.standard.string(forKey: "hub.theme") ?? "auto",
+                                        allowPeek: allowPeek)
             guard let data = try? JSONEncoder().encode(payload),
                   var json = String(data: data, encoding: .utf8) else { return }
             json = json.replacingOccurrences(of: "\u{2028}", with: "\\u2028")
@@ -77,7 +82,8 @@ struct QuizCardView: UIViewRepresentable {
             guard message.name == "hub", let body = message.body as? [String: Any] else { return }
             if (body["type"] as? String) == "answer" {
                 let ok = body["correct"] as? Bool ?? false
-                onAnswer(ok)
+                let peeked = body["peeked"] as? Bool ?? false
+                onAnswer(ok, peeked)
             }
         }
     }
@@ -93,7 +99,10 @@ struct QuizView: View {
     @State private var index = 0
     @State private var rightCount = 0
     @State private var answeredThis = false
+    @State private var peekedThis = false
+    @State private var peekedCount = 0
     @State private var finished = false
+    @AppStorage("hub.allowPeek") private var allowPeek = true
     @State private var wrongList: [QuizItem] = []
 
     var body: some View {
@@ -103,10 +112,24 @@ struct QuizView: View {
                     resultView
                 } else {
                     header
-                    QuizCardView(item: session.items[index], fontSize: store.fontSize) { ok in
-                        handle(ok)
+                    QuizCardView(item: session.items[index],
+                                  fontSize: store.fontSize,
+                                  allowPeek: allowPeek) { ok, peeked in
+                        handle(ok, peeked)
                     }
                     .id(index)
+
+                    if peekedThis {
+                        Button {
+                            advance()
+                        } label: {
+                            Text(index + 1 < session.items.count ? "下一题" : "看成绩")
+                                .frame(maxWidth: .infinity)
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 10)
+                    }
                 }
             }
             .navigationTitle(session.title)
@@ -141,7 +164,7 @@ struct QuizView: View {
         List {
             Section {
                 VStack(spacing: 8) {
-                    Text("\(rightCount) / \(session.items.count)")
+                    Text("\(rightCount) / \(answeredTotal)")
                         .font(.system(size: 44, weight: .bold, design: .rounded))
                     Text(rateText)
                         .font(.subheadline)
@@ -167,6 +190,7 @@ struct QuizView: View {
             Section {
                 Button("再来一轮") {
                     index = 0; rightCount = 0; answeredThis = false
+                    peekedThis = false; peekedCount = 0
                     wrongList = []; finished = false
                 }
                 Button("退出") { dismiss() }
@@ -175,30 +199,51 @@ struct QuizView: View {
         .listStyle(.insetGrouped)
     }
 
-    private var rateText: String {
-        let n = session.items.count
-        guard n > 0 else { return "" }
-        return "正确率 \(rightCount * 100 / n)%"
+    /// 真正作答的题数：看过解析的不算分母
+    private var answeredTotal: Int {
+        let n = session.items.count - peekedCount
+        return n > 0 ? n : 1
     }
 
-    private func handle(_ ok: Bool) {
+    private var rateText: String {
+        guard session.items.count > peekedCount else { return "全部看过解析" }
+        return "正确率 \(rightCount * 100 / answeredTotal)%"
+    }
+
+    /// peeked=true 表示「提交前看了解析」：不算答对，记入待复习，停在这一题等用户点下一题
+    private func handle(_ ok: Bool, peeked: Bool) {
         guard !answeredThis else { return }
         answeredThis = true
-        if ok { rightCount += 1 } else { wrongList.append(session.items[index]) }
+        peekedThis = peeked
 
         let it = session.items[index]
+        if peeked {
+            peekedCount += 1
+            if !wrongList.contains(where: { $0.id == it.id }) { wrongList.append(it) }
+        } else if ok {
+            rightCount += 1
+        } else {
+            wrongList.append(it)
+        }
+
         // 记进度 + 错题本 + 每日统计 + 复习排期
         store.record(lessonId: it.lessonId, lessonTitle: it.lessonTitle,
                      cardId: it.card.id, correct: ok, preview: previewText(it))
 
-        let nextIndex = index + 1
+        if peeked { return }   // 看完了自己点「下一题」，不自动跳
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
-            if nextIndex < session.items.count {
-                index = nextIndex
-                answeredThis = false
-            } else {
-                finished = true
-            }
+            advance()
+        }
+    }
+
+    private func advance() {
+        let nextIndex = index + 1
+        if nextIndex < session.items.count {
+            index = nextIndex
+            answeredThis = false
+            peekedThis = false
+        } else {
+            finished = true
         }
     }
 
