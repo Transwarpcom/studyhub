@@ -183,6 +183,24 @@ struct SettingsView: View {
                     }
                 }
 
+                Section {
+                    NavigationLink {
+                        ChapterStatsView()
+                    } label: {
+                        Label("各章掌握度", systemImage: "chart.bar.xaxis")
+                    }
+                    ShareLink(item: Log.text) {
+                        Label("导出运行日志（\(Log.lines.count) 条）", systemImage: "doc.text")
+                    }
+                    Button("清空日志") {
+                        Log.clear()
+                        hint = "日志已清空"
+                    }
+                    .foregroundColor(.red)
+                } header: {
+                    Text("诊断")
+                }
+
                 Section("关于") {
                     LabeledContent("版本", value: appVersion)
                     Text("学习台 · 高数 / 大学英语\n课程按文件夹组织，支持公式、矢量图、单选、多选、判断、填空、简答。内容由 Hermes 远程下发，读过的章节离线可看。")

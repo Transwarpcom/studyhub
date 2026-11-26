@@ -6,7 +6,32 @@ struct LibraryView: View {
     @EnvironmentObject var store: Store
     @State private var path: [Node] = []
     @State private var query = ""
+    @State private var cardHits: [QuizItem] = []
+    @State private var searchingCards = false
 
+    private func plain(_ s: String) -> String {
+        s.replacingOccurrences(of: "$", with: "")
+            .replacingOccurrences(of: "\n", with: " ")
+    }
+
+    private func searchCards() async {
+        let q = query.trimmingCharacters(in: .whitespaces)
+        guard q.count >= 2 else {
+            cardHits = []
+            searchingCards = false
+            return
+        }
+        // 打字停下 350ms 才扫全库，避免每个键都查一遍
+        try? await Task.sleep(nanoseconds: 350_000_000)
+        if Task.isCancelled { return }
+        await MainActor.run { searchingCards = true }
+        let hits = await store.searchQuestions(q)
+        if Task.isCancelled { return }
+        await MainActor.run {
+            cardHits = hits
+            searchingCards = false
+        }
+    }
     private var results: [Node] {
         let q = query.trimmingCharacters(in: .whitespaces)
         guard !q.isEmpty else { return [] }
@@ -20,12 +45,38 @@ struct LibraryView: View {
         NavigationStack(path: $path) {
             List {
                 if !query.isEmpty {
-                    Section("搜索结果（\(results.count)）") {
+                    Section("章节（\(results.count)）") {
                         if results.isEmpty {
                             Text("没有匹配的章节").foregroundColor(.secondary)
                         }
                         ForEach(results) { node in
                             NodeRow(node: node, path: $path)
+                        }
+                    }
+                    Section("题目里命中（\(cardHits.count)）") {
+                        if searchingCards && cardHits.isEmpty {
+                            HStack(spacing: 8) {
+                                ProgressView()
+                                Text("正在检索全部题目…").font(.footnote).foregroundColor(.secondary)
+                            }
+                        } else if cardHits.isEmpty {
+                            Text("题干、讲义、解析里都没有").foregroundColor(.secondary)
+                        }
+                        ForEach(cardHits) { it in
+                            Button {
+                                if let n = store.allLessonNodes.first(where: { $0.id == it.lessonId }) {
+                                    path.append(n)
+                                }
+                            } label: {
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(plain(it.card.question ?? it.card.md ?? it.card.id))
+                                        .font(.subheadline)
+                                        .lineLimit(2)
+                                    Text(it.lessonTitle)
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
+                            }
                         }
                     }
                 } else if let m = store.manifest {
@@ -80,7 +131,8 @@ struct LibraryView: View {
                 }
             }
             .listStyle(.insetGrouped)
-            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索章节")
+            .searchable(text: $query, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索章节或题目…")
+            .task(id: query) { await searchCards() }
             .navigationTitle("学习台")
             .refreshable { await store.refresh() }
             .navigationDestination(for: Node.self) { node in

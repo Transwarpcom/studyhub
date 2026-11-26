@@ -51,6 +51,17 @@ SESSIONS = os.path.join(DATA_DIR, "sessions.json")
 PROGRESS_DIR = os.path.join(DATA_DIR, "progress")
 IPA_DIR = os.environ.get("IPA_DIR", os.path.join(DATA_DIR, "ipa"))
 WEB_DIR = os.environ.get("WEB_DIR", "/opt/studyhub/web")
+
+
+def web_fingerprint():
+    """网页版 app.js 的指纹（前 8 位），客户端据此判断网页版是否换过"""
+    try:
+        import hashlib
+        p = os.path.join(WEB_DIR, "app.js")
+        with open(p, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()[:8]
+    except Exception:
+        return ""
 TLS_CERT = os.environ.get("TLS_CERT", "")
 TLS_KEY = os.environ.get("TLS_KEY", "")
 BUNDLE_DIR = os.environ.get("BUNDLE_DIR", "/opt/studyhub/appbundle")
@@ -289,8 +300,11 @@ class Handler(BaseHTTPRequestHandler):
         qs = parse_qs(u.query)
 
         if path == "/health":
+            m = read_json(os.path.join(CONTENT_DIR, "manifest.json"), {}) or {}
             return self.send_body(200, {"ok": True, "service": "studyhub",
-                                        "version": 2, "time": int(time.time())})
+                                        "version": 2, "time": int(time.time()),
+                                        "web": web_fingerprint(),
+                                        "content": m.get("version")})
 
         # 根路径直接进网页版，避免浏览器打开一串 JSON
         if path == "/":

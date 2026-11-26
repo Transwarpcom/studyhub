@@ -53,6 +53,13 @@ struct TodayView: View {
                         row(icon: "list.bullet.rectangle", title: "章节测验",
                             detail: "挑一章整套做", color: .purple)
                     }
+
+                    NavigationLink {
+                        ChapterStatsView()
+                    } label: {
+                        row(icon: "chart.bar.xaxis", title: "各章掌握度",
+                            detail: "哪章欠得多", color: .teal)
+                    }
                 }
 
                 if busy {

@@ -333,6 +333,62 @@ final class Store: ObservableObject {
         lessons.removeAll()
     }
 
+    // MARK: 章掌握度
+
+    /// 按课程树的二级节点（一章）统计
+    func chapterStats() async -> [ChapterStat] {
+        guard let m = manifest else { return [] }
+        var out: [ChapterStat] = []
+        for root in m.tree {
+            for ch in root.children ?? [] {
+                let mine = allLessonNodes.filter { $0.id == ch.id || $0.id.hasPrefix(ch.id + "/") }
+                var total = 0, answered = 0, correct = 0, wrong = 0
+                for n in mine {
+                    let l = cachedLesson(node: n) ?? (try? await loadLesson(node: n))
+                    guard let l else { continue }
+                    for c in l.cards where c.type != "lecture" {
+                        total += 1
+                        let key = "\(l.id)|\(c.id)"
+                        if let p = progress[key] {
+                            answered += 1
+                            if p { correct += 1 }
+                        }
+                        if wrongs.contains(where: { $0.id == key }) { wrong += 1 }
+                    }
+                }
+                let ids = Set(mine.map { $0.id })
+                let now = Date()
+                let due = reviews.values.filter { ids.contains($0.lessonId) && $0.due <= now }.count
+                out.append(ChapterStat(id: ch.id, title: ch.title, total: total,
+                                       answered: answered, correct: correct,
+                                       due: due, wrong: wrong))
+            }
+        }
+        return out
+    }
+
+    // MARK: 全库搜题
+
+    /// 在所有节的题干/讲义/解析里找关键词（先命中先返回，最多 60 条）
+    func searchQuestions(_ query: String) async -> [QuizItem] {
+        let q = query.trimmingCharacters(in: .whitespaces).lowercased()
+        guard q.count >= 1 else { return [] }
+        var out: [QuizItem] = []
+        for n in allLessonNodes {
+            let l = cachedLesson(node: n) ?? (try? await loadLesson(node: n))
+            guard let l else { continue }
+            for c in l.cards where c.type != "lecture" {
+                let hay = ((c.question ?? "") + " " + (c.md ?? "") + " " + (c.explain ?? "")).lowercased()
+                if hay.contains(q) {
+                    out.append(QuizItem(id: "\(l.id)|\(c.id)", lessonId: l.id,
+                                        lessonTitle: l.title, card: c))
+                }
+                if out.count >= 60 { return out }
+            }
+        }
+        return out
+    }
+
     // MARK: 统计
 
     var totalAnswered: Int { progress.count }
@@ -387,6 +443,8 @@ final class Store: ObservableObject {
     }
 
     func refresh() async {
+        defer { Shared.publish(due: dueReviews.count, today: todayStat.answered,
+                               wrong: wrongs.count, streak: streakDays) }
         guard !loading else { return }
         loading = true
         defer { loading = false }
@@ -412,6 +470,7 @@ final class Store: ObservableObject {
                 break
             } catch {
                 lastMsg = error.localizedDescription
+                Log.add("刷新失败：\(error.localizedDescription)")
             }
         }
         if !succeeded {
@@ -527,6 +586,12 @@ final class Store: ObservableObject {
 
         // 艾宾浩斯排期
         recordReview(key: key, lessonId: lessonId, lessonTitle: lessonTitle, correct: correct)
+
+        // 同步给锁屏小组件
+        Shared.publish(due: dueReviews.count,
+                       today: todayStat.answered,
+                       wrong: wrongs.count,
+                       streak: streakDays)
     }
 
     func stats(lesson: Lesson) -> (answered: Int, correct: Int, total: Int) {

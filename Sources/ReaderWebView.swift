@@ -12,6 +12,7 @@ struct RenderPayload: Codable {
     var scrollY: Double
     var theme: String
     var allowPeek: Bool?
+    var exam: Bool?
 }
 
 struct ReaderWebView: UIViewRepresentable {

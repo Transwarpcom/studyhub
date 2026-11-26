@@ -49,8 +49,11 @@ targets:
         NSMicrophoneUsageDescription: 录制语音提问（可选）
         UIApplicationSupportsIndirectInputEvents: true
         UIRequiresFullScreen: false
+    dependencies:
+      - target: StudyHubWidget
     settings:
       base:
+        CODE_SIGN_ENTITLEMENTS: StudyHub.entitlements
         PRODUCT_BUNDLE_IDENTIFIER: cn.medwarp.studyhub
         PRODUCT_NAME: StudyHub
         TARGETED_DEVICE_FAMILY: "1,2"
@@ -60,6 +63,21 @@ targets:
         CODE_SIGNING_REQUIRED: "NO"
         CODE_SIGNING_ALLOWED: "NO"
         DEVELOPMENT_TEAM: ""
+
+  StudyHubWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Widget
+    info:
+      path: Widget/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: cn.medwarp.studyhub.widget
+        PRODUCT_NAME: StudyHubWidget
+        CODE_SIGN_ENTITLEMENTS: Widget/Widget.entitlements
+        SKIP_INSTALL: "YES"
+        TARGETED_DEVICE_FAMILY: "1,2"
 
 schemes:
   StudyHub:

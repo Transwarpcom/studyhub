@@ -28,6 +28,10 @@ struct WrongBookView: View {
                         HStack {
                             Text("共 \(store.wrongs.count) 道").font(.headline)
                             Spacer()
+                            ShareLink(item: exportText) {
+                                Label("导出", systemImage: "square.and.arrow.up")
+                                    .font(.footnote)
+                            }
                             Button("清空") {
                                 store.wrongs = []
                                 if let d = try? JSONEncoder().encode([WrongItem]()) {
@@ -80,6 +84,19 @@ struct WrongBookView: View {
             (key: k, title: v.first?.lessonTitle ?? k, items: v)
         }
         .sorted { $0.title < $1.title }
+    }
+
+    /// 导出成一页文本：序号、所在节、题干
+    private var exportText: String {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd HH:mm"
+        var out = ["# 错题清单", "导出时间：\(f.string(from: Date()))", "共 \(store.wrongs.count) 道", ""]
+        for (i, w) in store.wrongs.enumerated() {
+            out.append("\(i + 1). 【\(w.lessonTitle)】")
+            out.append("   题干：\(w.preview.isEmpty ? w.cardId : w.preview)")
+            out.append("")
+        }
+        return out.joined(separator: "\n")
     }
 
     private func timeText(_ d: Date) -> String {

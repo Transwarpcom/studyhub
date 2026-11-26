@@ -18,6 +18,7 @@
     lessonId: null,
     answered: {},   // cardId -> {correct, picked, peeked}
     allowPeek: true,
+    exam: false,     // 考试模式：只记录选择，交卷后由 App 统一判分
     total: 0,
     done: 0
   };
@@ -354,10 +355,17 @@
           btn.classList.add('sel');
         }
         submit.disabled = picked.length === 0;
+        if (S.exam) {
+          post({ type: 'pick', cardId: card.id, picked: picked.map(String) });
+        }
       });
     });
 
     submit.addEventListener('click', function () {
+      if (S.exam) {
+        post({ type: 'pick', cardId: card.id, picked: picked.map(String) });
+        return;
+      }
       evaluateChoice(el, card, picked);
     });
 
@@ -444,6 +452,18 @@
     el.innerHTML = h;
 
     var peekBtn = el.querySelector('.peek');
+
+    if (S.exam) {
+      var sb = el.querySelector('.submit');
+      if (sb) sb.style.display = 'none';
+      el.querySelectorAll('.blank-input').forEach(function (inp) {
+        inp.addEventListener('input', function () {
+          var vals = [];
+          el.querySelectorAll('.blank-input').forEach(function (x) { vals.push(x.value); });
+          post({ type: 'pick', cardId: card.id, picked: vals });
+        });
+      });
+    }
 
     function resetUI() {
       el.dataset.locked = '0';
@@ -670,6 +690,7 @@
     S.payload = payload;
     S.lessonId = payload.lessonId;
     S.allowPeek = payload.allowPeek !== false;
+    S.exam = payload.exam === true;
     applyFontSize(payload.fontSize);
     applyTheme(payload.theme);
     S.answered = {};
