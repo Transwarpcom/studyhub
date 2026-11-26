@@ -100,6 +100,10 @@
   .md pre.code code{background:none;padding:0;font-size:13.5px;line-height:1.55}
   .md a{color:var(--accent);text-decoration:none}
   .md strong{font-weight:700}
+  /* 长行内公式会把题干顶出屏幕：允许单条公式横滑，整段仍可换行 */
+  .md .mtex{display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:bottom}
+  .md.q, .md .q{overflow-wrap:anywhere;word-break:break-word}
+  .md .katex-display{overflow-x:auto;overflow-y:hidden;padding-bottom:2px}
   .md .figure{margin:.8em 0;text-align:center}
   .md .figure svg{max-width:100%;height:auto}
 
@@ -149,7 +153,7 @@
 
   /* 填空 */
   .blank-input{
-    display:inline-block;min-width:96px;max-width:70%;
+    display:inline-block;width:120px;min-width:120px;max-width:70%;
     border:0;border-bottom:2px solid var(--accent);background:transparent;
     font-size:16px;color:var(--text);text-align:center;margin:0 4px;
     font-family:inherit;padding:1px 6px;outline:none;
