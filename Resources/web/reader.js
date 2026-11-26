@@ -376,8 +376,7 @@
 
     if (peekBtn) {
       peekBtn.addEventListener('click', function () {
-        if (el.dataset.locked === '1') return;
-        peekAnswer(el, card, { picked: picked }, resetUI);
+        toggleExplain(el, card, peekBtn);
       });
     }
 
@@ -413,8 +412,6 @@
   function restoreChoice(el, card, prev) {
     el.dataset.locked = '1';
     el.querySelector('.submit').style.display = 'none';
-    var pk = el.querySelector('.peek');
-    if (pk) pk.style.display = 'none';
     var ans = card.answer || [];
     el.querySelectorAll('.opt').forEach(function (b) {
       var idx = parseInt(b.dataset.idx, 10);
@@ -466,10 +463,7 @@
 
     if (peekBtn) {
       peekBtn.addEventListener('click', function () {
-        if (el.dataset.locked === '1') return;
-        var picked = [];
-        el.querySelectorAll('.blank-input').forEach(function (inp) { picked.push(inp.value); });
-        peekAnswer(el, card, { picked: picked }, resetUI);
+        toggleExplain(el, card, peekBtn);
       });
     }
 
@@ -495,7 +489,6 @@
 
     var prev = S.answered[card.id];
     if (prev) {
-      if (peekBtn) peekBtn.style.display = 'none';
       el.querySelectorAll('.blank-input').forEach(function (inp, idx) {
         inp.value = (prev.picked || [])[idx] || '';
         var blanks = card.blanks || [];
@@ -615,19 +608,22 @@
     updateProgress();
   }
 
-  // 提交前看解析：不判对错，只把题标成「已看」，记入待复习
-  function peekAnswer(el, card, info, reset) {
-    el.dataset.locked = '1';
-    var picked = (info && info.picked) || [];
-    var sub = el.querySelector('.submit');
-    if (sub) sub.style.display = 'none';
-    var pk = el.querySelector('.peek');
-    if (pk) pk.style.display = 'none';
-    el.querySelectorAll('.opt').forEach(function (b) { b.classList.add('locked'); });
-    el.querySelectorAll('.blank-input').forEach(function (i) { i.readOnly = true; });
-    showResult(el, card, false, { picked: picked, peeked: true });
-    record(card.id, false, { picked: picked, peeked: true }, previewOf(card));
-    if (reset) el.appendChild(redoBar(card, reset));
+  // 看解析：只是看，不锁选项、不判分、不记录，可以随时收起继续做
+  function toggleExplain(el, card, btn) {
+    var box = el.querySelector('.explain');
+    if (!box) return;
+    var open = box.style.display === 'block';
+    if (open) {
+      box.style.display = 'none';
+      box.innerHTML = '';
+      if (btn) btn.textContent = '看解析';
+      return;
+    }
+    box.style.display = 'block';
+    box.innerHTML = '<div class="tag">解析</div><div class="md">' +
+      mdToHtml(card.explain || '（暂无解析）') + '</div>';
+    renderMath(box);
+    if (btn) btn.textContent = '收起解析';
   }
 
   // ---------- 进度 ----------

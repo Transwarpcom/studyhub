@@ -99,8 +99,6 @@ struct QuizView: View {
     @State private var index = 0
     @State private var rightCount = 0
     @State private var answeredThis = false
-    @State private var peekedThis = false
-    @State private var peekedCount = 0
     @State private var finished = false
     @AppStorage("hub.allowPeek") private var allowPeek = true
     @State private var wrongList: [QuizItem] = []
@@ -118,18 +116,6 @@ struct QuizView: View {
                         handle(ok, peeked)
                     }
                     .id(index)
-
-                    if peekedThis {
-                        Button {
-                            advance()
-                        } label: {
-                            Text(index + 1 < session.items.count ? "下一题" : "看成绩")
-                                .frame(maxWidth: .infinity)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .padding(.horizontal, 16)
-                        .padding(.bottom, 10)
-                    }
                 }
             }
             .navigationTitle(session.title)
@@ -164,7 +150,7 @@ struct QuizView: View {
         List {
             Section {
                 VStack(spacing: 8) {
-                    Text("\(rightCount) / \(answeredTotal)")
+                    Text("\(rightCount) / \(session.items.count)")
                         .font(.system(size: 44, weight: .bold, design: .rounded))
                     Text(rateText)
                         .font(.subheadline)
@@ -190,7 +176,6 @@ struct QuizView: View {
             Section {
                 Button("再来一轮") {
                     index = 0; rightCount = 0; answeredThis = false
-                    peekedThis = false; peekedCount = 0
                     wrongList = []; finished = false
                 }
                 Button("退出") { dismiss() }
@@ -199,41 +184,25 @@ struct QuizView: View {
         .listStyle(.insetGrouped)
     }
 
-    /// 真正作答的题数：看过解析的不算分母
-    private var answeredTotal: Int {
-        let n = session.items.count - peekedCount
-        return n > 0 ? n : 1
-    }
-
     private var rateText: String {
-        guard session.items.count > peekedCount else { return "全部看过解析" }
-        return "正确率 \(rightCount * 100 / answeredTotal)%"
+        let n = session.items.count
+        guard n > 0 else { return "" }
+        return "正确率 \(rightCount * 100 / n)%"
     }
 
-    /// peeked=true 表示「提交前看了解析」：不算答对，记入待复习，停在这一题等用户点下一题
     private func handle(_ ok: Bool, _ peeked: Bool) {
         guard !answeredThis else { return }
         answeredThis = true
-        peekedThis = peeked
 
         let it = session.items[index]
-        if peeked {
-            peekedCount += 1
-            if !wrongList.contains(where: { $0.id == it.id }) { wrongList.append(it) }
-        } else if ok {
-            rightCount += 1
-        } else {
-            wrongList.append(it)
-        }
+        if ok { rightCount += 1 } else { wrongList.append(it) }
 
         // 记进度 + 错题本 + 每日统计 + 复习排期
         store.record(lessonId: it.lessonId, lessonTitle: it.lessonTitle,
-                     cardId: it.card.id, correct: ok, preview: previewText(it),
-                     peeked: peeked)
+                     cardId: it.card.id, correct: ok, preview: previewText(it))
 
-        if peeked { return }   // 看完了自己点「下一题」，不自动跳
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
-            advance()
+            self.advance()
         }
     }
 
@@ -242,7 +211,6 @@ struct QuizView: View {
         if nextIndex < session.items.count {
             index = nextIndex
             answeredThis = false
-            peekedThis = false
         } else {
             finished = true
         }

@@ -320,6 +320,11 @@ button { font-family: inherit; }
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .user-meta small { display: block; font-size: 11.5px; color: var(--text-3); line-height: 1.3; }
 
+/* ---------- 示意图 ---------- */
+.figure{margin:10px 0 4px;text-align:center}
+.figure svg{max-width:100%;height:auto}
+.peekbtn{margin:2px 0 8px}
+
 /* ---------- 主区 ---------- */
 .main {
   min-width: 0;

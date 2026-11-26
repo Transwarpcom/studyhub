@@ -742,6 +742,10 @@ function qcard(lid, card, qNo, total) {
 
   var body = el('<div class="qbody"></div>');
   body.appendChild(mdEl(card.question || card.q || ''));
+  if (card.svg) {
+    var fig = el('<div class="figure">' + card.svg + '</div>');
+    body.appendChild(fig);
+  }
   c.appendChild(body);
 
   var area = el('<div class="qans"></div>');
@@ -763,6 +767,27 @@ function answerIdxs(card) {
 
 function renderAnswer(area, exp, head, lid, card, c, settled) {
   var t = card.type || '';
+
+  // 上课用：随时看一眼解析，不锁选项、不判分、不记录
+  if (t !== 'text' && (card.explain || card.exp)) {
+    var peek = el('<button class="btn sm ghost peekbtn" type="button">看解析</button>');
+    peek.onclick = function () {
+      var willOpen = !!exp.hidden;
+      if (willOpen) {
+        if (!exp.dataset.filled) {
+          exp.innerHTML = '';
+          exp.appendChild(mdEl(card.explain || card.exp));
+          exp.dataset.filled = '1';
+        }
+        exp.hidden = false;
+        peek.textContent = '收起解析';
+      } else {
+        exp.hidden = true;
+        peek.textContent = '看解析';
+      }
+    };
+    area.appendChild(peek);
+  }
 
   if ((t === 'choice' || t === 'judge' || (t === '' && card.options)) && Array.isArray(card.options)) {
     renderChoice(area, exp, head, lid, card, c, settled, false);
