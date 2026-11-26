@@ -11,10 +11,11 @@ struct QuizCardView: UIViewRepresentable {
     var exam: Bool = false
     var onAnswer: (Bool, Bool) -> Void = { _, _ in }
     var onPick: ([String]) -> Void = { _ in }
+    var onHeight: (CGFloat) -> Void = { _ in }
 
     func makeCoordinator() -> Coord {
         Coord(item: item, fontSize: fontSize, allowPeek: allowPeek, exam: exam,
-              onAnswer: onAnswer, onPick: onPick)
+              onAnswer: onAnswer, onPick: onPick, onHeight: onHeight)
     }
 
     func makeUIView(context: Context) -> WKWebView {
@@ -24,6 +25,8 @@ struct QuizCardView: UIViewRepresentable {
         wv.isOpaque = false
         wv.backgroundColor = .clear
         wv.scrollView.backgroundColor = .clear
+        wv.scrollView.isScrollEnabled = false
+        wv.scrollView.bounces = false
         wv.navigationDelegate = context.coordinator
         context.coordinator.webView = wv
         if let url = Bundle.main.url(forResource: "reader", withExtension: "html", subdirectory: "web") {
@@ -47,19 +50,22 @@ struct QuizCardView: UIViewRepresentable {
         let exam: Bool
         let onAnswer: (Bool, Bool) -> Void
         let onPick: ([String]) -> Void
+        let onHeight: (CGFloat) -> Void
         weak var webView: WKWebView?
         private var ready = false
         private var pushed = false
 
         init(item: QuizItem, fontSize: Double, allowPeek: Bool, exam: Bool,
              onAnswer: @escaping (Bool, Bool) -> Void,
-             onPick: @escaping ([String]) -> Void) {
+             onPick: @escaping ([String]) -> Void,
+             onHeight: @escaping (CGFloat) -> Void) {
             self.item = item
             self.fontSize = fontSize
             self.allowPeek = allowPeek
             self.exam = exam
             self.onAnswer = onAnswer
             self.onPick = onPick
+            self.onHeight = onHeight
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -97,6 +103,9 @@ struct QuizCardView: UIViewRepresentable {
             } else if type == "pick" {
                 let picked = (body["picked"] as? [String]) ?? []
                 onPick(picked)
+            } else if type == "height" {
+                let h = (body["h"] as? NSNumber)?.doubleValue ?? 0
+                if h > 40 { onHeight(CGFloat(h)) }
             }
         }
     }
@@ -115,6 +124,7 @@ struct QuizView: View {
     @State private var finished = false
     @State private var wrongList: [QuizItem] = []
     @State private var allowPeek = true
+    @State private var cardHeight: CGFloat = 380
 
     // 答题卡
     @State private var showCard = false
@@ -135,18 +145,24 @@ struct QuizView: View {
                     resultView
                 } else {
                     header
-                    QuizCardView(item: session.items[index],
-                                  fontSize: store.fontSize,
-                                  allowPeek: allowPeek,
-                                  exam: isExam,
-                                  onAnswer: { ok, peeked in
-                                      handle(ok, peeked)
-                                  },
-                                  onPick: { picked in
-                                      picks[session.items[index].id] = picked
-                                      answeredThis = true
-                                  })
-                    .id(index)
+                    ScrollView {
+                        QuizCardView(item: session.items[index],
+                                      fontSize: store.fontSize,
+                                      allowPeek: allowPeek,
+                                      exam: isExam,
+                                      onAnswer: { ok, peeked in
+                                          handle(ok, peeked)
+                                      },
+                                      onPick: { picked in
+                                          picks[session.items[index].id] = picked
+                                          answeredThis = true
+                                      },
+                                      onHeight: { h in
+                                          cardHeight = min(max(h, 300), 4000)
+                                      })
+                        .frame(height: cardHeight)
+                        .id(index)
+                    }
                 }
             }
             .navigationTitle(session.title)
@@ -208,13 +224,17 @@ struct QuizView: View {
             ProgressView(value: Double(index + (answeredThis ? 1 : 0)),
                          total: Double(session.items.count))
 
-            if isExam && doneIdx.count == session.items.count {
+            if isExam {
                 Button {
                     submitExam()
                 } label: {
-                    Text("交卷").frame(maxWidth: .infinity)
+                    Text(doneIdx.count == session.items.count
+                         ? "交卷（已答完）"
+                         : "交卷（已答 \(doneIdx.count)/\(session.items.count)）")
+                        .frame(maxWidth: .infinity)
                 }
                 .buttonStyle(.borderedProminent)
+                .tint(doneIdx.count == session.items.count ? .green : .orange)
                 .padding(.top, 2)
             }
         }

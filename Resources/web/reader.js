@@ -436,11 +436,33 @@
     el.dataset.cardId = card.id;
 
     var q = mdToHtml(card.question || '');
-    var n = 0;
-    q = q.replace(/\{\{(\d+)\}\}/g, function (m, idx) {
-      n = Math.max(n, parseInt(idx, 10));
-      return '<input class="blank-input" data-blank="' + (parseInt(idx, 10) - 1) + '" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">';
-    });
+    var blankCount = (card.blanks || []).length;
+
+    // 两种占位都支持：{{1}} 显式编号，或 ____ 按出现顺序
+    var hasCurly = /\{\{\d+\}\}/.test(q);
+    if (hasCurly) {
+      q = q.replace(/\{\{(\d+)\}\}/g, function (m, idx) {
+        return '<input class="blank-input" data-blank="' + (parseInt(idx, 10) - 1) +
+               '" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">';
+      });
+    } else {
+      var seq = 0;
+      q = q.replace(/_{2,}/g, function () {
+        var i = seq < blankCount ? seq : seq;
+        seq++;
+        return '<input class="blank-input" data-blank="' + i +
+               '" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">';
+      });
+      // 题干没写 ____ 却有空：在末尾补
+      if (seq === 0 && blankCount > 0) {
+        var extra = '';
+        for (var k = 0; k < blankCount; k++) {
+          extra += ' <input class="blank-input" data-blank="' + k +
+                   '" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">';
+        }
+        q += '<div class="blank-fill">答案：' + extra + '</div>';
+      }
+    }
 
     var h = '<div class="kicker">' + kickerText(card) + '</div>';
     h += '<div class="md q">' + q + '</div>';
@@ -745,6 +767,14 @@
     }
   }
 
+  // 渲染完成后把内容高度报给原生（答题页按内容撑开，避免内部滚动藏住按钮）
+  function postHeight() {
+    try {
+      var h = Math.ceil(document.documentElement.scrollHeight || document.body.scrollHeight || 0);
+      if (h > 0) post({ type: 'height', h: h });
+    } catch (e) {}
+  }
+
   window.renderStudyHub = function (payload) {
     if (!payload) return;
     if (S.lessonId === payload.lessonId && document.getElementById('stage').children.length > 0) {
@@ -758,6 +788,8 @@
       return;
     }
     build(payload);
+    setTimeout(postHeight, 80);
+    setTimeout(postHeight, 400);
   };
 
   window.addEventListener('error', function () {

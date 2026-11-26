@@ -209,6 +209,21 @@ struct ChapterQuizPicker: View {
                         Section {
                             if Self.lessonCount(ch) > 1 {
                                 Button {
+                                    makeQuiz(ch, exam: true)
+                                } label: {
+                                    HStack(spacing: 8) {
+                                        Image(systemName: "timer")
+                                            .foregroundColor(.orange)
+                                        Text("模拟考 · 限时 40 分钟")
+                                        Spacer()
+                                        Text("\(Self.lessonCount(ch)) 节")
+                                            .font(.caption)
+                                            .foregroundColor(.secondary)
+                                    }
+                                }
+                                .disabled(busyLabel != nil)
+
+                                Button {
                                     makeQuiz(ch)
                                 } label: {
                                     HStack(spacing: 8) {
@@ -267,15 +282,18 @@ struct ChapterQuizPicker: View {
 
     // MARK: - 组卷
 
-    private func makeQuiz(_ node: Node) {
+    private func makeQuiz(_ node: Node, exam: Bool = false) {
         busyLabel = node.title
         Task {
             let all = await store.questions(in: node)
             await MainActor.run {
                 busyLabel = nil
                 if all.isEmpty { return }
-                let items = Array(all.shuffled().prefix(15))
-                session = QuizSession(title: node.title, items: items, exam: false, limitSeconds: 0)
+                let items = exam ? all : Array(all.shuffled().prefix(15))
+                session = QuizSession(title: exam ? "模拟考 · \(node.title)" : node.title,
+                                      items: items,
+                                      exam: exam,
+                                      limitSeconds: exam ? 40 * 60 : 0)
             }
         }
     }

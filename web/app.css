@@ -13,6 +13,7 @@
   --line-soft: #eef0f4;
   --text:      #14161c;
   --text-2:    #4a5160;
+  --sub:       #6b7280;
   --text-3:    #767d8b;
 
   /* 主色 */
@@ -60,6 +61,7 @@
     --line-soft: #1e242e;
     --text:      #e8ecf2;
     --text-2:    #a8b1c0;
+    --sub:       #9aa3b2;
     --text-3:    #8b95a5;
 
     --accent:      #6c8aff;
