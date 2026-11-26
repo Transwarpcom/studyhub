@@ -344,8 +344,9 @@ final class Store: ObservableObject {
                 let mine = allLessonNodes.filter { $0.id == ch.id || $0.id.hasPrefix(ch.id + "/") }
                 var total = 0, answered = 0, correct = 0, wrong = 0
                 for n in mine {
-                    let l = cachedLesson(node: n) ?? (try? await loadLesson(node: n))
-                    guard let l else { continue }
+                    var lesson: Lesson? = cachedLesson(node: n)
+                    if lesson == nil { lesson = try? await loadLesson(node: n) }
+                    guard let l = lesson else { continue }
                     for c in l.cards where c.type != "lecture" {
                         total += 1
                         let key = "\(l.id)|\(c.id)"
@@ -375,8 +376,9 @@ final class Store: ObservableObject {
         guard q.count >= 1 else { return [] }
         var out: [QuizItem] = []
         for n in allLessonNodes {
-            let l = cachedLesson(node: n) ?? (try? await loadLesson(node: n))
-            guard let l else { continue }
+            var lesson: Lesson? = cachedLesson(node: n)
+            if lesson == nil { lesson = try? await loadLesson(node: n) }
+            guard let l = lesson else { continue }
             for c in l.cards where c.type != "lecture" {
                 let hay = ((c.question ?? "") + " " + (c.md ?? "") + " " + (c.explain ?? "")).lowercased()
                 if hay.contains(q) {

@@ -236,7 +236,7 @@ struct QuizView: View {
             ScrollView {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 5),
                           spacing: 10) {
-                    ForEach(Array(session.items.enumerated()), id: \.offset) { i, it in
+                    ForEach(Array(session.items.enumerated()), id: \.offset) { _, it in
                         Button {
                             go(i)
                             showCard = false
