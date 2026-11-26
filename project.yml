@@ -71,8 +71,13 @@ targets:
       - path: Widget
     info:
       path: Widget/Info.plist
+      properties:
+        CFBundleDisplayName: 学习台
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:
       base:
+        GENERATE_INFOPLIST_FILE: "NO"
         PRODUCT_BUNDLE_IDENTIFIER: cn.medwarp.studyhub.widget
         PRODUCT_NAME: StudyHubWidget
         CODE_SIGN_ENTITLEMENTS: Widget/Widget.entitlements
