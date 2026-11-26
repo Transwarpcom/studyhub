@@ -211,7 +211,7 @@ struct QuizView: View {
     }
 
     /// peeked=true 表示「提交前看了解析」：不算答对，记入待复习，停在这一题等用户点下一题
-    private func handle(_ ok: Bool, peeked: Bool) {
+    private func handle(_ ok: Bool, _ peeked: Bool) {
         guard !answeredThis else { return }
         answeredThis = true
         peekedThis = peeked
