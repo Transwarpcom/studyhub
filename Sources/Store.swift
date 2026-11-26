@@ -493,8 +493,10 @@ final class Store: ObservableObject {
 
     // MARK: 答题
 
+    /// peeked = 提交前看过解析：不算作答，不写「每日答题/正确率」统计，
+    /// 但仍然记进度、进错题本、排进复习队列（该复习的还是要复习）
     func record(lessonId: String, lessonTitle: String, cardId: String,
-                correct: Bool, preview: String) {
+                correct: Bool, preview: String, peeked: Bool = false) {
         let key = "\(lessonId)|\(cardId)"
         progress[key] = correct
         saveProgress()
@@ -510,15 +512,17 @@ final class Store: ObservableObject {
         }
         saveWrongs()
 
-        // 按天统计
-        let f = DateFormatter()
-        f.dateFormat = "yyyy-MM-dd"
-        let day = f.string(from: Date())
-        var st = days[day] ?? DayStat(day: day, answered: 0, correct: 0)
-        st.answered += 1
-        if correct { st.correct += 1 }
-        days[day] = st
-        saveDays()
+        // 按天统计（看过解析的题不算作答，避免把正确率统计搞脏）
+        if !peeked {
+            let f = DateFormatter()
+            f.dateFormat = "yyyy-MM-dd"
+            let day = f.string(from: Date())
+            var st = days[day] ?? DayStat(day: day, answered: 0, correct: 0)
+            st.answered += 1
+            if correct { st.correct += 1 }
+            days[day] = st
+            saveDays()
+        }
         scheduleCloudSync()
 
         // 艾宾浩斯排期

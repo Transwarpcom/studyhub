@@ -228,7 +228,8 @@ struct QuizView: View {
 
         // 记进度 + 错题本 + 每日统计 + 复习排期
         store.record(lessonId: it.lessonId, lessonTitle: it.lessonTitle,
-                     cardId: it.card.id, correct: ok, preview: previewText(it))
+                     cardId: it.card.id, correct: ok, preview: previewText(it),
+                     peeked: peeked)
 
         if peeked { return }   // 看完了自己点「下一题」，不自动跳
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {

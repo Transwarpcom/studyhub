@@ -121,13 +121,15 @@ struct ReaderWebView: UIViewRepresentable {
             if type == "answer" {
                 let cardId = body["cardId"] as? String ?? ""
                 let correct = body["correct"] as? Bool ?? false
+                let peeked = body["peeked"] as? Bool ?? false
                 let preview = body["preview"] as? String ?? ""
                 let lessonId = lesson.id
                 let lessonTitle = lesson.title
                 let store = StoreLocator.shared.store
                 Task { @MainActor in
                     store?.record(lessonId: lessonId, lessonTitle: lessonTitle,
-                                  cardId: cardId, correct: correct, preview: preview)
+                                  cardId: cardId, correct: correct, preview: preview,
+                                  peeked: peeked)
                 }
             } else if type == "ready" {
                 push(force: true)
