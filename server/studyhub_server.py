@@ -288,9 +288,17 @@ class Handler(BaseHTTPRequestHandler):
         path = u.path
         qs = parse_qs(u.query)
 
-        if path in ("/health", "/"):
+        if path == "/health":
             return self.send_body(200, {"ok": True, "service": "studyhub",
                                         "version": 2, "time": int(time.time())})
+
+        # 根路径直接进网页版，避免浏览器打开一串 JSON
+        if path == "/":
+            self.send_response(302)
+            self.send_header("Location", "/web/")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
 
         # 课程与题目：登录墙开启后需要 token
         if path == "/manifest":
